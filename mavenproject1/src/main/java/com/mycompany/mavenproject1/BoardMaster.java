@@ -33,12 +33,14 @@ public class BoardMaster extends CellAutomaton{
     {
         boardstate= new int[width][height];
     }
-    public void reportBoard()
+    public String reportBoard()
     {
+        var retString ="";
         if (boardstate!=null)
         {
-            System.out.println(Arrays.deepToString(boardstate));
+            retString= Arrays.deepToString(boardstate);
         }
+        return retString;
     }
     public void seedBoard()
     {
@@ -47,13 +49,13 @@ public class BoardMaster extends CellAutomaton{
         {
         for(int c=0;c<dimensions;c++)
             {
-             randstate = Math.random();
-            if (randstate>probAlive)
+                randstate = Math.random();
+                if (randstate>probAlive)
                 {
-                boardstate[r][c]=1;
+                    boardstate[r][c]=1;
                 }
-            }
-        }
+            }//end for columns loop//
+        }//end for rows//
     }//end seedboard//
     @Override
      public boolean rules(int num){

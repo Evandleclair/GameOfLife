@@ -8,10 +8,18 @@ package com.mycompany.mavenproject1;
  *
  * @author toast
  */
-public class Simulator {
-    public static void main(String args[]) throws InterruptedException
-    {
-        var ourBoard = new BoardMaster(50);
-        ourBoard.setupBoard();
-    }
+public class Simulator extends FrameMaster{
+        
+    protected BoardMaster boardMaster;
+        public void StartSimulation()
+        {
+        boardMaster = new BoardMaster(50);
+        boardMaster.setupBoard();
+        SimulationTick();
+        }
+        public void SimulationTick()
+        {
+            super.RefreshBoard(boardMaster.reportBoard());
+            //super.RefreshBoard("aaaaaaaaaaaaaaaaaaaaaaaaaa");
+        }
 }
