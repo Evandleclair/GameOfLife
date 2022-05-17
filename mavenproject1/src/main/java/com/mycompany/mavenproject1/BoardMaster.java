@@ -5,7 +5,7 @@
 
 package com.mycompany.mavenproject1;
 
-import java.util.Arrays;
+
 
 /**
  *
@@ -38,7 +38,7 @@ public class BoardMaster extends CellAutomaton{
         var retString ="";
         if (boardstate!=null)
         {
-            retString= Arrays.deepToString(boardstate);
+            retString= StringMaster.arrayToString(boardstate);
         }
         return retString;
     }

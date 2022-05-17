@@ -1,25 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.mavenproject1;
 
 /**
  *
  * @author toast
  */
-public class Simulator extends FrameMaster{
+public class Simulator {
         
     protected BoardMaster boardMaster;
-        public void StartSimulation()
-        {
-        boardMaster = new BoardMaster(50);
+    protected SimulatorWindow masterWindow;
+    static int boardDims; 
+    public Simulator(SimulatorWindow m)
+    {
+        masterWindow=m;
+    }
+    public void StartSimulation(int d)
+    {
+        boardDims=d;
+        boardMaster = new BoardMaster(boardDims);
         boardMaster.setupBoard();
         SimulationTick();
-        }
-        public void SimulationTick()
-        {
-            super.RefreshBoard(boardMaster.reportBoard());
-            //super.RefreshBoard("aaaaaaaaaaaaaaaaaaaaaaaaaa");
-        }
+    }
+        
+    public void SimulationTick()
+    {
+        masterWindow.RefreshBoard(boardMaster.reportBoard());
+    }
 }
