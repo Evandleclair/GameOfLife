@@ -4,18 +4,21 @@
  */
 package com.mycompany.mavenproject1;
 
+import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author toast
  */
 public class MainInterface extends javax.swing.JFrame {
- private ArrayList<SimulatorWindow> simWindows = new ArrayList<>();
+ private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
  private static int gamesRunning=0;
     //protected static SimulatorWindow simWindow = new SimulatorWindow();
     /**
@@ -120,15 +123,20 @@ public class MainInterface extends javax.swing.JFrame {
 
         gameTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         gameTable.setToolTipText("");
         jScrollPane2.setViewportView(gameTable);
         gameTable.getAccessibleContext().setAccessibleName("gameTable");
@@ -204,19 +212,41 @@ public class MainInterface extends javax.swing.JFrame {
     {
         System.out.println("ugh");
         int dims = Integer.parseInt(dimensionBox.getText());
-        SimulatorWindow frame = new SimulatorWindow(dims, "GAME "+gamesRunning);
+        SimulatorWindow frame = new SimulatorWindow(dims, "GAME "+gamesRunning, this);
+        simWindows.add(new simWindowInfo("GAME "+gamesRunning,frame));
         gamesRunning++;
-        simWindows.add(frame);
         frame.setVisible(true); //necessary as of 1.3
         frame.SimulationStep();
+        updateFrameTable();
     }
     private void updateFrameTable()
     {
-        for (SimulatorWindow s : simWindows)
+        for ( simWindowInfo s : simWindows)
         {
-            
+            boolean itemPresent=false;
+            for (int i=0; i<gameTable.getRowCount();i++)
+            {
+                 final String rowGameID = (String)gameTable.getValueAt(i, 0);
+                 if (rowGameID==s.getID())
+                 {
+                     itemPresent=true;
+                     break;
+                 }
+            }
+            if (itemPresent==false)
+            {
+                AddToTable(s);
+            }
         }
     }
+    
+    
+    private void AddToTable(simWindowInfo s)
+    {
+        DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
+        model.addRow(new Object[]{s.getID(),s.getOBJ()});
+    }
+    
       protected void quit() {
         System.exit(0);
     }
@@ -225,6 +255,45 @@ public class MainInterface extends javax.swing.JFrame {
         MainInterface mainInt = new MainInterface();
         mainInt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainInt.setVisible(true);
+    }
+    public  void RemoveFrame(simWindowInfo s)
+    {
+        System.out.println("removing "  + s.getID());
+        DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
+       
+        
+        for (simWindowInfo s2 : simWindows)
+        {
+            System.out.println(s2.getID());
+            if (s2.getID().equals(s.getID()))
+            {
+                simWindows.remove(s2);
+                break;
+            }
+        }
+        for (int i=0; i<gameTable.getRowCount();i++)
+        {
+             final String rowGameID = (String)gameTable.getValueAt(i, 0);
+             if (rowGameID.equals(s.getID()))
+                 {
+                 model.removeRow(i);
+                 }
+        }
+    }
+    
+    private  int getRowByValue(TableModel model, Object value) 
+    {
+    int retInt = -1;
+    for (int i = model.getRowCount() - 1; i >= 0; --i) 
+        {
+        System.out.println(model.getValueAt(i, 0) + " versus " + value);
+        if (model.getValueAt(i, 0).equals(value)) 
+            {
+            
+            retInt=i;
+            }    
+        }
+    return retInt;
     }
     /**
      * @param args the command line arguments

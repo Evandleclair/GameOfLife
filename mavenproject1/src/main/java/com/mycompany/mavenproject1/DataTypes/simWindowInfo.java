@@ -10,15 +10,15 @@ import com.mycompany.mavenproject1.SimulatorWindow;
  *
  * @author toast
  */
-public class simWindowInfo<ID,OBJ> {
-    private ID id;
-    private OBJ obj;
-    public simWindowInfo(ID id, OBJ obj){
+public class simWindowInfo<String,SimulatorWindow> {
+    private String id;
+    private SimulatorWindow obj;
+    public simWindowInfo(String id, SimulatorWindow obj){
         this.id = id;
         this.obj = obj;
     }
-    public ID getID(){ return id; }
-    public OBJ getOBJ(){ return obj; }
-    public void setID(ID id){ this.id = id; }
-    public void setOBJ(OBJ obj){ this.obj = obj; }
+    public String getID(){ return id; }
+    public SimulatorWindow getOBJ(){ return obj; }
+    public void setID(String id){ this.id = id; }
+    public void setOBJ(SimulatorWindow obj){ this.obj = obj; }
 }

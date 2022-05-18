@@ -4,6 +4,7 @@
  */
 package com.mycompany.mavenproject1;
 
+import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -12,6 +13,8 @@ import java.awt.Rectangle;
 import java.awt.font.*;
 import javax.swing.*;
 import java.awt.FontMetrics;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -20,19 +23,38 @@ import java.awt.FontMetrics;
 public class SimulatorWindow extends JDialog{
     static int openFrameCount = 0;
     static int boardDim;
-    static String IDname;
+    String IDname;
+    static MainInterface creator;
     static Simulator simMaster;
     static final int xOffset = 30, yOffset = 30;
     static JTextArea textArea;
     static Graphics gr;
     static final Font boardFont = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-    public SimulatorWindow(int dim, String idName) {
+    public SimulatorWindow(int dim, String idName, MainInterface c) {
         gr = this.getGraphics();
         boardDim=dim;
+        creator=c;
+        IDname=idName;
         //...Then set the window size or call pack...
        
         SpinUpSim();
         CreateAndShowGUI();
+        this.addWindowListener(new WindowAdapter()
+            {
+                @Override
+                public void windowClosed(WindowEvent e)
+                {
+                   System.out.println("closing self. I am " + IDname);
+                   creator.RemoveFrame(new simWindowInfo(IDname,this));
+                }
+
+                @Override
+                public void windowClosing(WindowEvent e)
+                {
+                    System.out.println("closing self. I am " + IDname);
+                   creator.RemoveFrame(new simWindowInfo(IDname,this));
+                }
+            });
         System.out.println("aaaa");
         //Set the window's location.
         setLocation(xOffset*openFrameCount, yOffset*openFrameCount);
@@ -53,7 +75,7 @@ public class SimulatorWindow extends JDialog{
         textArea.setFont(boardFont);
         textArea.setLineWrap(false);
         textArea.setEditable(false);
-        
+        setTitle(IDname);
         //...Create the GUI and put it in the window...
         JPanel textPanel = new JPanel();
         EstablishBoard();
@@ -82,6 +104,7 @@ public class SimulatorWindow extends JDialog{
         System.out.println("height and width"  + boxHeight + "  " +boxWidth);
         textArea.setSize(boxWidth,boxHeight);
         pack();
+        
         //setSize(boxWidth,boxHeight);
     }
    
