@@ -18,7 +18,7 @@ public class Simulator {
         boardDims=d;
         boardMaster = new BoardMaster(boardDims);
         boardMaster.setupBoard();
-        SimulationTick();
+ 
     }
         
     public void SimulationTick()

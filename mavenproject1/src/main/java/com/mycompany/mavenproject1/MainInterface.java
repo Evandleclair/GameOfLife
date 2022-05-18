@@ -16,6 +16,7 @@ import javax.swing.*;
  */
 public class MainInterface extends javax.swing.JFrame {
  private ArrayList<SimulatorWindow> simWindows = new ArrayList<>();
+ private static int gamesRunning=0;
     //protected static SimulatorWindow simWindow = new SimulatorWindow();
     /**
      * Creates new form MainInterface
@@ -44,6 +45,8 @@ public class MainInterface extends javax.swing.JFrame {
         label1 = new java.awt.Label();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        gameTable = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,15 +118,36 @@ public class MainInterface extends javax.swing.JFrame {
         label1.getAccessibleContext().setAccessibleName("dimLabel");
         jButton1.getAccessibleContext().setAccessibleName("endAllButton");
 
+        gameTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        gameTable.setToolTipText("");
+        jScrollPane2.setViewportView(gameTable);
+        gameTable.getAccessibleContext().setAccessibleName("gameTable");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 206, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,7 +167,7 @@ public class MainInterface extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,10 +204,18 @@ public class MainInterface extends javax.swing.JFrame {
     {
         System.out.println("ugh");
         int dims = Integer.parseInt(dimensionBox.getText());
-        SimulatorWindow frame = new SimulatorWindow(dims);
+        SimulatorWindow frame = new SimulatorWindow(dims, "GAME "+gamesRunning);
+        gamesRunning++;
         simWindows.add(frame);
         frame.setVisible(true); //necessary as of 1.3
-        
+        frame.SimulationStep();
+    }
+    private void updateFrameTable()
+    {
+        for (SimulatorWindow s : simWindows)
+        {
+            
+        }
     }
       protected void quit() {
         System.exit(0);
@@ -233,11 +265,15 @@ public class MainInterface extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
     private java.awt.TextField dimensionBox;
+    private javax.swing.JTable gameTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private java.awt.Label label1;
     // End of variables declaration//GEN-END:variables
 }
+
+
