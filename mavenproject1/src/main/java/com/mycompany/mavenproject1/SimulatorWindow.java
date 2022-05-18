@@ -66,7 +66,7 @@ public class SimulatorWindow extends JDialog{
     }
     public void EstablishBoard()
     {
-         simMaster.StartSimulation(boardDim);
+         simMaster.StartSimulation(boardDim, creator.GetProb());
     }
     public void CreateAndShowGUI()
     {

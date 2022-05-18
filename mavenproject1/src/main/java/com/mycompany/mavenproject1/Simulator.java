@@ -13,10 +13,10 @@ public class Simulator {
     {
         masterWindow=m;
     }
-    public void StartSimulation(int d)
+    public void StartSimulation(int d, double prob)
     {
         boardDims=d;
-        boardMaster = new BoardMaster(boardDims);
+        boardMaster = new BoardMaster(boardDims, prob);
         boardMaster.setupBoard();
  
     }

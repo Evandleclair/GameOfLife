@@ -15,12 +15,12 @@ public class BoardMaster extends CellAutomaton{
 
     int boardstate[][];
     int dimensions;
-    double probAlive=0.5;
+    double probAlive;
     
-    public BoardMaster(int d)
+    public BoardMaster(int d, double ProbAlive)
     {
         //boardstate = new int[d][d];
-        
+        probAlive=ProbAlive;
         dimensions=d;
     }
     public void setupBoard()
