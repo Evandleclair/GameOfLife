@@ -65,6 +65,10 @@ public class SimulatorWindow extends JDialog{
         simMaster=new Simulator(this);
        
     }
+    public void PleaseLookAtMe()
+    {
+        requestFocus();
+    }
     public void EstablishBoard()
     {
          simMaster.StartSimulation(boardDim, creator.GetProb());

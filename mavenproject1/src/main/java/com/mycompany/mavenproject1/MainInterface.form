@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -231,7 +231,7 @@
                   </Table>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
-                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="gameTable.addMouseListener(new MouseAdapter()&#xa;    {&#xa;        public void mousePressed(MouseEvent mouseEvent) &#xa;        {&#xa;            JTable table =(JTable) mouseEvent.getSource();&#xa;            Point point = mouseEvent.getPoint();&#xa;            int row = table.rowAtPoint(point);&#xa;            if (mouseEvent.getClickCount() == 2 &amp;&amp; table.getSelectedRow() != -1) &#xa;            {&#xa;                final JTable jTable= (JTable)mouseEvent.getSource();&#xa;                final int row2 = jTable.getSelectedRow();&#xa;                focusFrame(row2);&#xa;            }&#xa;        }&#xa;    });">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
@@ -260,7 +260,7 @@
                 </Property>
               </Properties>
               <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="gameTable"/>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
               </AccessibilityProperties>
             </Component>
           </SubComponents>
