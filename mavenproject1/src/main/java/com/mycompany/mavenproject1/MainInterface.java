@@ -315,6 +315,12 @@ public class MainInterface extends javax.swing.JFrame {
         System.out.println(percSlider.getValue()*0.01 + " percent chance of alive at start");
         return (percSlider.getValue()*0.01);
     }
+    int getOpenFramesCount()
+    {
+        int retInt=0;
+        retInt=gameTable.getRowCount();
+        return retInt;
+    }
     private  int getRowByValue(TableModel model, Object value) 
     {
     int retInt = -1;

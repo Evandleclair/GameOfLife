@@ -14,6 +14,7 @@ import java.util.*;
 public class StringMaster {
     public static final Map<Integer, String> digitCharacter = new HashMap<>();
     static {
+        //▯◼◻▮
       digitCharacter.put(0, "▯");
       digitCharacter.put(1, "▮");
     }
@@ -34,5 +35,10 @@ public class StringMaster {
        }
     retString= sb.toString();
     return retString;
+    }
+    
+    public static int[][] importFileToBoard()
+    {
+        return new int[1][1];
     }
 }
