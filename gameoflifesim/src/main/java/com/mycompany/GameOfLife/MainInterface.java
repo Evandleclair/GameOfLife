@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.mavenproject1;
+package com.mycompany.GameOfLife;
 
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.awt.Point;
@@ -28,7 +28,6 @@ public class MainInterface extends javax.swing.JFrame {
     /**
      * Creates new form MainInterface
      */
-       JDesktopPane desktop;
     public MainInterface() {
         
        
@@ -53,6 +52,8 @@ public class MainInterface extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         percSlider = new javax.swing.JSlider();
+        jLabel2 = new javax.swing.JLabel();
+        genRunBox = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         gameTable = new javax.swing.JTable();
@@ -106,6 +107,10 @@ public class MainInterface extends javax.swing.JFrame {
         percSlider.setPaintTicks(true);
         percSlider.setName("percSlider"); // NOI18N
 
+        jLabel2.setText("GENERATIONS TO RUN: ");
+
+        genRunBox.setText("15");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -119,10 +124,15 @@ public class MainInterface extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(dimensionBox, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(genRunBox))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(52, 52, 52)
+                            .addComponent(dimensionBox, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(15, 15, 15))
@@ -135,11 +145,15 @@ public class MainInterface extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(dimensionBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(genRunBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 25, Short.MAX_VALUE))
+                        .addGap(8, 8, 8))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -153,6 +167,7 @@ public class MainInterface extends javax.swing.JFrame {
         label1.getAccessibleContext().setAccessibleName("dimLabel");
         jButton1.getAccessibleContext().setAccessibleName("endAllButton");
         percSlider.getAccessibleContext().setAccessibleName("");
+        genRunBox.getAccessibleContext().setAccessibleName("genNumField");
 
         gameTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -235,7 +250,7 @@ public class MainInterface extends javax.swing.JFrame {
                                 
     private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
         
-        //simWindow.EstablishBoard();
+        //simWindow.establishBoard();
     }//GEN-LAST:event_button1MouseClicked
 
     private void EndButtonClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EndButtonClicked
@@ -243,7 +258,7 @@ public class MainInterface extends javax.swing.JFrame {
         {
             destroyFrames();
         
-        //simWindow.EstablishBoard();
+        //simWindow.establishBoard();
         } catch (PropertyVetoException ex) {
          Logger.getLogger(MainInterface.class.getName()).log(Level.SEVERE, null, ex);
      }
@@ -264,14 +279,15 @@ public class MainInterface extends javax.swing.JFrame {
         simWindows.add(new simWindowInfo("GAME "+gamesRunning,frame));
         gamesRunning++;
         frame.setVisible(true); //necessary as of 1.3
-        frame.SimulationStep();
-        updateFrameTable();
+        frame.setMyGraphics();
+        frame.spinUpSim();
+        updateSimWindowTable();
     }
     void focusFrame(int rowID)
     {
        //simWindowInfo focusedWindow = simWindows.get(simWindows.indexOf(gameTable.getModel().getValueAt(rowID, 0)));
       // SimulatorWindow sw= (SimulatorWindow)focusedWindow.getOBJ();
-      /// sw.PleaseLookAtMe();
+      /// sw.pleaseLookAtMe();
       SimulatorWindow sw;
       if (rowID>-1)
       {
@@ -287,7 +303,7 @@ public class MainInterface extends javax.swing.JFrame {
       System.out.println("row " + rowID + " game " + " "+ idToFind);
       }
     }
-    private void updateFrameTable()
+    private void updateSimWindowTable()
     {
         for ( simWindowInfo s : simWindows)
         {
@@ -303,13 +319,13 @@ public class MainInterface extends javax.swing.JFrame {
             }
             if (itemPresent==false)
             {
-                AddToTable(s);
+                addSimWindowToTable(s);
             }
         }
     }
     
     
-    private void AddToTable(simWindowInfo s)
+    private void addSimWindowToTable(simWindowInfo s)
     {
         DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
         model.addRow(new Object[]{s.getID(),s.getOBJ()});
@@ -318,13 +334,13 @@ public class MainInterface extends javax.swing.JFrame {
       protected void quit() {
         System.exit(0);
     }
-    private static void CreateAndShow()
+    private static void createAndShow()
     {   
         MainInterface mainInt = new MainInterface();
         mainInt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainInt.setVisible(true);
     }
-    public  void RemoveFrame(simWindowInfo s)
+    public  void removeFrame(simWindowInfo s)
     {
         System.out.println("removing "  + s.getID());
         DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
@@ -348,14 +364,14 @@ public class MainInterface extends javax.swing.JFrame {
                  }
         }
     }
-    public double GetProb()
+    public double getAliveProbability()
     {
         System.out.println(percSlider.getValue()*0.01 + " percent chance of alive at start");
         return (percSlider.getValue()*0.01);
     }
     int getOpenFramesCount()
     {
-        int retInt=0;
+        int retInt;
         retInt=gameTable.getRowCount();
         return retInt;
     }
@@ -401,19 +417,25 @@ public class MainInterface extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-               CreateAndShow();
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            createAndShow();
         });
+    }
+    
+   
+    public int getGenToRun()
+    {
+        return Integer.parseInt(genRunBox.getText());
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
     private java.awt.TextField dimensionBox;
     private javax.swing.JTable gameTable;
+    private javax.swing.JTextField genRunBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
