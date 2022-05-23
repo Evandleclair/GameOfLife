@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package com.mycompany.mavenproject1;
+package com.mycompany.GameOfLife;
 
 import java.util.Arrays;
 
@@ -15,10 +15,10 @@ import java.util.Arrays;
  */
 public class BoardMaster extends CellAutomaton{
 
-    int[][] boardState;
-    int previousState[][];
-    int dimensions;
-    double probAlive;
+    private int[][] boardState;
+    private int previousState[][];
+    private int dimensions;
+    private double probAlive;
     
     public BoardMaster(int d, double ProbAlive)
     {
@@ -69,7 +69,7 @@ public class BoardMaster extends CellAutomaton{
     /*
      This method contains everything we need to tick the board forward by 1. 
      */
-    void BoardTick()
+    void boardTick()
     {
         previousState=boardState;
         boardState=calcNextState(boardState);
@@ -81,13 +81,13 @@ public class BoardMaster extends CellAutomaton{
        {
             for (int c=0; c<prevState[0].length; c++)
             {
-                System.out.println("current val is " + prevState[r][c]);
+                //System.out.println("current val is " + prevState[r][c]);
                 nextState[r][c]=  enoughNeighborsAlive(r,c, prevState) ? 1 : 0;
             }
        }
-       testPrintBoardState(prevState);
-       System.out.println("-----");
-       testPrintBoardState(nextState);
+       printBoardStateToConsole(prevState);
+       //System.out.println("-----");
+       printBoardStateToConsole(nextState);
        return nextState;
     }
     
@@ -111,7 +111,7 @@ public class BoardMaster extends CellAutomaton{
         }
         
         boolean returnVal=rulesOfNature(liveCount,inBoard[r][c]);
-         System.out.println("row " + r + " col " + c + " value is " + inBoard[r][c] + " and it has " + liveCount + "living neighbors and alive is " + returnVal);
+        //System.out.println("row " + r + " col " + c + " value is " + inBoard[r][c] + " and it has " + liveCount + "living neighbors and alive is " + returnVal);
         return returnVal;
     }
     
@@ -120,7 +120,7 @@ public class BoardMaster extends CellAutomaton{
         
         if (r >= 0 && c >= 0 && r < dimensions && c < dimensions )
         {
-        System.out.println("within bounds. coordinate at rc " + r + " " + c + " is "+inBoard[r][c]);
+        //System.out.println("within bounds. coordinate at rc " + r + " " + c + " is "+inBoard[r][c]);
         }
         return (r >= 0 && c >= 0 && r < dimensions && c < dimensions && inBoard[r][c]==1);
     }
@@ -154,7 +154,7 @@ public class BoardMaster extends CellAutomaton{
         return false;
     }
      
-     private void testPrintBoardState(int[][] mat)
+     private void printBoardStateToConsole(int[][] mat)
      {
          StringBuilder sb = new StringBuilder();
            for (int r=0; r<mat.length ; r++) 
@@ -165,6 +165,22 @@ public class BoardMaster extends CellAutomaton{
             }
             sb.append("\r\n");
             }
-           System.out.print(sb.toString());
+           //System.out.print(sb.toString());
+     }
+     public int[][] getBoardState()
+     {
+         return boardState;
+     }
+     void setBoardState(int[][] ia)
+     {
+          boardState=ia;
+     }
+      public int[][] getPreviousState()
+     {
+         return previousState;
+     }
+     void setPreviousState(int[][] ia)
+     {
+          previousState=ia;
      }
 }//end boardmaster//

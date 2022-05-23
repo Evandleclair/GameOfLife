@@ -4,7 +4,7 @@
  */
 package com.mycompany.mavenproject1.DataTypes;
 
-import com.mycompany.mavenproject1.SimulatorWindow;
+import com.mycompany.GameOfLife.SimulatorWindow;
 
 /**
  *
