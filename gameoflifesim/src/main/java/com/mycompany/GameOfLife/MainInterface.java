@@ -16,6 +16,9 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.text.AbstractDocument;
+
+
 
 /**
  *
@@ -24,14 +27,26 @@ import javax.swing.table.TableModel;
 public class MainInterface extends javax.swing.JFrame {
  private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
  private static int gamesRunning=0;
+ private static TablePopUp tablePopUpMenu;
+ private DocFilter df = new DocFilter();
+ private AbstractDocument genRunDoc, boxDimDoc;
     //protected static SimulatorWindow simWindow = new SimulatorWindow();
     /**
      * Creates new form MainInterface
      */
     public MainInterface() {
         
-       
         initComponents();
+        setDocFilters();
+        addRightClickMenuToTable();
+    }
+    private void setDocFilters()
+    {
+        
+        AbstractDocument genRunDoc = (AbstractDocument) genRunBox.getDocument();
+        AbstractDocument dimBoxDoc = (AbstractDocument) dimensionBox.getDocument();
+        genRunDoc.setDocumentFilter(df);
+        dimBoxDoc.setDocumentFilter(df);
     }
 
     /**
@@ -47,16 +62,20 @@ public class MainInterface extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         button1 = new java.awt.Button();
-        dimensionBox = new java.awt.TextField();
         label1 = new java.awt.Label();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         percSlider = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
         genRunBox = new javax.swing.JTextField();
+        dimensionBox = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         gameTable = new javax.swing.JTable();
+        jTextField1 = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -85,8 +104,6 @@ public class MainInterface extends javax.swing.JFrame {
             }
         });
 
-        dimensionBox.setText("10");
-
         label1.setText("DIMENSIONS:");
 
         jButton1.setLabel("END ALL");
@@ -111,6 +128,8 @@ public class MainInterface extends javax.swing.JFrame {
 
         genRunBox.setText("15");
 
+        dimensionBox.setText("10");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -124,15 +143,17 @@ public class MainInterface extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(genRunBox))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(52, 52, 52)
-                            .addComponent(dimensionBox, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(52, 52, 52)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(genRunBox, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dimensionBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(15, 15, 15))
@@ -142,10 +163,11 @@ public class MainInterface extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 10, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dimensionBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                            .addComponent(label1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dimensionBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(genRunBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -163,11 +185,11 @@ public class MainInterface extends javax.swing.JFrame {
         );
 
         button1.getAccessibleContext().setAccessibleName("rerunButton");
-        dimensionBox.getAccessibleContext().setAccessibleName("dimensionBox");
         label1.getAccessibleContext().setAccessibleName("dimLabel");
         jButton1.getAccessibleContext().setAccessibleName("endAllButton");
         percSlider.getAccessibleContext().setAccessibleName("");
         genRunBox.getAccessibleContext().setAccessibleName("genNumField");
+        dimensionBox.getAccessibleContext().setAccessibleName("dimensionBox");
 
         gameTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -204,13 +226,25 @@ public class MainInterface extends javax.swing.JFrame {
             });
             gameTable.getAccessibleContext().setAccessibleName("");
 
+            jButton2.setText("SELECT FILE");
+
+            jButton3.setText("IMPORT FILE");
+
             javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
             jPanel2.setLayout(jPanel2Layout);
             jPanel2Layout.setHorizontalGroup(
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jButton2)
+                            .addGap(4, 4, 4)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(6, 6, 6)))
                     .addContainerGap())
             );
             jPanel2Layout.setVerticalGroup(
@@ -218,8 +252,15 @@ public class MainInterface extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(35, Short.MAX_VALUE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2)
+                        .addComponent(jButton3))
+                    .addContainerGap())
             );
+
+            jLabel3.setText("Right click on a running game in the table below\\ to open up an interactions menu");
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
@@ -232,7 +273,12 @@ public class MainInterface extends javax.swing.JFrame {
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(layout.createSequentialGroup()
                             .addGap(20, 20, 20)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addComponent(jLabel3)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addContainerGap())
             );
             layout.setVerticalGroup(
@@ -240,7 +286,9 @@ public class MainInterface extends javax.swing.JFrame {
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(18, 18, 18)
+                    .addGap(2, 2, 2)
+                    .addComponent(jLabel3)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap())
             );
@@ -257,7 +305,6 @@ public class MainInterface extends javax.swing.JFrame {
         try 
         {
             destroyFrames();
-        
         //simWindow.establishBoard();
         } catch (PropertyVetoException ex) {
          Logger.getLogger(MainInterface.class.getName()).log(Level.SEVERE, null, ex);
@@ -271,6 +318,7 @@ public class MainInterface extends javax.swing.JFrame {
     private void destroyFrames() throws PropertyVetoException {
       
     }
+    
     protected void createFrame()  
     {
         System.out.println("ugh");
@@ -283,26 +331,36 @@ public class MainInterface extends javax.swing.JFrame {
         frame.spinUpSim();
         updateSimWindowTable();
     }
-    void focusFrame(int rowID)
+    
+    public void focusFrame(int rowID)
     {
-       //simWindowInfo focusedWindow = simWindows.get(simWindows.indexOf(gameTable.getModel().getValueAt(rowID, 0)));
-      // SimulatorWindow sw= (SimulatorWindow)focusedWindow.getOBJ();
-      /// sw.pleaseLookAtMe();
-      SimulatorWindow sw;
-      if (rowID>-1)
-      {
-      String idToFind = gameTable.getModel().getValueAt(rowID, 0).toString();
-      for (simWindowInfo s : simWindows)
-      {
-          if (s.getID()==idToFind)
-          {
-              sw=(SimulatorWindow) s.getOBJ();
-              sw.requestFocus();
-          }
-      }
-      System.out.println("row " + rowID + " game " + " "+ idToFind);
-      }
+        //simWindowInfo focusedWindow = simWindows.get(simWindows.indexOf(gameTable.getModel().getValueAt(rowID, 0)));
+        // SimulatorWindow sw= (SimulatorWindow)focusedWindow.getOBJ();
+        /// sw.pleaseLookAtMe();
+        getSimWindowByID(rowID).requestFocus();
     }
+    public void closeFrame(int rowID)
+    {
+         getSimWindowByID(rowID).pleaseCloseMe();
+    }
+    private SimulatorWindow getSimWindowByID(int rowID)
+    {
+        SimulatorWindow sw = null;
+        String idToFind = gameTable.getModel().getValueAt(rowID, 0).toString();
+        if (rowID>-1)
+        {
+            for (simWindowInfo s : simWindows)
+            {
+                if (s.getID()==idToFind)
+                {
+                    sw=(SimulatorWindow) s.getOBJ();
+                }
+            } 
+        }
+        System.out.println("row " + rowID + " game " + " "+ idToFind);
+        return sw;
+    }//end getSimWindowByID//
+    
     private void updateSimWindowTable()
     {
         for ( simWindowInfo s : simWindows)
@@ -430,20 +488,50 @@ public class MainInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
-    private java.awt.TextField dimensionBox;
+    private javax.swing.JTextField dimensionBox;
     private javax.swing.JTable gameTable;
     private javax.swing.JTextField genRunBox;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     private java.awt.Label label1;
     private javax.swing.JSlider percSlider;
     // End of variables declaration//GEN-END:variables
+
+    private void addRightClickMenuToTable() 
+    {
+    tablePopUpMenu = new TablePopUp(this);
+    gameTable.addMouseListener( new MouseAdapter(){
+    @Override
+    public void mousePressed(MouseEvent e)
+        {
+                System.out.println("pressed");
+            }
+          public void mouseReleased(MouseEvent e)
+            {
+                if (e.isPopupTrigger())
+                {
+                    JTable source = (JTable)e.getSource();
+                    int row = source.rowAtPoint( e.getPoint() );
+                    int column = source.columnAtPoint( e.getPoint() );
+
+                    if (! source.isRowSelected(row))
+                        source.changeSelection(row, column, false, false);
+
+                    tablePopUpMenu.ShowPopUp(e);
+                }
+            }
+     });
+    }
 }
 
 

@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.GameOfLife;
-
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.awt.Color;
 import java.awt.Container;
@@ -72,6 +71,10 @@ public class SimulatorWindow extends JDialog{
     public void pleaseLookAtMe()
     {
         requestFocus();
+    }
+    public void pleaseCloseMe()
+    {
+        dispose();
     }
     public void establishBoard()
     {

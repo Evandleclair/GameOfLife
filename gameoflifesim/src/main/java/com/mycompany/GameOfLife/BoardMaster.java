@@ -81,7 +81,6 @@ public class BoardMaster extends CellAutomaton{
        {
             for (int c=0; c<prevState[0].length; c++)
             {
-                //System.out.println("current val is " + prevState[r][c]);
                 nextState[r][c]=  enoughNeighborsAlive(r,c, prevState) ? 1 : 0;
             }
        }
