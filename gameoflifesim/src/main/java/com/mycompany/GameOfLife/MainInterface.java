@@ -24,7 +24,7 @@ import javax.swing.text.AbstractDocument;
  *
  * @author toast
  */
-public class MainInterface extends javax.swing.JFrame {
+public class MainInterface extends javax.swing.JFrame implements GameRunner {
  private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
  private static int gamesRunning=0;
  private static TablePopUp tablePopUpMenu;

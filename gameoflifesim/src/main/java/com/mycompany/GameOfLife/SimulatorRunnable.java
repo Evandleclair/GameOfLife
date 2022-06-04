@@ -6,14 +6,14 @@ import java.util.TimerTask;
  *
  * @author toast
  */
-public class Simulator implements Runnable{
+public class SimulatorRunnable implements Runnable{
     private Thread t;
-    private BoardMaster boardMaster;
-    private final SimulatorWindow masterWindow;
+    private BoardMaster boardMaster; //it will create a board master//
+    private final SimulatorWindow masterWindow; //the simulator window that created this//
     private int boardDims, gensToRun, currentGen;
     private double aliveProb;
     private String name;
-    public Simulator(SimulatorWindow m, String n, int d, double prob, int GensToRun)
+    public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
     {
         masterWindow=m;
         name=n;

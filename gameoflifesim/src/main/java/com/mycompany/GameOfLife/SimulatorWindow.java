@@ -26,7 +26,7 @@ public class SimulatorWindow extends JDialog{
     private int boardDim;
     private String IDname, origTitle;
     private MainInterface creator;
-    private Simulator simMaster;
+    private SimulatorRunnable simMaster;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     JTextArea textArea;
     Graphics gr, textAreaGr;
@@ -78,7 +78,7 @@ public class SimulatorWindow extends JDialog{
     }
     public void establishBoard()
     {
-         simMaster = new Simulator(this, IDname,boardDim, creator.getAliveProbability(), creator.getGenToRun());
+         simMaster = new SimulatorRunnable(this, IDname,boardDim, creator.getAliveProbability(), creator.getGenToRun());
          simMaster.startSimulation();
     }
     public void createAndShowGUI()
