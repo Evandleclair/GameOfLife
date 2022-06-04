@@ -25,14 +25,16 @@ public class TablePopUp extends JFrame implements ActionListener {
     protected JMenuItem bringToFrontMenuItem = new JMenuItem (new bringToFrontAction());
     protected JMenuItem pauseResumeMenuItem = new JMenuItem (new pauseResumeAction());
     protected JMenuItem closeMenuItem = new JMenuItem (new closeGameAction());
-    MainInterface mainInterface;
+    MainWindow mainInterface;
+    GameRunner gr;
     int callingRow;
     
     
-    public TablePopUp(MainInterface mi)
+    public TablePopUp(MainWindow mi)
     {
         popup = new JPopupMenu();
         mainInterface=mi;
+        gr = mi.getGameRunner();
         bringToFrontMenuItem.addActionListener(this);
         JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem};
         for (JMenuItem j : menuItems)
@@ -48,8 +50,9 @@ public class TablePopUp extends JFrame implements ActionListener {
         System.out.println(table.getSelectedRow() + " : " + table.getSelectedColumn());
         callingRow=table.getSelectedRow();
     }
-    public void ShowPopUp(MouseEvent e)
+    public void ShowPopUp(MouseEvent e, int rowselected)
     {
+        callingRow = rowselected;
         popup.show(e.getComponent(), e.getX(), e.getY());
     }
    
@@ -70,7 +73,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("This will bring window to front");
-            mainInterface.focusFrame(callingRow);
+            gr.focusFrame(callingRow);
             
         }
         
@@ -110,7 +113,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println("This will close a game");
-            mainInterface.closeFrame(callingRow);
+            gr.closeFrame(callingRow);
         }
     }//end pauseresume action//
     

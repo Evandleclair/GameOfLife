@@ -4,17 +4,14 @@
  */
 package com.mycompany.GameOfLife;
 
-import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyVetoException;
-import java.util.ArrayList;
 import java.util.Hashtable;
+import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.AbstractDocument;
 
@@ -24,9 +21,8 @@ import javax.swing.text.AbstractDocument;
  *
  * @author toast
  */
-public class MainInterface extends javax.swing.JFrame {
- private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
- private static int gamesRunning=0;
+public class MainWindow extends GameOfLifeWindow {
+ 
  private GameRunner gameRunner;
   private final DocFilter docFilter;
  private static TablePopUp tablePopUpMenu;
@@ -36,16 +32,17 @@ public class MainInterface extends javax.swing.JFrame {
     /**
      * Creates new form MainInterface
      */
-    public MainInterface(DocFilter df) {
+    public MainWindow(DocFilter df) {
        
         docFilter = df;
         initComponents();
         setDocFilters();
-        addRightClickMenuToTable();
+        //addRightClickMenuToTable();
     }
     public void setGameRunner(GameRunner gameRunnerArg)
     {
-         gameRunner = gameRunnerArg;
+        gameRunner = gameRunnerArg;
+        addRightClickMenuToTable(); //we need it to have a gameRunner object or we cannot properly bind the popup window..//
     }
 
     private void setDocFilters()
@@ -78,7 +75,7 @@ public class MainInterface extends javax.swing.JFrame {
         dimensionBox = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        gameTable = new javax.swing.JTable();
+        gameJTable = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -198,7 +195,7 @@ public class MainInterface extends javax.swing.JFrame {
         genRunBox.getAccessibleContext().setAccessibleName("genNumField");
         dimensionBox.getAccessibleContext().setAccessibleName("dimensionBox");
 
-        gameTable.setModel(new javax.swing.table.DefaultTableModel(
+        gameJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -214,94 +211,79 @@ public class MainInterface extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        gameTable.setToolTipText("");
-        jScrollPane2.setViewportView(gameTable);
-        gameTable.addMouseListener(new MouseAdapter()
-            {
-                public void mousePressed(MouseEvent mouseEvent)
-                {
-                    JTable table =(JTable) mouseEvent.getSource();
-                    Point point = mouseEvent.getPoint();
-                    int row = table.rowAtPoint(point);
-                    if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1)
-                    {
-                        final JTable jTable= (JTable)mouseEvent.getSource();
-                        final int row2 = jTable.getSelectedRow();
-                        focusFrame(row2);
-                    }
-                }
-            });
-            gameTable.getAccessibleContext().setAccessibleName("");
+        gameJTable.setToolTipText("");
+        jScrollPane2.setViewportView(gameJTable);
+        gameJTable.getAccessibleContext().setAccessibleName("");
 
-            jButton2.setText("SELECT FILE");
+        jButton2.setText("SELECT FILE");
 
-            jButton3.setText("IMPORT FILE");
+        jButton3.setText("IMPORT FILE");
 
-            javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-            jPanel2.setLayout(jPanel2Layout);
-            jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane2)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jButton2)
-                            .addGap(4, 4, 4)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(6, 6, 6)))
-                    .addContainerGap())
-            );
-            jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addComponent(jButton3))
-                    .addContainerGap())
-            );
+                        .addGap(4, 4, 4)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(6, 6, 6)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap())
+        );
 
-            jLabel3.setText("Right click on a running game in the table below\\ to open up an interactions menu");
+        jLabel3.setText("Right click on a running game in the table below\\ to open up an interactions menu");
 
-            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-            getContentPane().setLayout(layout);
-            layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(20, 20, 20)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(6, 6, 6)
-                                    .addComponent(jLabel3)
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addContainerGap())
-            );
-            layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(2, 2, 2)
-                    .addComponent(jLabel3)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap())
-            );
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-            pack();
-        }// </editor-fold>//GEN-END:initComponents
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
                                 
     private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
         
@@ -314,87 +296,39 @@ public class MainInterface extends javax.swing.JFrame {
             destroyFrames();
         //simWindow.establishBoard();
         } catch (PropertyVetoException ex) {
-         Logger.getLogger(MainInterface.class.getName()).log(Level.SEVERE, null, ex);
+         Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
      }
     }//GEN-LAST:event_EndButtonClicked
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         
+      
         createFrame();
     }//GEN-LAST:event_button1ActionPerformed
     private void destroyFrames() throws PropertyVetoException {
       
     }
+    void updateTable(TableModel tm)
+    {
+        gameJTable.setModel((tm));
+    }
+    
     
     protected void createFrame()  
     {
-        System.out.println("ugh");
+          
+        //System.out.println("ugh");
         int dims = Integer.parseInt(dimensionBox.getText());
-        SimulatorWindow frame = new SimulatorWindow(dims, "GAME "+gamesRunning, this);
-        simWindows.add(new simWindowInfo("GAME "+gamesRunning,frame));
-        gamesRunning++;
-        frame.setVisible(true); //necessary as of 1.3
-        frame.setMyGraphics();
-        frame.spinUpSim();
-        updateSimWindowTable();
-    }
-    
-    public void focusFrame(int rowID)
-    {
-        //simWindowInfo focusedWindow = simWindows.get(simWindows.indexOf(gameTable.getModel().getValueAt(rowID, 0)));
-        // SimulatorWindow sw= (SimulatorWindow)focusedWindow.getOBJ();
-        /// sw.pleaseLookAtMe();
-        getSimWindowByID(rowID).requestFocus();
-    }
-    public void closeFrame(int rowID)
-    {
-         getSimWindowByID(rowID).pleaseCloseMe();
-    }
-    private SimulatorWindow getSimWindowByID(int rowID)
-    {
-        SimulatorWindow sw = null;
-        String idToFind = gameTable.getModel().getValueAt(rowID, 0).toString();
-        if (rowID>-1)
-        {
-            for (simWindowInfo s : simWindows)
-            {
-                if (s.getID()==idToFind)
-                {
-                    sw=(SimulatorWindow) s.getOBJ();
-                }
-            } 
-        }
-        System.out.println("row " + rowID + " game " + " "+ idToFind);
-        return sw;
-    }//end getSimWindowByID//
-    
-    private void updateSimWindowTable()
-    {
-        for ( simWindowInfo s : simWindows)
-        {
-            boolean itemPresent=false;
-            for (int i=0; i<gameTable.getRowCount();i++)
-            {
-                 final String rowGameID = (String)gameTable.getValueAt(i, 0);
-                 if (rowGameID==s.getID())
-                 {
-                     itemPresent=true;
-                     break;
-                 }
-            }
-            if (itemPresent==false)
-            {
-                addSimWindowToTable(s);
-            }
-        }
+        gameRunner.createGame(dims);
     }
     
     
-    private void addSimWindowToTable(simWindowInfo s)
-    {
-        DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
-        model.addRow(new Object[]{s.getID(),s.getOBJ()});
-    }
+  
+    
+  
+    
+    
+  
     
       protected void quit() {
         System.exit(0);
@@ -404,55 +338,17 @@ public class MainInterface extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
-    public  void removeFrame(simWindowInfo s)
-    {
-        System.out.println("removing "  + s.getID());
-        DefaultTableModel model = (DefaultTableModel) gameTable.getModel();
-       
-        
-        for (simWindowInfo s2 : simWindows)
-        {
-            System.out.println(s2.getID());
-            if (s2.getID().equals(s.getID()))
-            {
-                simWindows.remove(s2);
-                break;
-            }
-        }
-        for (int i=0; i<gameTable.getRowCount();i++)
-        {
-             final String rowGameID = (String)gameTable.getValueAt(i, 0);
-             if (rowGameID.equals(s.getID()))
-                 {
-                 model.removeRow(i);
-                 }
-        }
-    }
+  
+    
+     
+    
     public double getAliveProbability()
     {
         System.out.println(percSlider.getValue()*0.01 + " percent chance of alive at start");
         return (percSlider.getValue()*0.01);
     }
-    int getOpenFramesCount()
-    {
-        int retInt;
-        retInt=gameTable.getRowCount();
-        return retInt;
-    }
-    private  int getRowByValue(TableModel model, Object value) 
-    {
-    int retInt = -1;
-    for (int i = model.getRowCount() - 1; i >= 0; --i) 
-        {
-        System.out.println(model.getValueAt(i, 0) + " versus " + value);
-        if (model.getValueAt(i, 0).equals(value)) 
-            {
-            
-            retInt=i;
-            }    
-        }
-    return retInt;
-    }
+  
+    
     
     public  void startTheGame()
     {
@@ -464,11 +360,16 @@ public class MainInterface extends javax.swing.JFrame {
     {
         return Integer.parseInt(genRunBox.getText());
     }
+    
+    public GameRunner getGameRunner()
+    {
+        return gameRunner;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button button1;
     private javax.swing.JTextField dimensionBox;
-    private javax.swing.JTable gameTable;
+    private javax.swing.JTable gameJTable;
     private javax.swing.JTextField genRunBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -489,12 +390,13 @@ public class MainInterface extends javax.swing.JFrame {
     private void addRightClickMenuToTable() 
     {
     tablePopUpMenu = new TablePopUp(this);
-    gameTable.addMouseListener( new MouseAdapter(){
+    gameJTable.addMouseListener( new MouseAdapter(){
     @Override
     public void mousePressed(MouseEvent e)
         {
                 System.out.println("pressed");
             }
+    @Override
           public void mouseReleased(MouseEvent e)
             {
                 if (e.isPopupTrigger())
@@ -506,7 +408,7 @@ public class MainInterface extends javax.swing.JFrame {
                     if (! source.isRowSelected(row))
                         source.changeSelection(row, column, false, false);
 
-                    tablePopUpMenu.ShowPopUp(e);
+                    tablePopUpMenu.ShowPopUp(e, row);
                 }
             }
      });

@@ -4,14 +4,21 @@
  */
 package com.mycompany.GameOfLife;
 
+import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
+
 /**
  *
  * @author toast
  */
 interface GameRunnerInterface {
         
-        public void createFrameAndGame();
-        public void destroyGameAndFrame();
+        public void createGame(int dimensions);
+        public void destroyGame(simWindowInfo s);
+        public int getGamesRunning();
+        public void setGamesRunning(int GamesRunning);
+        public SimulatorWindow getSimWindowByID(int rowID);
+        public int getOpenGamesCount();
+        public void UpdateTableOnWindow();
        
         
 }

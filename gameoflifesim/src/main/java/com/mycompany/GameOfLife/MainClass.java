@@ -12,9 +12,13 @@ public class MainClass {
     
     public static void main(String[] args)
     {
-        MainInterface mainInterface = new MainInterface(new DocFilter());
-        mainInterface.setGameRunner(new GameRunner(mainInterface));
+       
+        MainWindow mainInterface = new MainWindow(new DocFilter());
+        GameRunner GR=new GameRunner(mainInterface);
+        mainInterface.setGameRunner(GR);
+        GR.UpdateTableOnWindow();
         mainInterface.startTheGame();
     }
+    
     
 }

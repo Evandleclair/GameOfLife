@@ -25,19 +25,21 @@ public class SimulatorWindow extends JDialog{
     static int openFrameCount = 0;
     private int boardDim;
     private String IDname, origTitle;
-    private MainInterface creator;
+    private MainWindow myCreator;
+    private GameRunner myRunner;
     private SimulatorRunnable simMaster;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     JTextArea textArea;
     Graphics gr, textAreaGr;
     private static Font BOARD_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-    public SimulatorWindow(int dim, String idName, MainInterface c) {
+    public SimulatorWindow(int dim, String idName, MainWindow c) {
         gr = this.getGraphics();
         boardDim=dim;
-        creator=c;
+        myCreator=c;
+        myRunner=c.getGameRunner();
         IDname=idName;
         //...Then set the window size or call pack...
-        openFrameCount=creator.getOpenFramesCount();
+        openFrameCount=myRunner.getGamesRunning();
         createAndShowGUI();
        
         System.out.println(textAreaGr);
@@ -48,7 +50,7 @@ public class SimulatorWindow extends JDialog{
                 public void windowClosed(WindowEvent e)
                 {
                    System.out.println("closing self. I am " + IDname);
-                   creator.removeFrame(new simWindowInfo(IDname,this));
+                   myRunner.destroyGame(new simWindowInfo(IDname,this));
                    simMaster.interuptThread();
                 }
 
@@ -56,7 +58,7 @@ public class SimulatorWindow extends JDialog{
                 public void windowClosing(WindowEvent e)
                 {
                     System.out.println("closing self. I am " + IDname);
-                    creator.removeFrame(new simWindowInfo(IDname,this));
+                    myRunner.destroyGame(new simWindowInfo(IDname,this));
                     simMaster.interuptThread();
                 }
             });
@@ -78,7 +80,7 @@ public class SimulatorWindow extends JDialog{
     }
     public void establishBoard()
     {
-         simMaster = new SimulatorRunnable(this, IDname,boardDim, creator.getAliveProbability(), creator.getGenToRun());
+         simMaster = new SimulatorRunnable(this, IDname,boardDim, myCreator.getAliveProbability(), myCreator.getGenToRun());
          simMaster.startSimulation();
     }
     public void createAndShowGUI()
