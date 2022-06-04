@@ -8,6 +8,21 @@ package com.mycompany.GameOfLife;
  *
  * @author toast
  */
-interface GameRunner {
+public class GameRunner implements GameRunnerInterface {
     
+    private final MainInterface mainInterface;
+    public GameRunner(MainInterface MI)
+    {
+    mainInterface=MI;
+    }
+
+    @Override
+    public void createFrameAndGame() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void destroyGameAndFrame() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

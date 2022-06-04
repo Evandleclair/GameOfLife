@@ -24,29 +24,36 @@ import javax.swing.text.AbstractDocument;
  *
  * @author toast
  */
-public class MainInterface extends javax.swing.JFrame implements GameRunner {
+public class MainInterface extends javax.swing.JFrame {
  private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
  private static int gamesRunning=0;
+ private GameRunner gameRunner;
+  private final DocFilter docFilter;
  private static TablePopUp tablePopUpMenu;
- private DocFilter df = new DocFilter();
+
  private AbstractDocument genRunDoc, boxDimDoc;
     //protected static SimulatorWindow simWindow = new SimulatorWindow();
     /**
      * Creates new form MainInterface
      */
-    public MainInterface() {
-        
+    public MainInterface(DocFilter df) {
+       
+        docFilter = df;
         initComponents();
         setDocFilters();
         addRightClickMenuToTable();
     }
+    public void setGameRunner(GameRunner gameRunnerArg)
+    {
+         gameRunner = gameRunnerArg;
+    }
+
     private void setDocFilters()
     {
-        
         AbstractDocument genRunDoc = (AbstractDocument) genRunBox.getDocument();
         AbstractDocument dimBoxDoc = (AbstractDocument) dimensionBox.getDocument();
-        genRunDoc.setDocumentFilter(df);
-        dimBoxDoc.setDocumentFilter(df);
+        genRunDoc.setDocumentFilter(docFilter);
+        dimBoxDoc.setDocumentFilter(docFilter);
     }
 
     /**
@@ -392,11 +399,10 @@ public class MainInterface extends javax.swing.JFrame implements GameRunner {
       protected void quit() {
         System.exit(0);
     }
-    private static void createAndShow()
+    private  void createAndShow()
     {   
-        MainInterface mainInt = new MainInterface();
-        mainInt.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainInt.setVisible(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
     }
     public  void removeFrame(simWindowInfo s)
     {
@@ -447,40 +453,13 @@ public class MainInterface extends javax.swing.JFrame implements GameRunner {
         }
     return retInt;
     }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            createAndShow();
-        });
-    }
     
-   
+    public  void startTheGame()
+    {
+         java.awt.EventQueue.invokeLater(() -> {
+            createAndShow();
+         });
+    }//end startGameRunner./
     public int getGenToRun()
     {
         return Integer.parseInt(genRunBox.getText());
