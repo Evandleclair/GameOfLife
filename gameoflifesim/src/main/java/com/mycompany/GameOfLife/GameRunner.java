@@ -20,9 +20,8 @@ public class GameRunner implements GameRunnerInterface {
     private final MainWindow mainInterface;
     private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
     private static int gamesRunning=0;
-    private String[] colNames = {"Game","Generation"};
+    private String[] colNames = {"Game","Generation","Status"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
-    
     private JTable simTable = new JTable(dtm);
     public GameRunner(MainWindow MI)
     {
@@ -31,7 +30,7 @@ public class GameRunner implements GameRunnerInterface {
     }
     private void HideGameColumn() //we are storing games in the column but do not want to display them as that is pointless//
     {
-        simTable.getColumnModel().getColumn(1).setMaxWidth(0);
+       // simTable.getColumnModel().getColumn(2).setMaxWidth(0);
     }
             
     @Override
@@ -139,14 +138,11 @@ public class GameRunner implements GameRunnerInterface {
       private void addSimWindowToTable(simWindowInfo s)
     {
         DefaultTableModel model = (DefaultTableModel) simTable.getModel();
-        model.addRow(new Object[]{s.getID(),"oo",s.getOBJ()});
+        model.addRow(new Object[]{s.getID(),"oo","generation",s.getOBJ()});
     }
       
     public void focusOnSpecificSimWindow(int rowID)
     {
-        //simWindowInfo focusedWindow = simWindows.get(simWindows.indexOf(simTable.getModel().getValueAt(rowID, 0)));
-        // SimulatorWindow sw= (SimulatorWindow)focusedWindow.getOBJ();
-        /// sw.pleaseLookAtMe();
         getSimWindowByID(rowID).requestFocus();
     }
        
@@ -164,5 +160,26 @@ public class GameRunner implements GameRunnerInterface {
     @Override
     public void UpdateTableOnMainWindow() {
         mainInterface.updateTableModel(simTable.getModel());
+    }
+    
+    public void updateSimColumnsOnTable(String IDname, String status, int curGen)
+    {
+        int rowToUpdate = getSimRowByName(IDname);
+        simTable.getModel().setValueAt(status,rowToUpdate,2);
+        simTable.getModel().setValueAt(curGen,rowToUpdate,1);
+    }
+    
+    private int getSimRowByName(String IDname)
+    {
+        int retInt = 0;
+        for (int i=0; i<simTable.getRowCount();i++)
+        {
+            final String rowGameID = (String)simTable.getValueAt(i, 0);
+            if (rowGameID==IDname)
+            {
+            retInt=i;
+            }
+        }
+        return retInt;
     }
 }//end class//

@@ -51,26 +51,31 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
         setMyGraphics();
         
     }
+    @Override
     public void startSimRunnable()
     {
         simRunnable.start();
     }
     
+    @Override
     public void pleaseLookAtMe()
     {
         requestFocus();
     }
     
+    @Override
     public void pleaseCloseMe()
     {
         dispose();
     }
     
+    @Override
     public void pleaseAddGenerations(int gens)
     {
         simRunnable.addGens(gens);
     }
     
+    @Override
     public void establishBoardAndStartSim()
     {
          simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun());
@@ -124,6 +129,7 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
         setSize(100, 100);
     }//end createAndShowGUI//
    
+    @Override
     public void displayUpdatedBoardText(String s)
     {
         try 
@@ -164,5 +170,11 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
     public void paint(Graphics g) {
         super.paint(g);
         gr=g;
+    }
+
+    @Override
+    public void passSimStatusToMainWindow(String simStatus, int currentGen) {
+        gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen);
+        
     }
 }

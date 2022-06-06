@@ -35,6 +35,7 @@ public class SimulatorRunnable implements Runnable{
     public void simulationTick()
     {
         boardObject.boardTick();
+        masterWindow.passSimStatusToMainWindow(getSimStatusAsString(),currentGen);
         masterWindow.displayUpdatedBoardText(boardObject.reportBoard());
     }
 
@@ -44,10 +45,7 @@ public class SimulatorRunnable implements Runnable{
         while (!Thread.currentThread().isInterrupted())
             try 
             {
-                if (currentGen==0)
-                {
-                    currentGen=1;
-                }
+               
                 //masterWindow.printMyName();
                 for (int i=0; i<gensToRun; i++)
                 {
@@ -60,10 +58,13 @@ public class SimulatorRunnable implements Runnable{
             catch(InterruptedException e)
             {
                 e.printStackTrace();
+               
                 Thread.currentThread().interrupt(); //ensures the current thread will properly interrupt//
             }
             finally
             {
+                masterWindow.displayUpdatedBoardText(boardObject.reportBoard());
+                masterWindow.passSimStatusToMainWindow("COMPLETE",currentGen);
                 interuptThread();
             }
     }//end run//
@@ -117,6 +118,26 @@ public class SimulatorRunnable implements Runnable{
         {
          gensToRun+=gensToAdd;
         }
+    }
+    
+    public String getSimStatusAsString()
+    {
+        String retString="eururu";
+        if (t!=null)
+        {
+            switch (t.getState().toString())
+            {
+                case "TERMINATED":
+                    retString="COMPLETE";
+                default:
+                    retString="RUNNING";
+            }
+        }
+        else
+        {
+            retString="COMPLETE";
+        }
+        return retString;
     }
 }
 
