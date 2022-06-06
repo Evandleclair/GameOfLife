@@ -148,6 +148,12 @@ public class GameRunner implements GameRunnerInterface {
          getSimWindowByID(rowID).pleaseCloseMe();
     }
    
+    public void addGenerations(int rowID)
+    {
+        getSimWindowByID(rowID).pleaseAddGenerations(mainInterface.getGenToRun());
+        focusFrame(rowID);
+    }
+    
     @Override
     public void UpdateTableOnWindow() {
         mainInterface.updateTable(gameTable.getModel());

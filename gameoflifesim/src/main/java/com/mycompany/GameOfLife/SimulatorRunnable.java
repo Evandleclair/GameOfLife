@@ -10,7 +10,7 @@ public class SimulatorRunnable implements Runnable{
     private Thread t;
     private BoardMaster boardMaster; //it will create a board master//
     private final SimulatorWindow masterWindow; //the simulator window that created this//
-    private int boardDims, gensToRun, currentGen;
+    private int boardDims, gensToRun, currentGen=0;
     private double aliveProb;
     private String name;
     public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
@@ -35,32 +35,45 @@ public class SimulatorRunnable implements Runnable{
     }
 
     @Override
-    public void run() {
-        try 
-        {
-            currentGen=1;
-            masterWindow.printMyName();
-            for (int i=0; i<gensToRun; i++)
+    public void run() 
+    {
+        while (!Thread.currentThread().isInterrupted())
+            try 
             {
-                simulationTick();
-                currentGen++;
-                Thread.sleep(500);
+                if (currentGen==0)
+                {
+                    currentGen=1;
+                }
+                masterWindow.printMyName();
+                for (int i=0; i<gensToRun; i++)
+                {
+                    simulationTick();
+                    currentGen++;
+                    Thread.sleep(250);
+                }
             }
-        }
-        catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            currentGen++;
-        }
-    }
+            catch(InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                currentGen++;
+                interuptThread();
+            }
+    }//end run//
      public void start () {
-      System.out.println("Starting " +  name );
+      
       if (t == null) {
+         System.out.println("Starting game on new thread" +  name );
          t = new Thread (this, name);
          t.start ();
+      }
+      else if (t.isAlive()==false)
+      {
+        System.out.println("Starting a new thread to continue game");
+        t=null;
+        start();
       }
    }
     public void setSimulationThreadReference()
@@ -73,7 +86,26 @@ public class SimulatorRunnable implements Runnable{
     }
     public void interuptThread()
     {
-        t.interrupt();
+        
+        //System.out.println("ending thread " + t.getName());
+        if (t!=null)
+        {
+        t.interrupt(); 
+        t=null; //blank the thread//
+        }
+    }
+    public void addGens(int gensToAdd)
+    {
+    if (t==null)
+        {
+        System.out.println("will start a new game");
+        gensToRun=gensToAdd;
+        start();
+        }
+    else
+        {
+         gensToRun+=gensToAdd;
+        }
     }
 }
 

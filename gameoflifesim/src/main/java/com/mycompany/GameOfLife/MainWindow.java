@@ -130,9 +130,10 @@ public class MainWindow extends GameOfLifeWindow {
 
         jLabel2.setText("GENERATIONS TO RUN: ");
 
-        genRunBox.setText("15");
+        genRunBox.setText("30");
+        genRunBox.setToolTipText("");
 
-        dimensionBox.setText("10");
+        dimensionBox.setText("25");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

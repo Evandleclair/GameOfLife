@@ -78,6 +78,10 @@ public class SimulatorWindow extends JDialog{
     {
         dispose();
     }
+    public void pleaseAddGenerations(int gens)
+    {
+        simMaster.addGens(gens);
+    }
     public void establishBoard()
     {
          simMaster = new SimulatorRunnable(this, IDname,boardDim, myCreator.getAliveProbability(), myCreator.getGenToRun());

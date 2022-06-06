@@ -41,4 +41,15 @@ public class StringMaster {
     {
         return new int[1][1];
     }
+    
+    public static String combineStrings(String[] inStrings)
+    {
+         StringBuilder str
+            = new StringBuilder();
+         for (String s : inStrings)
+         {
+             str.append(s);
+         }
+         return str.toString();
+    }
 }

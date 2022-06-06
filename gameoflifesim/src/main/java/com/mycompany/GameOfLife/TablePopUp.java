@@ -25,6 +25,8 @@ public class TablePopUp extends JFrame implements ActionListener {
     protected JMenuItem bringToFrontMenuItem = new JMenuItem (new bringToFrontAction());
     protected JMenuItem pauseResumeMenuItem = new JMenuItem (new pauseResumeAction());
     protected JMenuItem closeMenuItem = new JMenuItem (new closeGameAction());
+    protected JMenuItem addGenerationsMenuItem = new JMenuItem (new addGenerationsAction());
+    private String addGenLabel;
     MainWindow mainInterface;
     GameRunner gr;
     int callingRow;
@@ -36,7 +38,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         mainInterface=mi;
         gr = mi.getGameRunner();
         bringToFrontMenuItem.addActionListener(this);
-        JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem};
+        JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem, addGenerationsMenuItem};
         for (JMenuItem j : menuItems)
         {
             popup.add(j);
@@ -48,11 +50,15 @@ public class TablePopUp extends JFrame implements ActionListener {
         JPopupMenu popup = (JPopupMenu)c.getParent();
         JTable table = (JTable)popup.getInvoker();
         System.out.println(table.getSelectedRow() + " : " + table.getSelectedColumn());
+        //addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainInterface.getGenToRun())," Generations"});
         callingRow=table.getSelectedRow();
     }
     public void ShowPopUp(MouseEvent e, int rowselected)
     {
         callingRow = rowselected;
+        System.out.println("fuck");
+        addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainInterface.getGenToRun())," Generations"});
+        addGenerationsMenuItem.setText(addGenLabel);
         popup.show(e.getComponent(), e.getX(), e.getY());
     }
    
@@ -116,5 +122,18 @@ public class TablePopUp extends JFrame implements ActionListener {
             gr.closeFrame(callingRow);
         }
     }//end pauseresume action//
+     
+     public class addGenerationsAction extends AbstractAction {
+         public addGenerationsAction()
+         {
+             super(addGenLabel);
+         }
+           @Override
+        public void actionPerformed(ActionEvent e) {
+            
+            System.out.println("adding generations");
+            gr.addGenerations(callingRow);
+        }
+     }
     
 }
