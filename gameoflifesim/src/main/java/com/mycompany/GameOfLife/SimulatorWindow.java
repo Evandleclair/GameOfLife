@@ -21,72 +21,68 @@ import java.awt.geom.IllegalPathStateException;
  *
  * @author toast
  */
-public class SimulatorWindow extends JDialog{
+public class SimulatorWindow extends JDialog implements SimWindowInterface{
     static int openFrameCount = 0;
     private int boardDim;
     private String IDname, origTitle;
-    private MainWindow myCreator;
-    private GameRunner myRunner;
-    private SimulatorRunnable simMaster;
+    private final MainWindow myCreator;
+    private GameRunner gameRunner;
+    private SimulatorRunnable simRunnable;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     JTextArea textArea;
     Graphics gr, textAreaGr;
-    private static Font BOARD_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 12);
+    private static final Font BOARD_FONT = StringMaster.getGlobalFont();
     public SimulatorWindow(int dim, String idName, MainWindow c) {
         gr = this.getGraphics();
         boardDim=dim;
         myCreator=c;
-        myRunner=c.getGameRunner();
+        gameRunner=c.getGameRunner();
         IDname=idName;
         //...Then set the window size or call pack...
-        openFrameCount=myRunner.getGamesRunning();
-        createAndShowGUI();
-       
+        openFrameCount=gameRunner.getGamesRunning();
         System.out.println(textAreaGr);
-        
-        this.addWindowListener(new WindowAdapter()
-            {
-                @Override
-                public void windowClosed(WindowEvent e)
-                {
-                   System.out.println("closing self. I am " + IDname);
-                   myRunner.destroyGame(new simWindowInfo(IDname,this));
-                   simMaster.interuptThread();
-                }
-
-                @Override
-                public void windowClosing(WindowEvent e)
-                {
-                    System.out.println("closing self. I am " + IDname);
-                    myRunner.destroyGame(new simWindowInfo(IDname,this));
-                    simMaster.interuptThread();
-                }
-            });
-        System.out.println("aaaa");
+        createAndShowGUI();
         //Set the window's location.
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
     }
-    public void spinUpSim()
+    public void runSimWindowStartupTasks()
     {
-        simMaster.start();
+        setVisible(true); //necessary as of 1.3
+        setMyGraphics();
+        
     }
+    public void startSimRunnable()
+    {
+        simRunnable.start();
+    }
+    
     public void pleaseLookAtMe()
     {
         requestFocus();
     }
+    
     public void pleaseCloseMe()
     {
         dispose();
     }
+    
     public void pleaseAddGenerations(int gens)
     {
-        simMaster.addGens(gens);
+        simRunnable.addGens(gens);
     }
-    public void establishBoard()
+    
+    public void establishBoardAndStartSim()
     {
-         simMaster = new SimulatorRunnable(this, IDname,boardDim, myCreator.getAliveProbability(), myCreator.getGenToRun());
-         simMaster.startSimulation();
+         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun());
+         simRunnable.startSimulation();
     }
+    
+    public void establishBoardAndStartSim(int[][] importedBoard)
+    {
+         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun());
+         simRunnable.startImportedSimulation(importedBoard);
+    }
+     
     public void createAndShowGUI()
     {
         textArea = new JTextArea(boardDim, boardDim);
@@ -100,30 +96,50 @@ public class SimulatorWindow extends JDialog{
         origTitle=IDname;
         //...Create the GUI and put it in the window...
         JPanel textPanel = new JPanel();
-        establishBoard();
+        establishBoardAndStartSim();
         textPanel.add(textArea);
         Container cc = this.getContentPane();
         cc.add(textPanel);
-        
+        this.addWindowListener(new WindowAdapter()
+            {
+                @Override
+                public void windowClosed(WindowEvent e)
+                {
+                   System.out.println("closing self. I am " + IDname);
+                   gameRunner.destroyGame(new simWindowInfo(IDname,this));
+                   simRunnable.interuptThread();
+                   simRunnable.hearingExam();
+                }
+
+                @Override
+                public void windowClosing(WindowEvent e)
+                {
+                    System.out.println("closing self. I am " + IDname);
+                    gameRunner.destroyGame(new simWindowInfo(IDname,this));
+                    simRunnable.interuptThread();
+                    simRunnable.hearingExam();
+                }
+            });
         // set the size of frame
         setSize(100, 100);
-    }
+    }//end createAndShowGUI//
    
-    public void refreshBoard(String s)
+    public void displayUpdatedBoardText(String s)
     {
         try 
         {
-        textArea.setText(s);
-        scaleToFont();
-        //textArea.update(textArea.getGraphics());
-        repaint();
-        this.setTitle(origTitle + " GEN:" + simMaster.getCurrentGen());
-        }
-        catch (IllegalPathStateException e) {
-            System.out.println("board error occured. why?");
-        }
-    }
-    private void scaleToFont()
+            textArea.setText(s);
+            scaleBoardToFont();
+            repaint();
+            this.setTitle(origTitle + " GEN:" + simRunnable.getCurrentGen());
+        }//end try//
+        catch (IllegalPathStateException e) 
+        {
+            System.out.println("board error occured!?");
+        }//end catch//
+    }//end displayUpdatedBoardText//
+    
+    private void scaleBoardToFont()
     {
         FontMetrics fm =  textAreaGr.getFontMetrics(BOARD_FONT);
         var boxHeight = (fm.getMaxAscent()*boardDim);
@@ -132,15 +148,17 @@ public class SimulatorWindow extends JDialog{
         textArea.setSize(boxWidth,boxHeight);
         pack();
         //setSize(boxWidth,boxHeight);
-    }
+    }//end scaleBoardToFont//
+    
     public void printMyName()
     {
         System.out.println(IDname);
     }
+    
     public void setMyGraphics()
     {
         textAreaGr=textArea.getGraphics();
-    }
+    }//end setMyGraphics//
    
  @Override
     public void paint(Graphics g) {

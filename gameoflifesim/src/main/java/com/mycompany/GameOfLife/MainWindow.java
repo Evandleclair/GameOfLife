@@ -39,10 +39,12 @@ public class MainWindow extends GameOfLifeWindow {
         setDocFilters();
         //addRightClickMenuToTable();
     }
+    
+    //this is used so that it is not responsible for creating it's own gamerunner object//
     public void setGameRunner(GameRunner gameRunnerArg)
     {
         gameRunner = gameRunnerArg;
-        addRightClickMenuToTable(); //we need it to have a gameRunner object or we cannot properly bind the popup window..//
+        //addRightClickMenuToTable(); //we need it to have a gameRunner object or we cannot properly bind the popup window..//
     }
 
     private void setDocFilters()
@@ -65,7 +67,6 @@ public class MainWindow extends GameOfLifeWindow {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        button1 = new java.awt.Button();
         label1 = new java.awt.Label();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -73,6 +74,7 @@ public class MainWindow extends GameOfLifeWindow {
         jLabel2 = new javax.swing.JLabel();
         genRunBox = new javax.swing.JTextField();
         dimensionBox = new javax.swing.JTextField();
+        startButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         gameJTable = new javax.swing.JTable();
@@ -95,18 +97,6 @@ public class MainWindow extends GameOfLifeWindow {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        button1.setLabel("RERUN");
-        button1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                button1MouseClicked(evt);
-            }
-        });
-        button1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
-            }
-        });
 
         label1.setText("DIMENSIONS:");
 
@@ -135,13 +125,24 @@ public class MainWindow extends GameOfLifeWindow {
 
         dimensionBox.setText("25");
 
+        startButton.setText("Start Game");
+        startButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        startButton.setIconTextGap(2);
+        startButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
+        startButton.setName(""); // NOI18N
+        startButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                startButtonMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -168,6 +169,9 @@ public class MainWindow extends GameOfLifeWindow {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 10, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(label1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,27 +179,23 @@ public class MainWindow extends GameOfLifeWindow {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(genRunBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(genRunBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(button1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(8, 8, 8)))
                 .addContainerGap())
         );
 
-        button1.getAccessibleContext().setAccessibleName("rerunButton");
         label1.getAccessibleContext().setAccessibleName("dimLabel");
         jButton1.getAccessibleContext().setAccessibleName("endAllButton");
         percSlider.getAccessibleContext().setAccessibleName("");
         genRunBox.getAccessibleContext().setAccessibleName("genNumField");
         dimensionBox.getAccessibleContext().setAccessibleName("dimensionBox");
 
+        gameJTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         gameJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -286,64 +286,43 @@ public class MainWindow extends GameOfLifeWindow {
         pack();
     }// </editor-fold>//GEN-END:initComponents
                                 
-    private void button1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MouseClicked
-        
-        //simWindow.establishBoard();
-    }//GEN-LAST:event_button1MouseClicked
-
     private void EndButtonClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EndButtonClicked
         try 
         {
-            destroyFrames();
+            destroyAllFrames();
         //simWindow.establishBoard();
         } catch (PropertyVetoException ex) {
          Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
      }
     }//GEN-LAST:event_EndButtonClicked
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        
-      
-        createFrame();
-    }//GEN-LAST:event_button1ActionPerformed
-    private void destroyFrames() throws PropertyVetoException {
+    private void startButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonMouseClicked
+         createFrameAndGame();
+    }//GEN-LAST:event_startButtonMouseClicked
+    private void destroyAllFrames() throws PropertyVetoException {
       
     }
-    void updateTable(TableModel tm)
+    void updateTableModel(TableModel tm)
     {
         gameJTable.setModel((tm));
     }
     
-    
-    protected void createFrame()  
+    protected void createFrameAndGame()  
     {
-          
-        //System.out.println("ugh");
         int dims = Integer.parseInt(dimensionBox.getText());
-        gameRunner.createGame(dims);
+        gameRunner.createSimWindowAndStartSim(dims);
     }
     
-    
-  
-    
-  
-    
-    
-  
-    
-      protected void quit() {
+    protected void quit() {
         System.exit(0);
     }
-    private  void createAndShow()
+    private void createAndShowMainWindow()
     {   
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
   
-    
-     
-    
-    public double getAliveProbability()
+    public double getInitialAliveProbability()
     {
         System.out.println(percSlider.getValue()*0.01 + " percent chance of alive at start");
         return (percSlider.getValue()*0.01);
@@ -351,13 +330,13 @@ public class MainWindow extends GameOfLifeWindow {
   
     
     
-    public  void startTheGame()
+    public  void showTheWindow()
     {
          java.awt.EventQueue.invokeLater(() -> {
-            createAndShow();
+            createAndShowMainWindow();
          });
     }//end startGameRunner./
-    public int getGenToRun()
+    public int getGenerationsToRun()
     {
         return Integer.parseInt(genRunBox.getText());
     }
@@ -368,7 +347,6 @@ public class MainWindow extends GameOfLifeWindow {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button1;
     private javax.swing.JTextField dimensionBox;
     private javax.swing.JTable gameJTable;
     private javax.swing.JTextField genRunBox;
@@ -386,9 +364,10 @@ public class MainWindow extends GameOfLifeWindow {
     private javax.swing.JTextField jTextField1;
     private java.awt.Label label1;
     private javax.swing.JSlider percSlider;
+    private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
-    private void addRightClickMenuToTable() 
+    public void addRightClickMenuToTable() 
     {
     tablePopUpMenu = new TablePopUp(this);
     gameJTable.addMouseListener( new MouseAdapter(){

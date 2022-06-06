@@ -13,23 +13,30 @@ import java.util.Arrays;
  *
  * @author toast
  */
-public class BoardMaster extends CellAutomaton{
+public class BoardObject extends CellAutomaton{
 
     private int[][] boardState;
     private int previousState[][];
     private int dimensions;
     private double probAlive;
     
-    public BoardMaster(int d, double ProbAlive)
+    //public BoardObject(int d, double ProbAlive)
+    public BoardObject(int d)
     {
         
-        probAlive=ProbAlive;
+        
         dimensions=d;
     }
-    public void setupBoard()
+    public void setupBoard(double ProbAlive)
     {
+        probAlive=ProbAlive;
         boardState=deadState(dimensions,dimensions);
         seedBoard();
+        reportBoard();
+    }
+    public void setupBoard(int[][] importedBoard)
+    {
+        boardState=importedBoard;
         reportBoard();
     }
     public int[][] deadState(int width, int height)

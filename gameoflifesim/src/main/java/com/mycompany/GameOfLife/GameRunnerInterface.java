@@ -12,13 +12,14 @@ import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
  */
 interface GameRunnerInterface {
         
-        public void createGame(int dimensions);
+        public void createSimWindowAndStartSim(int dimensions);
+        public void createSimWindowAndStartSim(int[][] importedBoard);
         public void destroyGame(simWindowInfo s);
         public int getGamesRunning();
         public void setGamesRunning(int GamesRunning);
         public SimulatorWindow getSimWindowByID(int rowID);
         public int getOpenGamesCount();
-        public void UpdateTableOnWindow();
+        public void UpdateTableOnMainWindow();
        
         
 }
