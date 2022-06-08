@@ -16,6 +16,7 @@ import java.awt.FontMetrics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.IllegalPathStateException;
+import java.util.Hashtable;
 
 /**
  *
@@ -23,11 +24,12 @@ import java.awt.geom.IllegalPathStateException;
  */
 public class SimulatorWindow extends JDialog implements SimWindowInterface{
     static int openFrameCount = 0;
-    private int boardDim;
+    private int boardDim, genTime;
     private String IDname, origTitle;
     private final MainWindow myCreator;
     private GameRunner gameRunner;
     private SimulatorRunnable simRunnable;
+    private Hashtable<String, Integer> rulesDictionary;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     JTextArea textArea;
     Graphics gr, textAreaGr;
@@ -36,7 +38,9 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
         gr = this.getGraphics();
         boardDim=dim;
         myCreator=c;
+        genTime=c.getGenTime();
         gameRunner=c.getGameRunner();
+        rulesDictionary=gameRunner.CopyRulesDictionary();
         IDname=idName;
         //...Then set the window size or call pack...
         openFrameCount=gameRunner.getGamesRunning();
@@ -79,13 +83,13 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
     public void establishBoardAndStartSim()
     {
          simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun());
-         simRunnable.startSimulation();
+         simRunnable.startSimulation(genTime);
     }
     
     public void establishBoardAndStartSim(int[][] importedBoard)
     {
          simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun());
-         simRunnable.startImportedSimulation(importedBoard);
+         simRunnable.startImportedSimulation(importedBoard, genTime);
     }
      
     public void createAndShowGUI()
@@ -174,7 +178,7 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
 
     @Override
     public void passSimStatusToMainWindow(String simStatus, int currentGen) {
+        System.out.println("passing");
         gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen);
-        
     }
 }

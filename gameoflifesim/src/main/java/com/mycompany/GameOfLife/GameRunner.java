@@ -6,6 +6,7 @@ package com.mycompany.GameOfLife;
 
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +21,7 @@ public class GameRunner implements GameRunnerInterface {
     private final MainWindow mainInterface;
     private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
     private static int gamesRunning=0;
+    private Hashtable<String, Integer> rulesDictionary = new Hashtable<>();
     private String[] colNames = {"Game","Generation","Status"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
@@ -27,12 +29,25 @@ public class GameRunner implements GameRunnerInterface {
     {
     mainInterface=MI;
     HideGameColumn();
+    SetUpRulesDictionary();
     }
     private void HideGameColumn() //we are storing games in the column but do not want to display them as that is pointless//
     {
        // simTable.getColumnModel().getColumn(2).setMaxWidth(0);
     }
             
+    private void SetUpRulesDictionary()
+    {
+        rulesDictionary.put("StarveNumber", 1);
+        rulesDictionary.put("AliveNumber", 2);
+        rulesDictionary.put("ReviveNumber", 3);
+        rulesDictionary.put("OverpopNumber", 3);
+    }
+    public Hashtable<String, Integer> CopyRulesDictionary()
+    {
+       return rulesDictionary;
+    }
+    
     @Override
     public void createSimWindowAndStartSim(int dims) {
         SimulatorWindow simWindowObj = new SimulatorWindow(dims, "GAME "+gamesRunning, mainInterface);
@@ -164,18 +179,27 @@ public class GameRunner implements GameRunnerInterface {
     
     public void updateSimColumnsOnTable(String IDname, String status, int curGen)
     {
+        System.out.println("trying to find " + IDname);
         int rowToUpdate = getSimRowByName(IDname);
+        if (rowToUpdate != -1)
+        {
         simTable.getModel().setValueAt(status,rowToUpdate,2);
         simTable.getModel().setValueAt(curGen,rowToUpdate,1);
+        }
+        else
+        {
+            System.out.println("Row did not exist");
+        }
     }
     
     private int getSimRowByName(String IDname)
     {
-        int retInt = 0;
+        int retInt = -1; //signifies not found//
         for (int i=0; i<simTable.getRowCount();i++)
         {
-            final String rowGameID = (String)simTable.getValueAt(i, 0);
-            if (rowGameID==IDname)
+            String rowGameID = (String)simTable.getValueAt(i, 0);
+            System.out.println("comparing " + rowGameID + " to input of " + IDname);
+            if (rowGameID.equals(IDname))
             {
             retInt=i;
             }

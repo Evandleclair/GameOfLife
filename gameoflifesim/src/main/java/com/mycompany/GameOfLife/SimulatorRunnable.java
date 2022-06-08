@@ -9,25 +9,37 @@ import java.util.TimerTask;
 public class SimulatorRunnable implements Runnable{
     private Thread t;
     private BoardObject boardObject; //it will create a board master//
-    private final SimulatorWindow masterWindow; //the simulator window that created this//
-    private int boardDims, gensToRun, currentGen=0;
-    private double aliveProb;
+    private final SimulatorWindow mySimWindow; //the simulator window that created this//
+    private int gensToRun, currentGen=0;
+    private final int boardDims;
+    private final double aliveProb;
+    private int genTime =250, starveNumber, aliveNumber, reviveNumber, overpopNumber;
     private String name;
     public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
     {
-        masterWindow=m;
+        mySimWindow=m;
         name=n;
         aliveProb=prob;
         boardDims = d;
         gensToRun=GensToRun;
     }
-    public void startSimulation()
+      public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun, int StarveNumber, int AliveNumber, int ReviveNumber, int OverpopNumber)
     {
-        boardObject = new BoardObject(boardDims);
-        boardObject.setupBoard(aliveProb);
+        mySimWindow=m;
+        name=n;
+        aliveProb=prob;
+        boardDims = d;
+        gensToRun=GensToRun;
     }
-    public void startImportedSimulation(int[][] importedBoard)
+    public void startSimulation(int GenTime)
     {
+        genTime=GenTime;
+        boardObject = new BoardObject(boardDims);
+        boardObject.setupBoard(aliveProb,starveNumber,aliveNumber,reviveNumber,overpopNumber);
+    }
+    public void startImportedSimulation(int[][] importedBoard, int GenTime)
+    {
+        genTime=GenTime;
         boardObject = new BoardObject(boardDims);
         boardObject.setupBoard(importedBoard);
     }
@@ -35,8 +47,8 @@ public class SimulatorRunnable implements Runnable{
     public void simulationTick()
     {
         boardObject.boardTick();
-        masterWindow.passSimStatusToMainWindow(getSimStatusAsString(),currentGen);
-        masterWindow.displayUpdatedBoardText(boardObject.reportBoard());
+        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),currentGen);
+        mySimWindow.displayUpdatedBoardText(boardObject.reportBoard());
     }
 
     @Override
@@ -49,22 +61,24 @@ public class SimulatorRunnable implements Runnable{
                 //masterWindow.printMyName();
                 for (int i=0; i<gensToRun; i++)
                 {
-                    simulationTick();
                     currentGen++;
-                    Thread.sleep(250);
+                    if (i!=0)
+                    {
+                        simulationTick();
+                    }
+                    Thread.sleep(genTime);
                 }
                 //currentGen++;
             }
             catch(InterruptedException e)
             {
                 e.printStackTrace();
-               
                 Thread.currentThread().interrupt(); //ensures the current thread will properly interrupt//
             }
             finally
             {
-                masterWindow.displayUpdatedBoardText(boardObject.reportBoard());
-                masterWindow.passSimStatusToMainWindow("COMPLETE",currentGen);
+                mySimWindow.displayUpdatedBoardText(boardObject.reportBoard());
+                mySimWindow.passSimStatusToMainWindow("COMPLETE",currentGen);
                 interuptThread();
             }
     }//end run//

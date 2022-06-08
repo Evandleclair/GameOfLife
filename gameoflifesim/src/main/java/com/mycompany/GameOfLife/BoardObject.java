@@ -17,26 +17,42 @@ public class BoardObject extends CellAutomaton{
 
     private int[][] boardState;
     private int previousState[][];
-    private int dimensions;
+    private int dimensions, starveNumber, aliveNumber, reviveNumber, overpopNumber;
     private double probAlive;
+    
     
     //public BoardObject(int d, double ProbAlive)
     public BoardObject(int d)
     {
-        
-        
         dimensions=d;
     }
-    public void setupBoard(double ProbAlive)
+    public void setupBoard(double ProbAlive, int StarveNumber, int AliveNumber, int ReviveNumber, int OverpopNumber)
     {
         probAlive=ProbAlive;
-        boardState=deadState(dimensions,dimensions);
-        seedBoard();
-        reportBoard();
+        starveNumber=StarveNumber;
+        aliveNumber=AliveNumber;
+        reviveNumber=ReviveNumber;
+        overpopNumber=OverpopNumber;
+        createSeedAndReportBoard();
+    }
+     public void setupBoard(double ProbAlive) //default method//
+    {
+        probAlive=ProbAlive;
+        starveNumber=1;
+        aliveNumber=2;
+        reviveNumber=3;
+        overpopNumber=4;
+        createSeedAndReportBoard();
     }
     public void setupBoard(int[][] importedBoard)
     {
         boardState=importedBoard;
+        reportBoard();
+    }
+    public void createSeedAndReportBoard()
+    {
+        boardState=deadState(dimensions,dimensions);
+        seedBoard();
         reportBoard();
     }
     public int[][] deadState(int width, int height)
