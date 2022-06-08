@@ -2,9 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.mycompany.GameOfLife.popupWindows;
 
 
+import com.mycompany.GameOfLife.GameRunner;
+import com.mycompany.GameOfLife.MainWindow;
+import com.mycompany.GameOfLife.StringMaster;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -4,6 +4,7 @@
  */
 package com.mycompany.GameOfLife;
 
+import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -25,6 +26,7 @@ public class GameRunner implements GameRunnerInterface {
     private String[] colNames = {"Game","Generation","Status"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
+    private RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
     public GameRunner(MainWindow MI)
     {
     mainInterface=MI;
@@ -50,7 +52,7 @@ public class GameRunner implements GameRunnerInterface {
     
     @Override
     public void createSimWindowAndStartSim(int dims) {
-        SimulatorWindow simWindowObj = new SimulatorWindow(dims, "GAME "+gamesRunning, mainInterface);
+        SimulatorWindow simWindowObj = new SimulatorWindow(dims, "GAME "+gamesRunning, mainInterface, getRulesSet());
         simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
         gamesRunning++;
         simWindowObj.runSimWindowStartupTasks();
@@ -59,8 +61,8 @@ public class GameRunner implements GameRunnerInterface {
     }
     
     @Override
-    public void createSimWindowAndStartSim(int[][] importedBoard) {
-        SimulatorWindow simWindowObj = new SimulatorWindow(importedBoard.length, "GAME "+gamesRunning, mainInterface);
+    public void createSimWindowAndStartSim(int[][] importedBoard, RulesBundle importedRules) {
+        SimulatorWindow simWindowObj = new SimulatorWindow(importedBoard.length, "GAME "+gamesRunning, mainInterface, importedRules);
         simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
         gamesRunning++;
         simWindowObj.runSimWindowStartupTasks();
@@ -108,6 +110,18 @@ public class GameRunner implements GameRunnerInterface {
     public void setGamesRunning(int GamesRunning) {
        gamesRunning=GamesRunning;
     }
+    
+    private RulesBundle getRulesSet()
+    {
+        RulesBundle rb = conwayDefault;
+        if (mainInterface.useCustomRules())
+        {
+            rb=mainInterface.getRules();
+        }
+        return rb;
+    }
+    
+    
     
     @Override
     public SimulatorWindow getSimWindowByID(int rowID)
@@ -205,5 +219,15 @@ public class GameRunner implements GameRunnerInterface {
             }
         }
         return retInt;
+    }
+    
+    public void endAllGames()
+    {
+        SimulatorWindow sw=null;
+        for (simWindowInfo s : simWindows)
+            {
+                sw=(SimulatorWindow) s.getOBJ();
+                sw.pleaseCloseMe();
+            } 
     }
 }//end class//

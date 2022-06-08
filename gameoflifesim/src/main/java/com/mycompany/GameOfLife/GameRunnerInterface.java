@@ -4,6 +4,7 @@
  */
 package com.mycompany.GameOfLife;
 
+import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 
 /**
@@ -13,7 +14,7 @@ import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 interface GameRunnerInterface {
         
         public void createSimWindowAndStartSim(int dimensions);
-        public void createSimWindowAndStartSim(int[][] importedBoard);
+        public void createSimWindowAndStartSim(int[][] importedBoard, RulesBundle importedRules);
         public void destroyGame(simWindowInfo s);
         public int getGamesRunning();
         public void setGamesRunning(int GamesRunning);

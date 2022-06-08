@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.GameOfLife;
+import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.awt.Color;
 import java.awt.Container;
@@ -29,18 +30,18 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
     private final MainWindow myCreator;
     private GameRunner gameRunner;
     private SimulatorRunnable simRunnable;
-    private Hashtable<String, Integer> rulesDictionary;
+    private RulesBundle myRules;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     JTextArea textArea;
     Graphics gr, textAreaGr;
     private static final Font BOARD_FONT = StringMaster.getGlobalFont();
-    public SimulatorWindow(int dim, String idName, MainWindow c) {
+    public SimulatorWindow(int dim, String idName, MainWindow c, RulesBundle MyRules) {
         gr = this.getGraphics();
         boardDim=dim;
         myCreator=c;
+        myRules=MyRules;
         genTime=c.getGenTime();
         gameRunner=c.getGameRunner();
-        rulesDictionary=gameRunner.CopyRulesDictionary();
         IDname=idName;
         //...Then set the window size or call pack...
         openFrameCount=gameRunner.getGamesRunning();
@@ -82,13 +83,13 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
     @Override
     public void establishBoardAndStartSim()
     {
-         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun());
+         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
          simRunnable.startSimulation(genTime);
     }
     
     public void establishBoardAndStartSim(int[][] importedBoard)
     {
-         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun());
+         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
          simRunnable.startImportedSimulation(importedBoard, genTime);
     }
      
@@ -170,7 +171,7 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
         textAreaGr=textArea.getGraphics();
     }//end setMyGraphics//
    
- @Override
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         gr=g;

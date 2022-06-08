@@ -1,5 +1,6 @@
 package com.mycompany.GameOfLife;
 
+import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.util.TimerTask;
 
 /**
@@ -13,29 +14,32 @@ public class SimulatorRunnable implements Runnable{
     private int gensToRun, currentGen=0;
     private final int boardDims;
     private final double aliveProb;
-    private int genTime =250, starveNumber, aliveNumber, reviveNumber, overpopNumber;
+    private int genTime =250;
+    private RulesBundle rulesBundle;
     private String name;
-    public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
+    //public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
+    //{
+    //    mySimWindow=m;
+    //    name=n;
+    //    aliveProb=prob;
+    //    boardDims = d;
+    //    gensToRun=GensToRun;
+    //}
+      public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun, RulesBundle rBundle)
     {
+        rulesBundle=rBundle;
         mySimWindow=m;
         name=n;
         aliveProb=prob;
         boardDims = d;
         gensToRun=GensToRun;
-    }
-      public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun, int StarveNumber, int AliveNumber, int ReviveNumber, int OverpopNumber)
-    {
-        mySimWindow=m;
-        name=n;
-        aliveProb=prob;
-        boardDims = d;
-        gensToRun=GensToRun;
+       
     }
     public void startSimulation(int GenTime)
     {
         genTime=GenTime;
         boardObject = new BoardObject(boardDims);
-        boardObject.setupBoard(aliveProb,starveNumber,aliveNumber,reviveNumber,overpopNumber);
+        boardObject.setupBoard(aliveProb,rulesBundle);
     }
     public void startImportedSimulation(int[][] importedBoard, int GenTime)
     {
