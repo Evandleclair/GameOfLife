@@ -8,8 +8,8 @@ package com.mycompany.mavenproject1.DataTypes;
  *
  * @author toast
  */
-class IntPair {
-  final int x;
-  final int y;
-  IntPair(int x, int y) {this.x=x;this.y=y;}
+class IntPair<F, S> {
+  final F f;
+  final S s;
+  IntPair(F f, S s) {this.f=f;this.s=s;}
 }

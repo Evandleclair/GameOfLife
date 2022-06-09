@@ -5,6 +5,7 @@
 
 package com.mycompany.GameOfLife;
 
+import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.util.Arrays;
 
 
@@ -13,20 +14,44 @@ import java.util.Arrays;
  *
  * @author toast
  */
-public class BoardMaster extends CellAutomaton{
+public class BoardObject extends CellAutomaton{
 
     private int[][] boardState;
     private int previousState[][];
-    private int dimensions;
+    private int dimensions, starveNumber, aliveNumber, reviveNumber, overpopNumber;
     private double probAlive;
     
-    public BoardMaster(int d, double ProbAlive)
+    
+    //public BoardObject(int d, double ProbAlive)
+    public BoardObject(int d)
     {
-        
-        probAlive=ProbAlive;
         dimensions=d;
     }
-    public void setupBoard()
+    public void setupBoard(double ProbAlive, RulesBundle myRules)
+    {
+        probAlive=ProbAlive;
+        
+        starveNumber=myRules.getStarveNumber();
+        aliveNumber=myRules.getAliveNumber();
+        reviveNumber=myRules.getReviveNumber();
+        overpopNumber=myRules.getOverpopNumber();
+        createSeedAndReportBoard();
+    }
+     public void setupBoard(double ProbAlive) //default method//
+    {
+        probAlive=ProbAlive;
+        starveNumber=1;
+        aliveNumber=2;
+        reviveNumber=3;
+        overpopNumber=4;
+        createSeedAndReportBoard();
+    }
+    public void setupBoard(int[][] importedBoard)
+    {
+        boardState=importedBoard;
+        reportBoard();
+    }
+    public void createSeedAndReportBoard()
     {
         boardState=deadState(dimensions,dimensions);
         seedBoard();
@@ -81,7 +106,6 @@ public class BoardMaster extends CellAutomaton{
        {
             for (int c=0; c<prevState[0].length; c++)
             {
-                //System.out.println("current val is " + prevState[r][c]);
                 nextState[r][c]=  enoughNeighborsAlive(r,c, prevState) ? 1 : 0;
             }
        }
@@ -110,7 +134,7 @@ public class BoardMaster extends CellAutomaton{
             }
         }
         
-        boolean returnVal=rulesOfNature(liveCount,inBoard[r][c]);
+        boolean returnVal=areWeAliveBasedOnNeighbors(liveCount,inBoard[r][c]);
         //System.out.println("row " + r + " col " + c + " value is " + inBoard[r][c] + " and it has " + liveCount + "living neighbors and alive is " + returnVal);
         return returnVal;
     }
@@ -125,29 +149,29 @@ public class BoardMaster extends CellAutomaton{
         return (r >= 0 && c >= 0 && r < dimensions && c < dimensions && inBoard[r][c]==1);
     }
     
-     boolean rulesOfNature(int liveN, int curVal)
+    boolean areWeAliveBasedOnNeighbors(int liveN, int curVal)
     {
 
-        if (liveN<2)
+        if (liveN<=starveNumber) //if it is equal to or smaller than the starvation number/
         {
             return false;
         }
-        else if (liveN==2)
+        else if (liveN==aliveNumber)
         {
-            if (curVal==0)
+            if (curVal!=0) //if we are not dead//
             {
-            return false;
+                return true; //we stay alive//
             }
             else
             {
-            return true; //a two cannot revive a dead cell/
+                return false; //we are dead and its not enough to revive us//
             }
         }
-        else if (liveN==3)
+        else if (liveN==reviveNumber)
         {
             return true; //a three always means the cell is currently alive, even if it was dead//
         }
-        else if (liveN>3)
+        else if (liveN>overpopNumber)
         {
             return false;
         }

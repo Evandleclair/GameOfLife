@@ -10,7 +10,8 @@ import com.mycompany.GameOfLife.SimulatorWindow;
  *
  * @author toast
  */
-public class simWindowInfo<String,SimulatorWindow> {
+public class simWindowInfo<String,SimulatorWindow> 
+{
     private String id;
     private SimulatorWindow obj;
     public simWindowInfo(String id, SimulatorWindow obj){

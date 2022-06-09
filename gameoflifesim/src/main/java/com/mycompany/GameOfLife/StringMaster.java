@@ -4,6 +4,7 @@
  */
 package com.mycompany.GameOfLife;
 
+import java.awt.Font;
 import java.util.*;
 
 
@@ -14,7 +15,7 @@ import java.util.*;
 public class StringMaster {
     public static final Map<Integer, String> digitCharacter = new HashMap<>();
     static {
-        //▯◼◻▮
+        //▯◼◻▮ left these here for easier access incase I change my mind about the character used//
       digitCharacter.put(0, "▯");
       digitCharacter.put(1, "▮");
     }
@@ -40,5 +41,21 @@ public class StringMaster {
     public static int[][] importFileToBoard()
     {
         return new int[1][1];
+    }
+    
+    public static String combineStrings(String[] inStrings)
+    {
+         StringBuilder str
+            = new StringBuilder();
+         for (String s : inStrings)
+         {
+             str.append(s);
+         }
+         return str.toString();
+    }
+    //StringMaster will hold onto the default font used by all boards.//
+    public static Font getGlobalFont()
+    {
+        return new Font(Font.MONOSPACED, Font.PLAIN, 12);
     }
 }
