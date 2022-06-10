@@ -83,13 +83,13 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
     @Override
     public void establishBoardAndStartSim()
     {
-         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
+         //simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
          simRunnable.startSimulation(genTime);
     }
     
     public void establishBoardAndStartSim(int[][] importedBoard)
     {
-         simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
+         //simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
          simRunnable.startImportedSimulation(importedBoard, genTime);
     }
      
@@ -135,9 +135,9 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
     }//end createAndShowGUI//
    
     @Override
-    public void displayUpdatedBoardText(String s)
+    public void displayUpdatedBoard(int[][] boardState)
     {
-        try 
+      /*  try 
         {
             textArea.setText(s);
             scaleBoardToFont();
@@ -147,8 +147,8 @@ public class SimulatorWindow extends JDialog implements SimWindowInterface{
         catch (IllegalPathStateException e) 
         {
             System.out.println("board error occured!?");
-        }//end catch//
-    }//end displayUpdatedBoardText//
+        }//end catch//*/
+    }//end displayUpdatedBoard//
     
     private void scaleBoardToFont()
     {

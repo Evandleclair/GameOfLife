@@ -15,15 +15,16 @@ import java.awt.Graphics;
 public class GridCanvas extends Canvas 
 {
     private CellObject[][] cellArray;
-    private int cellSize;
-    public GridCanvas(int dimensions, int CellSize)
+    private int cellSize, dimensions;
+    public GridCanvas(int Dimensions, int CellSize)
     {
         cellSize=CellSize;
+        dimensions=Dimensions;
         cellArray = new CellObject[dimensions][dimensions];
          for (int r = 0; r < dimensions; r++) {
-            int y = r * dimensions;
+            int y = r * cellSize;
             for (int c = 0; c < dimensions; c++) {
-                int x = c * dimensions;
+                int x = c * cellSize;
                 cellArray[r][c] = new CellObject(x, y, cellSize);
             }
         }
@@ -38,10 +39,18 @@ public class GridCanvas extends Canvas
             }
         }
     }
+    @Override
     public void paint(Graphics g) 
     {
         draw(g);
     }
+    
+    public int getSizeScale()
+    {
+        //return getSize().height;
+        return dimensions*(cellSize); //the plus 2 is to account for border size
+    }
+    
     public void setCellState(int c, int r, int state)
     {
         if (state==1)
@@ -60,4 +69,5 @@ public class GridCanvas extends Canvas
             }
        } 
     }
+   // public Dimension getPreferredSize() 
 }//end draw//

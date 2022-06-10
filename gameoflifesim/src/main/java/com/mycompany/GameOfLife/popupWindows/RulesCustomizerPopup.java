@@ -6,6 +6,7 @@ package com.mycompany.GameOfLife.popupWindows;
 
 import com.mycompany.GameOfLife.MainWindow;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -14,29 +15,34 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 /**
  *
  * @author toast
  */
-public class RulesCustomizerPopup extends JDialog implements WindowFocusListener
+public class RulesCustomizerPopup extends JDialog
 {
     Graphics gr;
     private final RulesBundle startingRules;
     private JSpinner starveSpinner, aliveSpinner, reviveSpinner, overpopSpinner;
-    private JButton finishButton;
+    private JButton finishButton, cancelButton;
     private JLabel starveLabel, aliveLabel, reviveLabel, overpopLabel;
     private final String starveLabelText = "Cell starves with this many or fewer neighbors: ", aliveLabelText = "Cell survives with exactly this many neighbors: ", reviveLabelText="Dead cells revive with this many neighbors: ", overpopLabelText="Cells die of overpopulation with this many neighbors: ";
-    private final String finishButtonText = "Confirm custom rules";
+    private final String finishButtonText = "Confirm custom rules", cancelButtonText = "Cancel";
     private MainWindow mainWindow;
-    public RulesCustomizerPopup(MainWindow MW)
+    public RulesCustomizerPopup(JFrame Frame)
     {
-        mainWindow=MW;
-        startingRules=MW.getRules();
+        super(Frame);
+        
+        setModal(true);
+        mainWindow=(MainWindow)Frame;
+        startingRules=mainWindow.getRules();
         createAndShowGUI();
     }
     private void exportRulesToMainWindow()
@@ -50,9 +56,9 @@ public class RulesCustomizerPopup extends JDialog implements WindowFocusListener
         cc.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         //setAlwaysOnTop(true);
-        
-        
-        
+        int startVal=0;
+        SpinnerModel model;
+        setUndecorated(true);
         
         starveLabel = new JLabel(starveLabelText);
         gbc.fill=GridBagConstraints.HORIZONTAL;
@@ -83,28 +89,60 @@ public class RulesCustomizerPopup extends JDialog implements WindowFocusListener
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridx=2;
         gbc.gridy=0;
-        starveSpinner.setValue((Integer)startingRules.getStarveNumber());
+        startVal = (Integer)startingRules.getStarveNumber();
+        
+        model  =
+        new SpinnerNumberModel(startVal, //initial value
+                               0, //min
+                               99, //max
+                               1);                //step
+        starveSpinner.setModel(model);
+        ((JSpinner.DefaultEditor) starveSpinner.getEditor()).getTextField().setEditable(false);
         cc.add(starveSpinner,gbc);
         
         aliveSpinner = new JSpinner();
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridx=2;
         gbc.gridy=1;
-        aliveSpinner.setValue((Integer)startingRules.getAliveNumber());
+        //aliveSpinner.setValue();
+        startVal=(Integer)startingRules.getAliveNumber();
+        model  =
+        new SpinnerNumberModel(startVal, //initial value
+                               0, //min
+                               99, //max
+                               1);                //step
+        aliveSpinner.setModel(model);
+        ((JSpinner.DefaultEditor) aliveSpinner.getEditor()).getTextField().setEditable(false);
         cc.add(aliveSpinner,gbc);
+        
         
         reviveSpinner = new JSpinner();
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridx=2;
         gbc.gridy=2;
-        reviveSpinner.setValue((Integer)startingRules.getReviveNumber());
+        //reviveSpinner.setValue((Integer)startingRules.getReviveNumber());
+        startVal=(Integer)startingRules.getReviveNumber();
+        model  =
+        new SpinnerNumberModel(startVal, //initial value
+                               0, //min
+                               99, //max
+                               1);                //step
+        reviveSpinner.setModel(model);
+        ((JSpinner.DefaultEditor) reviveSpinner.getEditor()).getTextField().setEditable(false);
         cc.add(reviveSpinner,gbc);
         
         overpopSpinner = new JSpinner();
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridx=2;
         gbc.gridy=3;
-        overpopSpinner.setValue((Integer)startingRules.getOverpopNumber());
+        startVal=(Integer)startingRules.getOverpopNumber();
+        model  =
+        new SpinnerNumberModel(startVal, //initial value
+                               0, //min
+                               99, //max
+                               1);                //step
+        overpopSpinner.setModel(model);
+        ((JSpinner.DefaultEditor) overpopSpinner.getEditor()).getTextField().setEditable(false);
         cc.add(overpopSpinner,gbc);
         
         
@@ -112,32 +150,53 @@ public class RulesCustomizerPopup extends JDialog implements WindowFocusListener
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridx=0;
         gbc.gridy=4;
-        gbc.gridwidth=3;
+        gbc.gridwidth=1;
         finishButton.addActionListener(new ActionListener() 
             { 
+                @Override
                 public void actionPerformed(ActionEvent e) { 
                exportRulesAndClose();
                 } 
             } );
         cc.add(finishButton,gbc);
+        
+        cancelButton = new JButton(cancelButtonText);
+        gbc.fill=GridBagConstraints.HORIZONTAL;
+        gbc.gridx=1;
+        gbc.gridy=4;
+        gbc.gridwidth=2;
+        cancelButton.addActionListener(new ActionListener() 
+            { 
+                @Override
+                public void actionPerformed(ActionEvent e) { 
+                closeMe();
+                } 
+            } );
+        cc.add(cancelButton,gbc);
+        cc.setBackground(Color.WHITE);
         pack();
+        setLocationRelativeTo(mainWindow);
         setVisible(true);
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter()
         {
+            @Override
             public void windowClosed(WindowEvent e)
                 {
                     mainWindow.nullRulesWindow();
                 }
                 });
-        addWindowFocusListener(this);
-        
     }
     
     private void exportRulesAndClose()
     {
         RulesBundle exportedRules = new RulesBundle((Integer)starveSpinner.getValue(),(Integer)aliveSpinner.getValue(),(Integer)reviveSpinner.getValue(),(Integer)overpopSpinner.getValue());
         mainWindow.setRules(exportedRules);
+        closeMe();
+    }
+    private void closeMe()
+    {
         dispose();
     }
     
@@ -145,15 +204,4 @@ public class RulesCustomizerPopup extends JDialog implements WindowFocusListener
      *
      * @param e
      */
-    @Override
-    public void windowLostFocus(WindowEvent e) 
-    {
-        requestFocus();
-    }
-
-    @Override
-    public void windowGainedFocus(WindowEvent e) {
-      //do nothing, added for override//
-    }
-
 }//end RulesCustomizerPopup//

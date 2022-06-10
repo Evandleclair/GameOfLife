@@ -53,14 +53,14 @@ public class GameRunner implements GameRunnerInterface {
     @Override
     public void createSimWindowAndStartSim(int dims) {
         //SimulatorWindow simWindowObj = new SimulatorWindow(dims, "GAME "+gamesRunning, mainInterface, getRulesSet());
-        //simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
-        S simWindowObj= new SimCanvasWindow(dims, "GAME " + gamesRunning, mainInterface, getRulesSet());
         
+        SimCanvasWindow simWindowObj= new SimCanvasWindow(dims, "GAME " + gamesRunning, mainInterface, getRulesSet());
+        simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
         
         gamesRunning++;
         simWindowObj.runSimWindowStartupTasks();
-        //simWindowObj.startSimRunnable();
-        //updateSimWindowTable();
+        simWindowObj.startSimRunnable();
+        updateSimWindowTable();
     }
     
     @Override
@@ -127,9 +127,9 @@ public class GameRunner implements GameRunnerInterface {
     
     
     @Override
-    public SimulatorWindow getSimWindowByID(int rowID)
+    public SimCanvasWindow getSimWindowByID(int rowID)
     {
-        SimulatorWindow sw = null;
+        SimCanvasWindow sw = null;
         //String idToFind = simTable.getModel().getValueAt(rowID, 0).toString();
         String idToFind = simTable.getValueAt(rowID, 0).toString();
         if (rowID>-1)
@@ -138,7 +138,7 @@ public class GameRunner implements GameRunnerInterface {
             {
                 if (s.getID()==idToFind)
                 {
-                    sw=(SimulatorWindow) s.getOBJ();
+                    sw=(SimCanvasWindow) s.getOBJ();
                 }
             } 
         }

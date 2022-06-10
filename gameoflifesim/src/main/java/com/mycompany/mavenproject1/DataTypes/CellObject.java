@@ -17,7 +17,7 @@ public class CellObject {
     private final int cellSize;
     private int cellState;
     private Color aliveColor, deadColor;
-    private  Color[] COLORS;
+    private Color[] COLORS = new Color[2];
     
     public CellObject(int x, int y, int size) 
     {
@@ -27,7 +27,8 @@ public class CellObject {
         this.deadColor=Color.WHITE;
         this.cellSize = size;
         this.cellState = 0;
-        Color[] COLORS= {deadColor,aliveColor} ;
+        COLORS[0]=deadColor;
+        COLORS[1]=aliveColor;
     }
      public CellObject(int x, int y, int size, Color AliveColor, Color DeadColor) 
     {
@@ -37,7 +38,8 @@ public class CellObject {
         this.deadColor=DeadColor;
         this.cellSize = size;
         this.cellState = 0;
-        Color[] COLORS= {deadColor,aliveColor} ;
+        COLORS[0]=deadColor;
+        COLORS[1]=aliveColor;
     }
     public boolean isDead() 
     {

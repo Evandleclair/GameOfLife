@@ -11,6 +11,7 @@ import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -36,7 +37,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     Graphics gr, canvasGr;
     public SimCanvasWindow(int dim, String idName, MainWindow c, RulesBundle MyRules)
     {
-        gr = this.getGraphics();
+       
         boardDim=dim;
         myCreator=c;
         myRules=MyRules;
@@ -45,7 +46,6 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         IDname=idName;
         //...Then set the window size or call pack...
         openFrameCount=gameRunner.getGamesRunning();
-      
         createAndShowGUI();
         //Set the window's location.
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
@@ -60,7 +60,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     }
     @Override
     public void startSimRunnable() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        simRunnable.start();
     }
     
     @Override
@@ -83,31 +83,35 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
 
     @Override
     public void establishBoardAndStartSim() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
+       simRunnable.startSimulation(genTime);
     }
     public void setMyGraphics()
     {
         canvasGr=boardGameCanvas.getGraphics();
+        gr = this.getGraphics();
     }//end setMyGraphics//
   
 
     @Override
-    public void displayUpdatedBoardText(String s) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void displayUpdatedBoard(int[][] boardState) {
+        boardGameCanvas.setCellsEqualToBoardState(boardState);
+        boardGameCanvas.draw(canvasGr);
     }
     
       public void createAndShowGUI()
     {
-        GridCanvas boardGameCanvas = new GridCanvas(boardDim, 10);
-       
+        boardGameCanvas = new GridCanvas(boardDim, 10);
+        int prefSize= boardDim*(10);
+        boardGameCanvas.setPreferredSize(new Dimension(prefSize,prefSize));
         setTitle(IDname);
         origTitle=IDname;
         //...Create the GUI and put it in the window...
         JPanel canvasPanel = new JPanel();
         establishBoardAndStartSim();
         canvasPanel.add(boardGameCanvas);
-        Container cc = this.getContentPane();
-        cc.add(canvasPanel);
+        canvasPanel.setSize(boardGameCanvas.getSize());
+        add(canvasPanel);
         this.addWindowListener(new WindowAdapter()
             {
                 @Override
@@ -129,12 +133,23 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                 }
             });
         // set the size of frame
-        setSize(100, 100);
+       
+        //setVisible(true);
+        //boardGameCanvas.draw(gr);
+         pack(); 
+        setResizable(false);
+        //int sizeToScale = boardGameCanvas.getSizeScale();
+        //setPreferredSize(new Dimension(sizeToScale, sizeToScale));
+        
+       
+        //setSize(sizeToScale,sizeToScale);
+         
     }//end createAndShowGUI//
 
     @Override
     public void passSimStatusToMainWindow(String simStatus, int currentGen) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        System.out.println("passing");
+        gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen);
     }
     
 }

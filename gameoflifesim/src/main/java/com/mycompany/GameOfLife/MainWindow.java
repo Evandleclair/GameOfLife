@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.table.TableModel;
 import javax.swing.text.AbstractDocument;
 
@@ -74,7 +75,7 @@ public class MainWindow extends GameOfLifeWindow {
                                spinnerIncrement);                //step
         
         generationTimeSpinner.setModel(model);
-     
+        ((DefaultEditor) generationTimeSpinner.getEditor()).getTextField().setEditable(false);
     }
     
     private void setDocFilters()

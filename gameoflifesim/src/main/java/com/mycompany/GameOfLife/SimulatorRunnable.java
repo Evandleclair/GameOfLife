@@ -10,7 +10,8 @@ import java.util.TimerTask;
 public class SimulatorRunnable implements Runnable{
     private Thread t;
     private BoardObject boardObject; //it will create a board master//
-    private final SimulatorWindow mySimWindow; //the simulator window that created this//
+    //private final SimulatorWindow mySimWindow; //the simulator window that created this//
+    private final SimCanvasWindow mySimWindow;
     private int gensToRun, currentGen=0;
     private final int boardDims;
     private final double aliveProb;
@@ -25,7 +26,7 @@ public class SimulatorRunnable implements Runnable{
     //    boardDims = d;
     //    gensToRun=GensToRun;
     //}
-      public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun, RulesBundle rBundle)
+    public SimulatorRunnable(SimCanvasWindow m, String n, int d, double prob, int GensToRun, RulesBundle rBundle)
     {
         rulesBundle=rBundle;
         mySimWindow=m;
@@ -35,6 +36,7 @@ public class SimulatorRunnable implements Runnable{
         gensToRun=GensToRun;
        
     }
+  
     public void startSimulation(int GenTime)
     {
         genTime=GenTime;
@@ -52,7 +54,7 @@ public class SimulatorRunnable implements Runnable{
     {
         boardObject.boardTick();
         mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),currentGen);
-        mySimWindow.displayUpdatedBoardText(boardObject.reportBoard());
+        mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
 
     @Override
@@ -81,7 +83,7 @@ public class SimulatorRunnable implements Runnable{
             }
             finally
             {
-                mySimWindow.displayUpdatedBoardText(boardObject.reportBoard());
+                mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
                 mySimWindow.passSimStatusToMainWindow("COMPLETE",currentGen);
                 interuptThread();
             }
