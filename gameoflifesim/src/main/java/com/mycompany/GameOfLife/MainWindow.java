@@ -6,6 +6,7 @@ package com.mycompany.GameOfLife;
 
 
 import com.mycompany.GameOfLife.popupWindows.FileManager;
+import com.mycompany.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.mycompany.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.mycompany.GameOfLife.popupWindows.TablePopUp;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
@@ -115,7 +116,7 @@ public class MainWindow extends GameOfLifeWindow {
         jPanel5 = new javax.swing.JPanel();
         startButton = new javax.swing.JButton();
         endAllButton = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        endHighlightedGameButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         gameJTable = new javax.swing.JTable();
@@ -278,14 +279,18 @@ public class MainWindow extends GameOfLifeWindow {
         });
 
         endAllButton.setText("End All Games");
-        endAllButton.setActionCommand("End All Games");
         endAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 EndButtonClicked(evt);
             }
         });
 
-        jButton5.setText("End Highlighted Game");
+        endHighlightedGameButton.setText("End Highlighted Game");
+        endHighlightedGameButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                endHighlightedGameButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -294,7 +299,7 @@ public class MainWindow extends GameOfLifeWindow {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(endHighlightedGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(endAllButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -307,7 +312,7 @@ public class MainWindow extends GameOfLifeWindow {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(endAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(endHighlightedGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -320,9 +325,7 @@ public class MainWindow extends GameOfLifeWindow {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -457,10 +460,19 @@ public class MainWindow extends GameOfLifeWindow {
      }
         
     }//GEN-LAST:event_customRulesButtonMouseClicked
+
+    private void endHighlightedGameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_endHighlightedGameButtonMouseClicked
+       
+    }//GEN-LAST:event_endHighlightedGameButtonMouseClicked
    
     void updateTableModel(TableModel tm)
     {
         gameJTable.setModel((tm));
+    }
+    
+    public void sendGensToSpecificRow()
+    {
+        
     }
     
     public void nullRulesWindow()
@@ -530,11 +542,11 @@ public class MainWindow extends GameOfLifeWindow {
     private javax.swing.JButton customRulesButton;
     private javax.swing.JTextField dimensionBox;
     private javax.swing.JButton endAllButton;
+    private javax.swing.JButton endHighlightedGameButton;
     private javax.swing.JTable gameJTable;
     private javax.swing.JTextField genRunBox;
     private javax.swing.JSpinner generationTimeSpinner;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

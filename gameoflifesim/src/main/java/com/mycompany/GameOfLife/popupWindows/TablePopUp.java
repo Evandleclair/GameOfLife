@@ -30,7 +30,8 @@ public class TablePopUp extends JFrame implements ActionListener {
     protected JMenuItem closeMenuItem = new JMenuItem (new closeGameAction());
     protected JMenuItem addGenerationsMenuItem = new JMenuItem (new addGenerationsAction());
     private String addGenLabel;
-    MainWindow mainInterface;
+    MainWindow mainWindow;
+    GenerationEntryPopup genEntryPopup;
     GameRunner gr;
     int callingRow;
     
@@ -38,7 +39,7 @@ public class TablePopUp extends JFrame implements ActionListener {
     public TablePopUp(MainWindow mi)
     {
         popup = new JPopupMenu();
-        mainInterface=mi;
+        mainWindow=mi;
         gr = mi.getGameRunner();
         bringToFrontMenuItem.addActionListener(this);
         JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem, addGenerationsMenuItem};
@@ -53,14 +54,14 @@ public class TablePopUp extends JFrame implements ActionListener {
         JPopupMenu popup = (JPopupMenu)c.getParent();
         JTable table = (JTable)popup.getInvoker();
         System.out.println(table.getSelectedRow() + " : " + table.getSelectedColumn());
-        //addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainInterface.getGenerationsToRun())," Generations"});
+        //addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainWindow.getGenerationsToRun())," Generations"});
         callingRow=table.getSelectedRow();
     }
     public void ShowPopUp(MouseEvent e, int rowselected)
     {
         callingRow = rowselected;
         System.out.println("fuck");
-        addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainInterface.getGenerationsToRun())," Generations"});
+        addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainWindow.getGenerationsToRun())," Generations"});
         addGenerationsMenuItem.setText(addGenLabel);
         popup.show(e.getComponent(), e.getX(), e.getY());
     }
@@ -135,7 +136,9 @@ public class TablePopUp extends JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             
             System.out.println("adding generations");
-            gr.addGenerationsToSpecificSimWindow(callingRow);
+            genEntryPopup=new GenerationEntryPopup(mainWindow,callingRow);
+            //gr.addGenerationsToSpecificSimWindow(callingRow);
+            
         }
      }
     

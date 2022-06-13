@@ -183,9 +183,9 @@ public class GameRunner implements GameRunnerInterface {
          getSimWindowByID(rowID).pleaseCloseMe();
     }
    
-    public void addGenerationsToSpecificSimWindow(int rowID)
+    public void addGenerationsToSpecificSimWindow(int rowID, int gensToAdd)
     {
-        getSimWindowByID(rowID).pleaseAddGenerations(mainInterface.getGenerationsToRun());
+        getSimWindowByID(rowID).pleaseAddGenerations(gensToAdd);
         focusOnSpecificSimWindow(rowID);
     }
     
