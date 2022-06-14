@@ -5,6 +5,7 @@
 
 package com.mycompany.GameOfLife;
 
+
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.util.Arrays;
 
@@ -19,6 +20,9 @@ public class BoardObject extends CellAutomaton{
     private int[][] boardState;
     private int previousState[][];
     private int dimensions, starveNumber, aliveNumber, reviveNumber, overpopNumber;
+    private int tickSpeed, currentGen=0;
+    private String id;
+    private RulesBundle myRules;
     private double probAlive;
     
     
@@ -191,6 +195,18 @@ public class BoardObject extends CellAutomaton{
             }
            //System.out.print(sb.toString());
      }
+     
+     public String getOneLineBoardString()
+     {
+        StringBuilder sb = new StringBuilder();
+        for (int[] boardState1 : boardState) {
+            for (int c = 0; c<boardState[0].length; c++) {
+                sb.append(boardState1[c]);
+            }
+        }
+        return sb.toString();
+     }//end getOneLineBoardString//
+     
      public int[][] getBoardState()
      {
          return boardState;
@@ -207,4 +223,28 @@ public class BoardObject extends CellAutomaton{
      {
           previousState=ia;
      }
+     public RulesBundle getMyRules()
+     {
+         return new RulesBundle(starveNumber,aliveNumber,reviveNumber,overpopNumber);
+     }
+     public int getDimensions()
+     {
+         return dimensions;
+     }
+      public int getCurrentGen()
+      {
+          return currentGen;
+      }
+      public void setCurrentGen(int cg)
+      {
+          currentGen=cg;
+      }
+      public int getTickSpeed()
+      {
+          return tickSpeed;
+      }
+      public void setTickSpeed(int ts)
+      {
+          tickSpeed=ts;
+      }
 }//end boardmaster//

@@ -1,5 +1,6 @@
 package com.mycompany.GameOfLife;
 
+
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.util.TimerTask;
 
@@ -12,7 +13,7 @@ public class SimulatorRunnable implements Runnable{
     private BoardObject boardObject; //it will create a board master//
     //private final SimulatorWindow mySimWindow; //the simulator window that created this//
     private final SimCanvasWindow mySimWindow;
-    private int gensToRun, currentGen=0;
+    private int gensToRun; //currentGen=0;
     private final int boardDims;
     private final double aliveProb;
     private int genTime =250;
@@ -53,7 +54,7 @@ public class SimulatorRunnable implements Runnable{
     public void simulationTick()
     {
         boardObject.boardTick();
-        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),currentGen);
+        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen());
         mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
 
@@ -67,7 +68,9 @@ public class SimulatorRunnable implements Runnable{
                 //masterWindow.printMyName();
                 for (int i=0; i<gensToRun; i++)
                 {
-                    currentGen++;
+                    int cGen = boardObject.getCurrentGen();
+                    cGen++;
+                    boardObject.setCurrentGen(boardObject.getCurrentGen());
                     if (i!=0)
                     {
                         simulationTick();
@@ -84,7 +87,7 @@ public class SimulatorRunnable implements Runnable{
             finally
             {
                 mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
-                mySimWindow.passSimStatusToMainWindow("COMPLETE",currentGen);
+                mySimWindow.passSimStatusToMainWindow("COMPLETE",boardObject.getCurrentGen());
                 interuptThread();
             }
     }//end run//
@@ -106,10 +109,7 @@ public class SimulatorRunnable implements Runnable{
     {
         
     }
-    public int getCurrentGen()
-    {
-        return currentGen;
-    }
+   
     public void interuptThread()
     {
         System.out.println("ending thread");
@@ -159,5 +159,9 @@ public class SimulatorRunnable implements Runnable{
         }
         return retString;
     }
+    public BoardObject grabBoard()
+     {
+         return this.boardObject;
+     }
 }
 

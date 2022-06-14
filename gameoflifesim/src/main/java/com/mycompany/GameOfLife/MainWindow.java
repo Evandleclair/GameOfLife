@@ -578,6 +578,12 @@ public class MainWindow extends GameOfLifeWindow {
         customRules=rb;
     }
     
+    public void showFileSaveInterface(int rowID)
+    {
+          fileManager.setCallingRow(rowID);
+          fileManager.ShowSaveInterface();
+    }
+    
     public void addRightClickMenuToTable() 
     {
     tablePopUpMenu = new TablePopUp(this);

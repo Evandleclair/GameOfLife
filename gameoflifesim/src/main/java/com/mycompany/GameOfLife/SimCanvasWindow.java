@@ -4,7 +4,6 @@
  */
 package com.mycompany.GameOfLife;
 
-import static com.mycompany.GameOfLife.SimulatorWindow.openFrameCount;
 import com.mycompany.GameOfLife.popupWindows.GridCanvas;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
@@ -150,6 +149,11 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     public void passSimStatusToMainWindow(String simStatus, int currentGen) {
         System.out.println("passing");
         gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen);
+    }
+
+    @Override
+    public BoardObject getBoardFromRunnable() {
+       return simRunnable.grabBoard();
     }
     
 }

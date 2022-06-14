@@ -17,6 +17,13 @@ public class RulesBundle {
         reviveNumber=ReviveNumber;
         overpopNumber=OverpopNumber;
     }
+     public RulesBundle(int[] ruleSet)
+    {
+        starveNumber=ruleSet[0];
+        aliveNumber=ruleSet[1];
+        reviveNumber=ruleSet[2];
+        overpopNumber=ruleSet[3];
+    }
     public RulesBundle()
     {
         starveNumber=0;
@@ -28,6 +35,8 @@ public class RulesBundle {
     {
         return new int[]{starveNumber,aliveNumber,reviveNumber,overpopNumber};
     }
+  
+           
     public void rewriteRules(int StarveNumber, int AliveNumber, int ReviveNumber, int OverpopNumber)
     {
         starveNumber=StarveNumber;

@@ -4,6 +4,8 @@
  */
 package com.mycompany.GameOfLife.popupWindows;
 
+import java.io.File;
+
 /**
  *
  * @author toast
@@ -11,8 +13,9 @@ package com.mycompany.GameOfLife.popupWindows;
 public interface FileManagerInterface {
         public String convertBoardToString();
         public String convertStringToBoard();
-        public void ExportBoard();
-        public void ImportBoard();
+        public void ExportBoard(File FileToExport);
+        public void ImportBoard(File FileToImport);
         public void ShowOpenInterface();
+        public void ShowSaveInterface();
         
 }

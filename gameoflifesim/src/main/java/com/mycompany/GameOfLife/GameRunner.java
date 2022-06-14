@@ -65,7 +65,7 @@ public class GameRunner implements GameRunnerInterface {
     
     @Override
     public void createSimWindowAndStartSim(int[][] importedBoard, RulesBundle importedRules) {
-        SimulatorWindow simWindowObj = new SimulatorWindow(importedBoard.length, "GAME "+gamesRunning, mainInterface, importedRules);
+        SimCanvasWindow simWindowObj = new SimCanvasWindow(importedBoard.length, "GAME "+gamesRunning, mainInterface, importedRules);
         simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
         gamesRunning++;
         simWindowObj.runSimWindowStartupTasks();
@@ -226,10 +226,10 @@ public class GameRunner implements GameRunnerInterface {
     
     public void endAllGames()
     {
-        SimulatorWindow sw=null;
+        SimCanvasWindow sw=null;
         for (simWindowInfo s : simWindows)
             {
-                sw=(SimulatorWindow) s.getOBJ();
+                sw=(SimCanvasWindow) s.getOBJ();
                 sw.pleaseCloseMe();
             } 
     }

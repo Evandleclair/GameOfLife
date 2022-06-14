@@ -29,6 +29,7 @@ public class TablePopUp extends JFrame implements ActionListener {
     protected JMenuItem pauseResumeMenuItem = new JMenuItem (new pauseResumeAction());
     protected JMenuItem closeMenuItem = new JMenuItem (new closeGameAction());
     protected JMenuItem addGenerationsMenuItem = new JMenuItem (new addGenerationsAction());
+    protected JMenuItem exportGameAction = new JMenuItem (new exportGameAction());
     private String addGenLabel;
     MainWindow mainWindow;
     GenerationEntryPopup genEntryPopup;
@@ -42,7 +43,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         mainWindow=mi;
         gr = mi.getGameRunner();
         bringToFrontMenuItem.addActionListener(this);
-        JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem, addGenerationsMenuItem};
+        JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem, addGenerationsMenuItem, exportGameAction};
         for (JMenuItem j : menuItems)
         {
             popup.add(j);
@@ -109,9 +110,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         }
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("This will export a game");
-            throw new java.lang.UnsupportedOperationException("Not supported yet.");
-            
+            mainWindow.showFileSaveInterface(callingRow);
         }
     }//end exportgame action//
     
