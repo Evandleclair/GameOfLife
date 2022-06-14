@@ -56,7 +56,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         boardDim=bOb.getDimensions();
         myCreator=c;
         myRules=bOb.getMyRules();
-        genTime=40;
+        genTime=c.getGenTime();
         gameRunner=c.getGameRunner();
         IDname=bOb.getName();
         //...Then set the window size or call pack...
@@ -103,9 +103,10 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     }
     
     @Override
-    public void importBoardAndStartSim() {
-        simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
-        simRunnable.startSimulation(genTime);
+    public void importBoardAndStartSim(BoardObject BOb) {
+        simRunnable = new SimulatorRunnable(this, BOb,  myCreator.getGenerationsToRun());
+        simRunnable.startImportedSimulation(genTime);
+        pleaseLookAtMe();
     }
     
     public void setMyGraphics()
@@ -136,7 +137,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         }
         else
         {
-            importBoardAndStartSim();
+            importBoardAndStartSim(bOb);
         }
         canvasPanel.add(boardGameCanvas);
         canvasPanel.setSize(boardGameCanvas.getSize());

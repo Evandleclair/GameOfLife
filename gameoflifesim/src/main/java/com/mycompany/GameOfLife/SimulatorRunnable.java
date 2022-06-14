@@ -16,7 +16,7 @@ public class SimulatorRunnable implements Runnable{
     private int gensToRun; //currentGen=0;
     private final int boardDims;
     private final double aliveProb;
-    private int genTime =250;
+    private int tickTime =250;
     private RulesBundle rulesBundle;
     private String name;
     //public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
@@ -37,17 +37,28 @@ public class SimulatorRunnable implements Runnable{
         gensToRun=GensToRun;
        
     }
-  
-    public void startSimulation(int GenTime)
+     public SimulatorRunnable(SimCanvasWindow m, BoardObject BOb, int GensToRun)
     {
-        genTime=GenTime;
+        boardObject=BOb;
+        rulesBundle=boardObject.getMyRules();
+        mySimWindow=m;
+        name=boardObject.getName();
+        aliveProb=0.5;
+        boardDims = boardObject.getDimensions();
+        gensToRun=GensToRun;
+    }
+  
+    public void startSimulation(int TickTime)
+    {
+        tickTime=TickTime;
         boardObject = new BoardObject(boardDims);
+        boardObject.setTickSpeed(tickTime);
         boardObject.setupBoard(aliveProb,rulesBundle);
     }
-    public void startImportedSimulation(BoardObject BOb, int GenTime)
+    public void startImportedSimulation(int TickTime)
     {
-        genTime=GenTime;
-        boardObject = BOb;
+        tickTime=TickTime;
+        boardObject.setTickSpeed(tickTime);
         boardObject.setupBoard();
     }
         
@@ -75,7 +86,7 @@ public class SimulatorRunnable implements Runnable{
                     {
                         simulationTick();
                     }
-                    Thread.sleep(genTime);
+                    Thread.sleep(tickTime);
                 }
                 //currentGen++;
             }

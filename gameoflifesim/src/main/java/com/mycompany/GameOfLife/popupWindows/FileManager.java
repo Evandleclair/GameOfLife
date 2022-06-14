@@ -96,7 +96,12 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
         } catch (IOException ex) {
             Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (bOb!=null)
         gr.createSimWindowAndStartSim(bOb);
+        else
+        {
+            System.out.println("Failed to import board");
+        }
     }
 
     @Override

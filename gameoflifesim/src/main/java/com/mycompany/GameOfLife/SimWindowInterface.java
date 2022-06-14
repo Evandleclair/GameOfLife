@@ -15,7 +15,7 @@ public interface SimWindowInterface {
     public void pleaseLookAtMe(); //external objects should be able to bring this window to the front//
     public void pleaseCloseMe(); //window must be able to be closed by external object//
     public void establishBoardAndStartSim(); //
-    public void importBoardAndStartSim();
+    public void importBoardAndStartSim(BoardObject BOb);
     public void pleaseAddGenerations(int gens); //window must be able to add generations to the sim runnable it is associated with//
     public void displayUpdatedBoard(int[][] board);
     public void passSimStatusToMainWindow(String simStatus, int currentGen);

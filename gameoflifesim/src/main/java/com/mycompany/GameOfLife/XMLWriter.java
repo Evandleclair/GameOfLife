@@ -55,7 +55,7 @@ import org.xml.sax.SAXException;
             rootElement.appendChild(rulesSet);
             Element boardSet = doc.createElement("BoardSettings");
             boardSet.setAttribute("Dimensions", String.valueOf(bOb.getDimensions()));
-            boardSet.setAttribute("TickSpeed", String.valueOf(bOb.getTickSpeed()));
+            //boardSet.setAttribute("TickSpeed", String.valueOf(bOb.getTickSpeed()));
             boardSet.setAttribute("CurrentGen", String.valueOf(bOb.getCurrentGen()));
             rootElement.appendChild(boardSet);
             Element boardData = doc.createElement("BoardData");
@@ -87,7 +87,7 @@ import org.xml.sax.SAXException;
         String id="";
         RulesBundle rules=null;
        
-        int tickSpeed=0, dimensions=0, currentGen=0;
+        int  dimensions=0, currentGen=0;
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
        //an instance of builder to parse the specified xml file  
         DocumentBuilder db = dbf.newDocumentBuilder();  
@@ -111,13 +111,13 @@ import org.xml.sax.SAXException;
         NamedNodeMap settingsMap=board.getElementsByTagName("BoardSettings").item(0).getAttributes();
         currentGen=Integer.parseInt(settingsMap.getNamedItem("CurrentGen").getNodeValue());
         dimensions=Integer.parseInt(settingsMap.getNamedItem("Dimensions").getNodeValue());
-        tickSpeed=Integer.parseInt(settingsMap.getNamedItem("TickSpeed").getNodeValue());
-        
+        //tickSpeed=Integer.parseInt(settingsMap.getNamedItem("TickSpeed").getNodeValue());
+        //System.out.println("Tickspeed is " + tickSpeed);
         String boardString = board.getElementsByTagName("BoardData").item(0).getAttributes().getNamedItem("BoardState").getNodeValue();
         int[][] myBoardState=convertStringToBoardMatrix(dimensions,boardString);
-        System.out.println(Arrays.deepToString(myBoardState));
-        BoardObject bOb = new BoardObject(dimensions, myBoardState, rules, tickSpeed, currentGen);
-        System.out.println(bOb.reportBoard());
+        //System.out.println(Arrays.deepToString(myBoardState));
+        BoardObject bOb = new BoardObject(dimensions, myBoardState, rules, 100, currentGen);
+        //System.out.println(bOb.reportBoard());
         return bOb;
         //return 
     }
@@ -133,9 +133,9 @@ import org.xml.sax.SAXException;
             {
                 
                 int cellVal = Character.getNumericValue(rowStrings.get(r).charAt(c));
-                System.out.println(cellVal);
+                //System.out.println(cellVal);
                 retVal[r][c]=cellVal;
-                System.out.println(retVal[r][c]);
+                //System.out.println(retVal[r][c]);
             }
         }
         return retVal;

@@ -68,7 +68,7 @@ public class GameRunner implements GameRunnerInterface {
     @Override
     public void createSimWindowAndStartSim(BoardObject BOb) {
         BOb.setName("GAME "+gamesRunning);
-        SimCanvasWindow simWindowObj = new SimCanvasWindow(mainInterface,BOb);
+        SimCanvasWindow simWindowObj = new SimCanvasWindow(mainInterface, BOb);
         simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
         gamesRunning++;
         simWindowObj.runSimWindowStartupTasks();
