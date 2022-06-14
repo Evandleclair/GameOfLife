@@ -33,6 +33,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     private RulesBundle myRules;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     GridCanvas boardGameCanvas;
+    BoardObject bOb= null;
     Graphics gr, canvasGr;
     public SimCanvasWindow(int dim, String idName, MainWindow c, RulesBundle MyRules)
     {
@@ -43,6 +44,21 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         genTime=c.getGenTime();
         gameRunner=c.getGameRunner();
         IDname=idName;
+        //...Then set the window size or call pack...
+        openFrameCount=gameRunner.getGamesRunning();
+        createAndShowGUI();
+        //Set the window's location.
+        setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
+    }
+     public SimCanvasWindow(MainWindow c, BoardObject BOb)
+    {
+        bOb=BOb;
+        boardDim=bOb.getDimensions();
+        myCreator=c;
+        myRules=bOb.getMyRules();
+        genTime=40;
+        gameRunner=c.getGameRunner();
+        IDname=bOb.getName();
         //...Then set the window size or call pack...
         openFrameCount=gameRunner.getGamesRunning();
         createAndShowGUI();
@@ -85,6 +101,13 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
        simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
        simRunnable.startSimulation(genTime);
     }
+    
+    @Override
+    public void importBoardAndStartSim() {
+        simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
+        simRunnable.startSimulation(genTime);
+    }
+    
     public void setMyGraphics()
     {
         canvasGr=boardGameCanvas.getGraphics();
@@ -107,7 +130,14 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         origTitle=IDname;
         //...Create the GUI and put it in the window...
         JPanel canvasPanel = new JPanel();
-        establishBoardAndStartSim();
+        if (bOb==null)
+        {
+            establishBoardAndStartSim();
+        }
+        else
+        {
+            importBoardAndStartSim();
+        }
         canvasPanel.add(boardGameCanvas);
         canvasPanel.setSize(boardGameCanvas.getSize());
         add(canvasPanel);
@@ -155,5 +185,9 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     public BoardObject getBoardFromRunnable() {
        return simRunnable.grabBoard();
     }
+
+  
+
+  
     
 }

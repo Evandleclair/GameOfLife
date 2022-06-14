@@ -423,9 +423,9 @@
                           <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                           <Component id="selectFileButton" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextField1" min="-2" pref="234" max="-2" attributes="0"/>
+                          <Component id="fileNameField" min="-2" pref="234" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton3" max="32767" attributes="0"/>
+                          <Component id="importButton" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -439,8 +439,8 @@
                   <Component id="jScrollPane2" min="-2" pref="234" max="-2" attributes="0"/>
                   <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="fileNameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="importButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="selectFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -504,7 +504,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="fileNameField">
         </Component>
         <Component class="javax.swing.JButton" name="selectFileButton">
           <Properties>
@@ -514,10 +514,13 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="selectFileButtonMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="importButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="IMPORT FILE"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="importButtonMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

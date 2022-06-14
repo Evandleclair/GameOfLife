@@ -120,9 +120,9 @@ public class MainWindow extends GameOfLifeWindow {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         gameJTable = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        fileNameField = new javax.swing.JTextField();
         selectFileButton = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        importButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -375,7 +375,12 @@ public class MainWindow extends GameOfLifeWindow {
             }
         });
 
-        jButton3.setText("IMPORT FILE");
+        importButton.setText("IMPORT FILE");
+        importButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                importButtonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -391,9 +396,9 @@ public class MainWindow extends GameOfLifeWindow {
                         .addGap(6, 6, 6)
                         .addComponent(selectFileButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(importButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(106, 106, 106))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -403,8 +408,8 @@ public class MainWindow extends GameOfLifeWindow {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3)
+                    .addComponent(fileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(importButton)
                     .addComponent(selectFileButton))
                 .addContainerGap())
         );
@@ -464,6 +469,15 @@ public class MainWindow extends GameOfLifeWindow {
     private void endHighlightedGameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_endHighlightedGameButtonMouseClicked
        
     }//GEN-LAST:event_endHighlightedGameButtonMouseClicked
+
+    private void importButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importButtonMouseClicked
+        if (gameRunner.getStoredFile()!=null)
+        fileManager.ImportBoard(gameRunner.getStoredFile());
+        else
+        {
+           System.out.println("no board to import");
+        }
+    }//GEN-LAST:event_importButtonMouseClicked
    
     void updateTableModel(TableModel tm)
     {
@@ -514,6 +528,11 @@ public class MainWindow extends GameOfLifeWindow {
         return Integer.parseInt(genRunBox.getText());
     }
     
+    public void setTextBoxToFilename(String s)
+    {
+        fileNameField.setText(s);
+    }
+    
     public GameRunner getGameRunner()
     {
         return gameRunner;
@@ -543,10 +562,11 @@ public class MainWindow extends GameOfLifeWindow {
     private javax.swing.JTextField dimensionBox;
     private javax.swing.JButton endAllButton;
     private javax.swing.JButton endHighlightedGameButton;
+    private javax.swing.JTextField fileNameField;
     private javax.swing.JTable gameJTable;
     private javax.swing.JTextField genRunBox;
     private javax.swing.JSpinner generationTimeSpinner;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton importButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -561,7 +581,6 @@ public class MainWindow extends GameOfLifeWindow {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private java.awt.Label label1;
     private javax.swing.JSlider percSlider;
     private javax.swing.ButtonGroup rulesButtonGroup;

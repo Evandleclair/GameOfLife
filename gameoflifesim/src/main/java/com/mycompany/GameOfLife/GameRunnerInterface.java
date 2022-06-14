@@ -14,7 +14,7 @@ import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 interface GameRunnerInterface {
         
         public void createSimWindowAndStartSim(int dimensions);
-        public void createSimWindowAndStartSim(int[][] importedBoard, RulesBundle importedRules);
+        public void createSimWindowAndStartSim(BoardObject BOb);
         public void destroyGame(simWindowInfo s);
         public int getGamesRunning();
         public void setGamesRunning(int GamesRunning);

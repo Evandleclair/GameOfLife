@@ -44,11 +44,11 @@ public class SimulatorRunnable implements Runnable{
         boardObject = new BoardObject(boardDims);
         boardObject.setupBoard(aliveProb,rulesBundle);
     }
-    public void startImportedSimulation(int[][] importedBoard, int GenTime)
+    public void startImportedSimulation(BoardObject BOb, int GenTime)
     {
         genTime=GenTime;
-        boardObject = new BoardObject(boardDims);
-        boardObject.setupBoard(importedBoard);
+        boardObject = BOb;
+        boardObject.setupBoard();
     }
         
     public void simulationTick()

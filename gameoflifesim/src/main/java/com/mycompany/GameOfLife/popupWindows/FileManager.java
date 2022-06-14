@@ -14,12 +14,14 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,6 +33,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -39,7 +42,7 @@ import org.w3c.dom.Element;
  */
 public class FileManager extends JPanel implements FileManagerInterface, ActionListener {
 
-    private final MainWindow mainInterface;
+    private final MainWindow mainWindow;
     private final GameRunner gr;
     private BoardObject boardObject;
     static private final String newline = "\n";
@@ -52,8 +55,9 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
     {
         this.xmlWriter = new XMLWriter();
         fc = new JFileChooser();
-        mainInterface=MainWindow;
+        mainWindow=MainWindow;
         gr=Gr;
+        fc.addChoosableFileFilter(new FileNameExtensionFilter("Game Of Life", "GOL", "gol"));
     }
     
     
@@ -81,7 +85,18 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
     
     @Override
     public void ImportBoard(File FileToImport) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        BoardObject bOb=null;
+        try {
+            System.out.println("passing board to XML writer");
+            bOb=xmlWriter.getBoardFromXML(FileToImport);
+        } catch (SAXException ex) {
+            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        gr.createSimWindowAndStartSim(bOb);
     }
 
     @Override
@@ -99,6 +114,7 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
     public void ShowSaveInterface()
     {
         int returnVal = fc.showSaveDialog(FileManager.this);
+        
              if (returnVal == JFileChooser.APPROVE_OPTION) {
                  File fileToSave = fc.getSelectedFile();
                  ExportBoard(fileToSave);
@@ -113,7 +129,9 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
           if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 //System.out.println(file.getName().toString());
-                ImportBoard(file);
+                mainWindow.setTextBoxToFilename(file.getAbsolutePath());
+                gr.storeGameFile(file);
+                
             } else {
                System.out.println("file opening cancelled by user");
             }

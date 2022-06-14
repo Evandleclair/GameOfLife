@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,6 +20,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -51,7 +58,7 @@ import org.w3c.dom.Element;
             boardSet.setAttribute("TickSpeed", String.valueOf(bOb.getTickSpeed()));
             boardSet.setAttribute("CurrentGen", String.valueOf(bOb.getCurrentGen()));
             rootElement.appendChild(boardSet);
-            Element boardData = doc.createElement("boardData");
+            Element boardData = doc.createElement("BoardData");
             boardData.setAttribute("BoardState", String.valueOf(bOb.getOneLineBoardString()));
             rootElement.appendChild(boardData);
             //rootElement.appendChild(doc.createElement("Rules Set").setAttribute("Alive", ));
@@ -75,5 +82,74 @@ import org.w3c.dom.Element;
         StreamResult result = new StreamResult(output);
         transformer.transform(source, result);
     }
+    public BoardObject getBoardFromXML(File file) throws SAXException, ParserConfigurationException, IOException
+    {
+        String id="";
+        RulesBundle rules=null;
+       
+        int tickSpeed=0, dimensions=0, currentGen=0;
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
+       //an instance of builder to parse the specified xml file  
+        DocumentBuilder db = dbf.newDocumentBuilder();  
+        Document doc = db.parse(file);  
+        doc.getDocumentElement().normalize();
+        Element board = doc.getDocumentElement();
+
+        
+        NamedNodeMap rulesMap=board.getElementsByTagName("Rules").item(0).getAttributes();
+        //int[] rulesArray = new int[rulesMap.getLength()];
+        //for (int i=0; i<rulesMap.getLength();i++)
+        //{
+         //   rulesArray[i]=Integer.parseInt(rulesMap.item(i).getNodeValue());
+         //   System.out.println(rulesArray[i]);
+        //}
+        int starveNumber=Integer.parseInt(rulesMap.getNamedItem("StarveNumber").getNodeValue());
+        int aliveNumber=Integer.parseInt(rulesMap.getNamedItem("AliveNumber").getNodeValue());
+        int reviveNumber=Integer.parseInt(rulesMap.getNamedItem("ReviveNumber").getNodeValue());
+        int overpopNumber=Integer.parseInt(rulesMap.getNamedItem("OverpopulationNumber").getNodeValue());
+        rules = new RulesBundle(starveNumber,aliveNumber,reviveNumber,overpopNumber);
+        NamedNodeMap settingsMap=board.getElementsByTagName("BoardSettings").item(0).getAttributes();
+        currentGen=Integer.parseInt(settingsMap.getNamedItem("CurrentGen").getNodeValue());
+        dimensions=Integer.parseInt(settingsMap.getNamedItem("Dimensions").getNodeValue());
+        tickSpeed=Integer.parseInt(settingsMap.getNamedItem("TickSpeed").getNodeValue());
+        
+        String boardString = board.getElementsByTagName("BoardData").item(0).getAttributes().getNamedItem("BoardState").getNodeValue();
+        int[][] myBoardState=convertStringToBoardMatrix(dimensions,boardString);
+        System.out.println(Arrays.deepToString(myBoardState));
+        BoardObject bOb = new BoardObject(dimensions, myBoardState, rules, tickSpeed, currentGen);
+        System.out.println(bOb.reportBoard());
+        return bOb;
+        //return 
+    }
+    
+    int[][] convertStringToBoardMatrix(int dimensions, String board)
+    {
+        int[][] retVal = new int[dimensions][dimensions];
+        List<String> rowStrings = splitStringAtEqualPoints(board,dimensions);
+        for (int r=0; r<retVal.length ; r++) 
+        {
+            //System.out.println(rowStrings.get(r));
+            for (int c=0; c<retVal[0].length; c++)
+            {
+                
+                int cellVal = Character.getNumericValue(rowStrings.get(r).charAt(c));
+                System.out.println(cellVal);
+                retVal[r][c]=cellVal;
+                System.out.println(retVal[r][c]);
+            }
+        }
+        return retVal;
+    }
+    public List<String> splitStringAtEqualPoints(String s, int i)
+    {
+        List<String> ret = new ArrayList<String>((s.length() + i - 1) / i);
+        for (int start = 0; start < s.length(); start += i) 
+        {
+            ret.add(s.substring(start, Math.min(s.length(), start + i)));
+        }
+        return ret;
+
+    }
+
        // public 
 }

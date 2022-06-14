@@ -6,6 +6,7 @@ package com.mycompany.GameOfLife;
 
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -27,6 +28,7 @@ public class GameRunner implements GameRunnerInterface {
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
     private RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
+    private File storedFileToImport=null;
     public GameRunner(MainWindow MI)
     {
     mainInterface=MI;
@@ -64,8 +66,9 @@ public class GameRunner implements GameRunnerInterface {
     }
     
     @Override
-    public void createSimWindowAndStartSim(int[][] importedBoard, RulesBundle importedRules) {
-        SimCanvasWindow simWindowObj = new SimCanvasWindow(importedBoard.length, "GAME "+gamesRunning, mainInterface, importedRules);
+    public void createSimWindowAndStartSim(BoardObject BOb) {
+        BOb.setName("GAME "+gamesRunning);
+        SimCanvasWindow simWindowObj = new SimCanvasWindow(mainInterface,BOb);
         simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
         gamesRunning++;
         simWindowObj.runSimWindowStartupTasks();
@@ -222,6 +225,15 @@ public class GameRunner implements GameRunnerInterface {
             }
         }
         return retInt;
+    }
+    
+    public void storeGameFile(File file)
+    {
+        storedFileToImport=file;
+    }
+    public File getStoredFile()
+    {
+        return storedFileToImport;
     }
     
     public void endAllGames()

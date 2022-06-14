@@ -31,6 +31,19 @@ public class BoardObject extends CellAutomaton{
     {
         dimensions=d;
     }
+    public BoardObject(int d, int[][] BoardState, RulesBundle Rules, int TickSpeed, int CurrentGen)
+    {
+        dimensions=d;
+        boardState=BoardState;
+        myRules=Rules;
+        tickSpeed=TickSpeed;
+        currentGen=CurrentGen;
+        starveNumber=myRules.getStarveNumber();
+        aliveNumber=myRules.getAliveNumber();
+        reviveNumber=myRules.getReviveNumber();
+        overpopNumber=myRules.getOverpopNumber();
+        //System.out.println("Reporting as " + reportBoard());
+    }
     public void setupBoard(double ProbAlive, RulesBundle myRules)
     {
         probAlive=ProbAlive;
@@ -50,9 +63,9 @@ public class BoardObject extends CellAutomaton{
         overpopNumber=4;
         createSeedAndReportBoard();
     }
-    public void setupBoard(int[][] importedBoard)
+    public void setupBoard()
     {
-        boardState=importedBoard;
+        
         reportBoard();
     }
     public void createSeedAndReportBoard()
@@ -246,5 +259,13 @@ public class BoardObject extends CellAutomaton{
       public void setTickSpeed(int ts)
       {
           tickSpeed=ts;
+      }
+      public String getName()
+      {
+          return id;
+      }
+      public void setName(String n)
+      {
+          id=n;
       }
 }//end boardmaster//
