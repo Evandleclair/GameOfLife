@@ -12,11 +12,19 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.AbstractAction;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -29,19 +37,23 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     private String IDname, origTitle;
     private final MainWindow myCreator;
     private GameRunner gameRunner;
+    private JMenuBar menuBar;
+    private JMenu menu, ioMenu;
+    private JMenuItem menuItem;
     private SimulatorRunnable simRunnable;
     private RulesBundle myRules;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     GridCanvas boardGameCanvas;
     BoardObject bOb= null;
     Graphics gr, canvasGr;
+    
     public SimCanvasWindow(int dim, String idName, MainWindow c, RulesBundle MyRules)
     {
        
         boardDim=dim;
         myCreator=c;
         myRules=MyRules;
-        genTime=c.getGenTime();
+        genTime=c.getTickTime();
         gameRunner=c.getGameRunner();
         IDname=idName;
         //...Then set the window size or call pack...
@@ -50,13 +62,14 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         //Set the window's location.
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
     }
-     public SimCanvasWindow(MainWindow c, BoardObject BOb)
+    
+    public SimCanvasWindow(MainWindow c, BoardObject BOb)
     {
         bOb=BOb;
         boardDim=bOb.getDimensions();
         myCreator=c;
         myRules=bOb.getMyRules();
-        genTime=c.getGenTime();
+        genTime=c.getTickTime();
         gameRunner=c.getGameRunner();
         IDname=bOb.getName();
         //...Then set the window size or call pack...
@@ -66,13 +79,13 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
     }
     
-    
     public void runSimWindowStartupTasks()
     {
         setVisible(true); //necessary as of 1.3
         setMyGraphics();
         
     }
+    
     @Override
     public void startSimRunnable() {
         simRunnable.start();
@@ -97,14 +110,17 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     }
 
     @Override
-    public void establishBoardAndStartSim() {
-       simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
-       simRunnable.startSimulation(genTime);
+    public void establishBoardAndStartSim() 
+    {
+        simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
+        simRunnable.startSimulation(genTime);
+        bOb=simRunnable.grabBoard();
+        pleaseLookAtMe();
     }
     
     @Override
     public void importBoardAndStartSim(BoardObject BOb) {
-        simRunnable = new SimulatorRunnable(this, BOb,  myCreator.getGenerationsToRun());
+        simRunnable = new SimulatorRunnable(this, BOb,  gameRunner.getImportedGens());
         simRunnable.startImportedSimulation(genTime);
         pleaseLookAtMe();
     }
@@ -114,7 +130,6 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         canvasGr=boardGameCanvas.getGraphics();
         gr = this.getGraphics();
     }//end setMyGraphics//
-  
 
     @Override
     public void displayUpdatedBoard(int[][] boardState) {
@@ -122,15 +137,23 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         boardGameCanvas.draw(canvasGr);
     }
     
-      public void createAndShowGUI()
+    public void updateTickSpeed(int speed)
+    {
+        bOb.setTickSpeed(speed);
+    }
+    
+    public void createAndShowGUI()
     {
         boardGameCanvas = new GridCanvas(boardDim, 10);
         int prefSize= boardDim*(10);
         boardGameCanvas.setPreferredSize(new Dimension(prefSize,prefSize));
         setTitle(IDname);
         origTitle=IDname;
+        
+        
         //...Create the GUI and put it in the window...
         JPanel canvasPanel = new JPanel();
+        
         if (bOb==null)
         {
             establishBoardAndStartSim();
@@ -139,6 +162,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         {
             importBoardAndStartSim(bOb);
         }
+        
         canvasPanel.add(boardGameCanvas);
         canvasPanel.setSize(boardGameCanvas.getSize());
         add(canvasPanel);
@@ -150,7 +174,6 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                    System.out.println("closing self. I am " + IDname);
                    gameRunner.destroyGame(new simWindowInfo(IDname,this));
                    simRunnable.interuptThread();
-                   simRunnable.hearingExam();
                 }
 
                 @Override
@@ -159,23 +182,54 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                     System.out.println("closing self. I am " + IDname);
                     gameRunner.destroyGame(new simWindowInfo(IDname,this));
                     simRunnable.interuptThread();
-                    simRunnable.hearingExam();
                 }
             });
-        // set the size of frame
-       
-        //setVisible(true);
-        //boardGameCanvas.draw(gr);
-         pack(); 
+        this.setJMenuBar(establishMenuBar());
+        pack(); 
         setResizable(false);
-        //int sizeToScale = boardGameCanvas.getSizeScale();
-        //setPreferredSize(new Dimension(sizeToScale, sizeToScale));
-        
-       
-        //setSize(sizeToScale,sizeToScale);
-         
     }//end createAndShowGUI//
 
+    private JMenuBar establishMenuBar()
+    {
+        menuBar = new JMenuBar();
+        menu = new JMenu("Simulator Options");
+        menu.setMnemonic(KeyEvent.VK_A);
+        menu.getAccessibleContext().setAccessibleDescription(
+        "The only menu in this program that has menu items");
+        menuBar.add(menu);
+        menuItem = new JMenuItem(new AbstractAction("Pause/Resume") 
+        {
+            public void actionPerformed(ActionEvent ae) 
+            {
+                togglePause();
+            }
+        }
+        );
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_P, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription(
+        "Pauses or unpauses the game");
+        menu.add(menuItem);
+        menuItem = new JMenuItem(new AbstractAction("Close this Simulation") 
+        {
+            public void actionPerformed(ActionEvent ae) 
+            {
+                pleaseCloseMe();
+            }
+        }
+        );
+         menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+                
+                
+                
+        menu.add(menuItem);
+        
+    
+        
+        return menuBar;
+    }
+    
     @Override
     public void passSimStatusToMainWindow(String simStatus, int currentGen) {
         System.out.println("passing");
@@ -183,12 +237,24 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     }
 
     @Override
-    public BoardObject getBoardFromRunnable() {
+    public BoardObject getBoardFromRunnable() 
+    {
        return simRunnable.grabBoard();
     }
 
-  
+    @Override
+    public void pleasePauseSim() {
+       simRunnable.setPause(true);
+    }
 
-  
+    @Override
+    public void pleaseResumeSim() {
+        simRunnable.setPause(false);
+    }
     
+    private void togglePause()
+    {
+        simRunnable.setPause(!simRunnable.getPause());
+        System.out.println("toggling pause");
+    }
 }

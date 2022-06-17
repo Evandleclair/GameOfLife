@@ -19,6 +19,8 @@ public interface SimWindowInterface {
     public void pleaseAddGenerations(int gens); //window must be able to add generations to the sim runnable it is associated with//
     public void displayUpdatedBoard(int[][] board);
     public void passSimStatusToMainWindow(String simStatus, int currentGen);
+    public void pleasePauseSim();
+    public void pleaseResumeSim();
     public BoardObject getBoardFromRunnable();
 
 }

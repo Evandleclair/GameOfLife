@@ -63,16 +63,12 @@ public class BoardObject extends CellAutomaton{
         overpopNumber=4;
         createSeedAndReportBoard();
     }
-    public void setupBoard()
-    {
-        
-        reportBoard();
-    }
+   
     public void createSeedAndReportBoard()
     {
         boardState=deadState(dimensions,dimensions);
         seedBoard();
-        reportBoard();
+       
     }
     public int[][] deadState(int width, int height)
     {
@@ -134,7 +130,6 @@ public class BoardObject extends CellAutomaton{
     
     boolean enoughNeighborsAlive(int r, int c, int[][] inBoard)
     {
-        
         int liveCount=0, deadCount=0;
         for (int colOffset=-1; colOffset<=1;colOffset++)
         {

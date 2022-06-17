@@ -29,8 +29,9 @@ public class TablePopUp extends JFrame implements ActionListener {
     protected JMenuItem pauseResumeMenuItem = new JMenuItem (new pauseResumeAction());
     protected JMenuItem closeMenuItem = new JMenuItem (new closeGameAction());
     protected JMenuItem addGenerationsMenuItem = new JMenuItem (new addGenerationsAction());
-    protected JMenuItem exportGameAction = new JMenuItem (new exportGameAction());
-    private String addGenLabel;
+    protected JMenuItem exportGameMenuItem = new JMenuItem (new exportGameAction());
+    protected JMenuItem updateTickTimeMenuItem = new JMenuItem (new updateTickTimeAction());
+    private String addGenLabel, updateTickLabel;
     MainWindow mainWindow;
     GenerationEntryPopup genEntryPopup;
     GameRunner gr;
@@ -43,7 +44,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         mainWindow=mi;
         gr = mi.getGameRunner();
         bringToFrontMenuItem.addActionListener(this);
-        JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem, addGenerationsMenuItem, exportGameAction};
+        JMenuItem[] menuItems = {bringToFrontMenuItem, closeMenuItem, addGenerationsMenuItem, exportGameMenuItem,updateTickTimeMenuItem};
         for (JMenuItem j : menuItems)
         {
             popup.add(j);
@@ -61,9 +62,10 @@ public class TablePopUp extends JFrame implements ActionListener {
     public void ShowPopUp(MouseEvent e, int rowselected)
     {
         callingRow = rowselected;
-        System.out.println("fuck");
-        addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainWindow.getGenerationsToRun())," Generations"});
-        addGenerationsMenuItem.setText(addGenLabel);
+        
+        updateTickLabel=StringMaster.combineStrings(new String[]{"Update tick time to: ",String.valueOf(mainWindow.getTickTime()), " MS"});
+        updateTickTimeMenuItem.setText(updateTickLabel);
+        
         popup.show(e.getComponent(), e.getX(), e.getY());
     }
    
@@ -126,19 +128,32 @@ public class TablePopUp extends JFrame implements ActionListener {
         }
     }//end pauseresume action//
      
-     public class addGenerationsAction extends AbstractAction {
-         public addGenerationsAction()
-         {
-             super(addGenLabel);
-         }
-           @Override
-        public void actionPerformed(ActionEvent e) {
-            
+    public class addGenerationsAction extends AbstractAction 
+    {
+        public addGenerationsAction()
+        {
+            super("Open menu to add Generations");
+        }
+        
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {    
             System.out.println("adding generations");
             genEntryPopup=new GenerationEntryPopup(mainWindow,callingRow);
             //gr.addGenerationsToSpecificSimWindow(callingRow);
-            
         }
-     }
+    }//end addGenerationsAction//
+    
+     public class updateTickTimeAction extends AbstractAction 
+    {
+        public updateTickTimeAction(){}
+        
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {    
+            System.out.println("adding generations");
+            gr.updateTickSpeedOnSpecificWindow(callingRow);
+        }
+    }//end addGenerationsAction//
     
 }
