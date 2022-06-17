@@ -80,8 +80,8 @@ public class SimulatorRunnable implements Runnable{
                 for (int i=0; i<gensToRun; i++)
                 {
                     int cGen = boardObject.getCurrentGen();
-                    cGen++;
-                    boardObject.setCurrentGen(boardObject.getCurrentGen());
+                    cGen+=1;
+                    boardObject.setCurrentGen(cGen);
                     if (i!=0)
                     {
                         simulationTick();
@@ -131,11 +131,6 @@ public class SimulatorRunnable implements Runnable{
         }
     }
     
-    public void hearingExam()
-    {
-        //test method to see if a thread is hearing from other objects correctly.//
-        System.out.println("I can hear you fine");
-    }
     
     public void addGens(int gensToAdd)
     {
@@ -153,7 +148,7 @@ public class SimulatorRunnable implements Runnable{
     
     public String getSimStatusAsString()
     {
-        String retString="eururu";
+        String retString=null;
         if (t!=null)
         {
             switch (t.getState().toString())

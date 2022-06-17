@@ -35,6 +35,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     GridCanvas boardGameCanvas;
     BoardObject bOb= null;
     Graphics gr, canvasGr;
+    
     public SimCanvasWindow(int dim, String idName, MainWindow c, RulesBundle MyRules)
     {
        
@@ -50,7 +51,8 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         //Set the window's location.
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
     }
-     public SimCanvasWindow(MainWindow c, BoardObject BOb)
+    
+    public SimCanvasWindow(MainWindow c, BoardObject BOb)
     {
         bOb=BOb;
         boardDim=bOb.getDimensions();
@@ -66,13 +68,13 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
     }
     
-    
     public void runSimWindowStartupTasks()
     {
         setVisible(true); //necessary as of 1.3
         setMyGraphics();
         
     }
+    
     @Override
     public void startSimRunnable() {
         simRunnable.start();
@@ -104,7 +106,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     
     @Override
     public void importBoardAndStartSim(BoardObject BOb) {
-        simRunnable = new SimulatorRunnable(this, BOb,  myCreator.getGenerationsToRun());
+        simRunnable = new SimulatorRunnable(this, BOb,  gameRunner.getImportedGens());
         simRunnable.startImportedSimulation(genTime);
         pleaseLookAtMe();
     }
@@ -114,7 +116,6 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         canvasGr=boardGameCanvas.getGraphics();
         gr = this.getGraphics();
     }//end setMyGraphics//
-  
 
     @Override
     public void displayUpdatedBoard(int[][] boardState) {
@@ -122,15 +123,17 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         boardGameCanvas.draw(canvasGr);
     }
     
-      public void createAndShowGUI()
+    public void createAndShowGUI()
     {
         boardGameCanvas = new GridCanvas(boardDim, 10);
         int prefSize= boardDim*(10);
         boardGameCanvas.setPreferredSize(new Dimension(prefSize,prefSize));
         setTitle(IDname);
         origTitle=IDname;
+        
         //...Create the GUI and put it in the window...
         JPanel canvasPanel = new JPanel();
+        
         if (bOb==null)
         {
             establishBoardAndStartSim();
@@ -139,6 +142,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         {
             importBoardAndStartSim(bOb);
         }
+        
         canvasPanel.add(boardGameCanvas);
         canvasPanel.setSize(boardGameCanvas.getSize());
         add(canvasPanel);
@@ -150,7 +154,6 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                    System.out.println("closing self. I am " + IDname);
                    gameRunner.destroyGame(new simWindowInfo(IDname,this));
                    simRunnable.interuptThread();
-                   simRunnable.hearingExam();
                 }
 
                 @Override
@@ -159,21 +162,10 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                     System.out.println("closing self. I am " + IDname);
                     gameRunner.destroyGame(new simWindowInfo(IDname,this));
                     simRunnable.interuptThread();
-                    simRunnable.hearingExam();
                 }
             });
-        // set the size of frame
-       
-        //setVisible(true);
-        //boardGameCanvas.draw(gr);
-         pack(); 
+        pack(); 
         setResizable(false);
-        //int sizeToScale = boardGameCanvas.getSizeScale();
-        //setPreferredSize(new Dimension(sizeToScale, sizeToScale));
-        
-       
-        //setSize(sizeToScale,sizeToScale);
-         
     }//end createAndShowGUI//
 
     @Override
@@ -183,12 +175,8 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     }
 
     @Override
-    public BoardObject getBoardFromRunnable() {
+    public BoardObject getBoardFromRunnable() 
+    {
        return simRunnable.grabBoard();
     }
-
-  
-
-  
-    
 }

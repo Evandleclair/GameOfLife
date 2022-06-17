@@ -29,6 +29,7 @@ public class GameRunner implements GameRunnerInterface {
     private JTable simTable = new JTable(dtm);
     private RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
     private File storedFileToImport=null;
+    private int importedGensToRun=0;
     public GameRunner(MainWindow MI)
     {
     mainInterface=MI;
@@ -127,7 +128,14 @@ public class GameRunner implements GameRunnerInterface {
         return rb;
     }
     
-    
+    public int getImportedGens()
+    {
+        return importedGensToRun;
+    }
+    public void setImportedGens(int i)
+    {
+        importedGensToRun=i;
+    }
     
     @Override
     public SimCanvasWindow getSimWindowByID(int rowID)
@@ -199,7 +207,7 @@ public class GameRunner implements GameRunnerInterface {
     
     public void updateSimColumnsOnTable(String IDname, String status, int curGen)
     {
-        System.out.println("trying to find " + IDname);
+        System.out.println("trying to find " + IDname + " which has a Gen value of " + curGen);
         int rowToUpdate = getSimRowByName(IDname);
         if (rowToUpdate != -1)
         {

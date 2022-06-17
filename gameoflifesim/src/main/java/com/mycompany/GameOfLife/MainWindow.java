@@ -17,7 +17,6 @@ import java.util.Hashtable;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -472,13 +471,20 @@ public class MainWindow extends GameOfLifeWindow {
 
     private void importButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importButtonMouseClicked
         if (gameRunner.getStoredFile()!=null)
-        fileManager.ImportBoard(gameRunner.getStoredFile());
+        {
+            showGenerationPopupAndImportFile();
+        }
         else
         {
            System.out.println("no board to import");
         }
     }//GEN-LAST:event_importButtonMouseClicked
    
+    void showGenerationPopupAndImportFile()
+    {
+        GenerationEntryPopup genEntryPopup=new GenerationEntryPopup(this);
+        fileManager.ImportBoard(gameRunner.getStoredFile());
+    }
     void updateTableModel(TableModel tm)
     {
         gameJTable.setModel((tm));

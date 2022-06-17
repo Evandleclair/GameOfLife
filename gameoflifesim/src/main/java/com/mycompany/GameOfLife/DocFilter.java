@@ -13,7 +13,7 @@ import javax.swing.text.DocumentFilter;
  *
  * @author toast
  */
-class DocFilter extends DocumentFilter
+public class DocFilter extends DocumentFilter
 {
    
        private Pattern regexCheck = Pattern.compile("[0-9]+");

@@ -6,6 +6,7 @@ package com.mycompany.GameOfLife.popupWindows;
 
 import com.mycompany.GameOfLife.GameRunner;
 import com.mycompany.GameOfLife.MainWindow;
+import com.mycompany.GameOfLife.DocFilter;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,10 +16,12 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
+import javax.swing.text.AbstractDocument;
 
 /**
  *
@@ -30,6 +33,7 @@ public class GenerationEntryPopup extends JDialog
     private JButton addButton, cancelButton;
     private int gensToAdd;
     private MainWindow mainWindow; //largely unused, only imported so that we can set this window as Modal to it.//'
+    private DocFilter docFilter = new DocFilter();
     private GameRunner gr; //this is where we will send our info//
     private JTextField genEntryField;
     private final int callingRow;
@@ -43,10 +47,12 @@ public class GenerationEntryPopup extends JDialog
         mainWindow=(MainWindow)Frame;
         gr=mainWindow.getGameRunner();
         gensToAdd=0;
-        callingRow=1;
+        callingRow=-1;
         createAndShowGUI();
+        setDocumentFilters();
     }//end constructor//
-     public GenerationEntryPopup(JFrame Frame, int CallingRow)
+    
+    public GenerationEntryPopup(JFrame Frame, int CallingRow)
     {
         super(Frame);
         callingRow=CallingRow;
@@ -54,12 +60,11 @@ public class GenerationEntryPopup extends JDialog
         mainWindow=(MainWindow)Frame;
         gensToAdd=0;
         gr=mainWindow.getGameRunner();
-        createAndShowGUI();
+        createAndShowGUI(); 
+        setDocumentFilters();
     }//end constructor//
      
-   
-     
-     private void createAndShowGUI()
+    private void createAndShowGUI()
     {
         setTitle("Enter Generations to Add");
         Container cc = this.getContentPane();
@@ -67,6 +72,8 @@ public class GenerationEntryPopup extends JDialog
         GridBagConstraints gbc = new GridBagConstraints();
         
         genEntryField= new JTextField();
+        AbstractDocument abstractGenEntry = (AbstractDocument) genEntryField.getDocument();
+        abstractGenEntry.setDocumentFilter(docFilter);
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridwidth=2;
         gbc.gridx=0;
@@ -79,19 +86,44 @@ public class GenerationEntryPopup extends JDialog
         gbc.gridx=0;
         gbc.gridy=1;
         cc.add(addButton, gbc);
-        addButton.addActionListener(new ActionListener() 
+        if (callingRow!=-1)
+        {
+            addButton.addActionListener(new ActionListener() 
             { 
                 @Override
-                public void actionPerformed(ActionEvent e) { 
-                sendGenerationsToSelectedRow();
+                public void actionPerformed(ActionEvent e) 
+                { 
+                    sendGenerationsToSelectedRow();
                 } 
             } );
+        }
+        else
+        {
+            addButton.addActionListener(new ActionListener() 
+            { 
+                @Override
+                public void actionPerformed(ActionEvent e) 
+                { 
+                    int gens = Integer.parseInt(genEntryField.getText());
+                    if (gens>1)
+                        setImportedGenerationsToRun(gens);
+                    else
+                    {
+                        JOptionPane.showMessageDialog(mainWindow," Generations to add must be larger than 1.");
+                        System.out.println("invalid character");
+                    }
+                        ///show warning popup
+                } 
+            } ); 
+        }
         
         cancelButton=new JButton("CANCEL");
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridwidth=1;
         gbc.gridx=1;
         gbc.gridy=1;
+      
+            
         cancelButton.addActionListener(new ActionListener() 
             { 
                 @Override
@@ -109,6 +141,11 @@ public class GenerationEntryPopup extends JDialog
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
      
+    private void setDocumentFilters()
+    {
+       
+    }
+     
     private void closeMe()
     {
         dispose();
@@ -118,6 +155,12 @@ public class GenerationEntryPopup extends JDialog
     {
         gensToAdd = Integer.parseInt(genEntryField.getText());
         gr.addGenerationsToSpecificSimWindow(callingRow, gensToAdd);
+        closeMe();
+    }
+     private void setImportedGenerationsToRun(int i)
+    {
+      
+        gr.setImportedGens(i);
         closeMe();
     }
     
