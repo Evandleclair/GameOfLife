@@ -16,6 +16,7 @@ public class GridCanvas extends Canvas
 {
     private CellObject[][] cellArray;
     private int cellSize, dimensions;
+    
     public GridCanvas(int Dimensions, int CellSize)
     {
         cellSize=CellSize;
@@ -29,6 +30,7 @@ public class GridCanvas extends Canvas
             }
         }
     }
+    
     public void draw(Graphics g) 
     {
         for (CellObject[] row : cellArray) 
@@ -39,10 +41,16 @@ public class GridCanvas extends Canvas
             }
         }
     }
+    
     @Override
     public void paint(Graphics g) 
     {
         draw(g);
+    }
+    
+    public int getCellSize()
+    {
+        return cellSize;
     }
     
     public int getSizeScale()
@@ -51,12 +59,18 @@ public class GridCanvas extends Canvas
         return dimensions*(cellSize); //the plus 2 is to account for border size
     }
     
-    public void setCellState(int c, int r, int state)
+    public void setCellState(int r, int c, int state)
     {
         if (state==1)
-            cellArray[c][r].turnOn();
+            cellArray[r][c].turnOn();
         else
-            cellArray[c][r].turnOff();
+            cellArray[r][c].turnOff();
+    }
+    
+    public void userToggleCell(int r, int c)
+    {
+        cellArray[r][c].turnOn();
+        draw(this.getGraphics());
     }
     
     public void setCellsEqualToBoardState(int[][] boardState)
@@ -65,9 +79,14 @@ public class GridCanvas extends Canvas
        {
             for (int c=0; c<boardState[0].length; c++)
             {
-                setCellState(c,r,boardState[c][r]);
+                setCellState(r,c,boardState[r][c]);
             }
        } 
+    }
+    
+    public CellObject getCell(int r, int c)
+    {
+        return cellArray[r][c];
     }
    // public Dimension getPreferredSize() 
 }//end draw//

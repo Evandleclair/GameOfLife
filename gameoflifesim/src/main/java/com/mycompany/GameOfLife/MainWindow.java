@@ -30,7 +30,7 @@ import javax.swing.text.AbstractDocument;
  *
  * @author toast
  */
-public class MainWindow extends GameOfLifeWindow {
+public class MainWindow extends javax.swing.JFrame {
  
  private GameRunner gameRunner;
   private final DocFilter docFilter;

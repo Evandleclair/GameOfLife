@@ -36,20 +36,16 @@ public class RulesCustomizerPopup extends JDialog
     private final String starveLabelText = "Cell starves with this many or fewer neighbors: ", aliveLabelText = "Cell survives with exactly this many neighbors: ", reviveLabelText="Dead cells revive with this many neighbors: ", overpopLabelText="Cells die of overpopulation with this many neighbors: ";
     private final String finishButtonText = "Confirm custom rules", cancelButtonText = "Cancel";
     private MainWindow mainWindow;
+    
     public RulesCustomizerPopup(JFrame Frame)
     {
         super(Frame);
-        
         setModal(true);
         mainWindow=(MainWindow)Frame;
         startingRules=mainWindow.getRules();
         createAndShowGUI();
     }
-    private void exportRulesToMainWindow()
-    {
-        RulesBundle rb = new RulesBundle();
-        mainWindow.setRules(rb);
-    }
+   
     private void createAndShowGUI()
     {
         Container cc = this.getContentPane();
@@ -151,13 +147,9 @@ public class RulesCustomizerPopup extends JDialog
         gbc.gridx=0;
         gbc.gridy=4;
         gbc.gridwidth=1;
-        finishButton.addActionListener(new ActionListener() 
-            { 
-                @Override
-                public void actionPerformed(ActionEvent e) { 
-               exportRulesAndClose();
-                } 
-            } );
+        finishButton.addActionListener((ActionEvent e) -> {
+            exportRulesAndClose();
+        });
         cc.add(finishButton,gbc);
         
         cancelButton = new JButton(cancelButtonText);
@@ -165,28 +157,25 @@ public class RulesCustomizerPopup extends JDialog
         gbc.gridx=1;
         gbc.gridy=4;
         gbc.gridwidth=2;
-        cancelButton.addActionListener(new ActionListener() 
-            { 
-                @Override
-                public void actionPerformed(ActionEvent e) { 
-                closeMe();
-                } 
-            } );
+        cancelButton.addActionListener((ActionEvent e) -> {
+            closeMe();
+        });
+        
         cc.add(cancelButton,gbc);
         cc.setBackground(Color.WHITE);
         pack();
         setLocationRelativeTo(mainWindow);
         setVisible(true);
-        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
         addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosed(WindowEvent e)
-                {
-                    mainWindow.nullRulesWindow();
-                }
-                });
+            {
+                mainWindow.nullRulesWindow();
+            }
+        });
     }
     
     private void exportRulesAndClose()
@@ -195,13 +184,9 @@ public class RulesCustomizerPopup extends JDialog
         mainWindow.setRules(exportedRules);
         closeMe();
     }
+    
     private void closeMe()
     {
         dispose();
     }
-    
-    /**
-     *
-     * @param e
-     */
 }//end RulesCustomizerPopup//

@@ -7,23 +7,20 @@ package com.mycompany.GameOfLife;
 import com.mycompany.GameOfLife.popupWindows.GridCanvas;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 /**
@@ -34,9 +31,9 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
 
     static int openFrameCount = 0;
     private int boardDim, genTime;
-    private String IDname, origTitle;
+    private  String  IDname;
     private final MainWindow myCreator;
-    private GameRunner gameRunner;
+    private final GameRunner gameRunner;
     private JMenuBar menuBar;
     private JMenu menu, ioMenu;
     private JMenuItem menuItem;
@@ -95,6 +92,8 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     public void pleaseLookAtMe()
     {
         requestFocus();
+        toFront();
+        
     }
     
     @Override
@@ -107,6 +106,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     public void pleaseAddGenerations(int gens)
     {
         simRunnable.addGens(gens);
+        
     }
 
     @Override
@@ -147,9 +147,20 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         boardGameCanvas = new GridCanvas(boardDim, 10);
         int prefSize= boardDim*(10);
         boardGameCanvas.setPreferredSize(new Dimension(prefSize,prefSize));
-        setTitle(IDname);
-        origTitle=IDname;
         
+        setTitle(IDname);
+        addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    System.out.println("Big window");
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                   
+                }
+            });
         
         //...Create the GUI and put it in the window...
         JPanel canvasPanel = new JPanel();
@@ -162,9 +173,28 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         {
             importBoardAndStartSim(bOb);
         }
-        
+        boardGameCanvas.addMouseListener(new MouseAdapter() {
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                    int x=e.getX();
+                    int y=e.getY();
+                    System.out.println("On the canvas" + " x " + x + " y " + y);
+                    
+                    setCellAtCoords(x,y);
+                    
+                    //System.out.println(bOb.reportBoard());
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                   
+                }
+            });
         canvasPanel.add(boardGameCanvas);
         canvasPanel.setSize(boardGameCanvas.getSize());
+        
         add(canvasPanel);
         this.addWindowListener(new WindowAdapter()
             {
@@ -189,6 +219,19 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         setResizable(false);
     }//end createAndShowGUI//
 
+    private void setCellAtCoords(int x, int y)
+    {
+        
+        //int c = x/boardGameCanvas.getWidth();
+        //int r = y/boardGameCanvas.getHeight();
+        int c = Math.round(x/boardGameCanvas.getCellSize());
+        int r = Math.round(y/boardGameCanvas.getCellSize());
+        System.out.println(" c " + c + " r " + r);
+        bOb.setCellAlive(r, c);
+        boardGameCanvas.userToggleCell(r, c);
+        //boardGameCanvas.getCell(x, y);
+    }
+    
     private JMenuBar establishMenuBar()
     {
         menuBar = new JMenuBar();
@@ -210,6 +253,42 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         menuItem.getAccessibleContext().setAccessibleDescription(
         "Pauses or unpauses the game");
         menu.add(menuItem);
+        menuItem = new JMenuItem(new AbstractAction("Export board") 
+        {
+            public void actionPerformed(ActionEvent ae) 
+            {
+                 throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }
+        );
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_E, ActionEvent.ALT_MASK));    
+        menu.add(menuItem);
+        
+        menuItem = new JMenuItem(new AbstractAction("Clear board") 
+        {
+            public void actionPerformed(ActionEvent ae) 
+            {
+                 throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }
+        );
+         menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_C, ActionEvent.ALT_MASK));    
+        menu.add(menuItem);
+         
+         menuItem = new JMenuItem(new AbstractAction("Add generations") 
+        {
+            public void actionPerformed(ActionEvent ae) 
+            {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        }
+        );
+         menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_G, ActionEvent.ALT_MASK));    
+        menu.add(menuItem);
+        
         menuItem = new JMenuItem(new AbstractAction("Close this Simulation") 
         {
             public void actionPerformed(ActionEvent ae) 
@@ -219,12 +298,8 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         }
         );
          menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        KeyEvent.VK_Q, ActionEvent.ALT_MASK));
-                
-                
-                
+        KeyEvent.VK_Q, ActionEvent.ALT_MASK));    
         menu.add(menuItem);
-        
     
         
         return menuBar;
@@ -232,7 +307,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     
     @Override
     public void passSimStatusToMainWindow(String simStatus, int currentGen) {
-        System.out.println("passing");
+        //System.out.println("passing");
         gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen);
     }
 
@@ -250,11 +325,17 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     @Override
     public void pleaseResumeSim() {
         simRunnable.setPause(false);
+        pleaseLookAtMe();
     }
     
     private void togglePause()
     {
         simRunnable.setPause(!simRunnable.getPause());
         System.out.println("toggling pause");
+    }
+
+    @Override
+    public void oogabooba() {
+ 
     }
 }

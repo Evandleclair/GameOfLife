@@ -21,6 +21,7 @@ public interface SimWindowInterface {
     public void passSimStatusToMainWindow(String simStatus, int currentGen);
     public void pleasePauseSim();
     public void pleaseResumeSim();
+    public void oogabooba();
     public BoardObject getBoardFromRunnable();
 
 }

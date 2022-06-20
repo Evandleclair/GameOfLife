@@ -11,7 +11,6 @@ import java.util.TimerTask;
 public class SimulatorRunnable implements Runnable{
     private Thread t;
     private BoardObject boardObject; //it will create a board master//
-    //private final SimulatorWindow mySimWindow; //the simulator window that created this//
     private final SimCanvasWindow mySimWindow;
     private int gensToRun, currentGen=0;
     private final int boardDims;
@@ -68,6 +67,12 @@ public class SimulatorRunnable implements Runnable{
         mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen());
         mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
+    
+    public void pauseTick()
+    {
+        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen());
+        mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
+    }
 
     @Override
     public void run() 
@@ -117,8 +122,9 @@ public class SimulatorRunnable implements Runnable{
         }
         else
         {
-            System.out.println("Paused");
+            //System.out.println("Paused");
             Thread.sleep(150);
+            pauseTick();
             gameBody();
         }
         /* while (!paused)

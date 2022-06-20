@@ -23,8 +23,6 @@ import javax.swing.*;
 public class TablePopUp extends JFrame implements ActionListener {
     
     JPopupMenu popup;
-   
-    //protected Action bringToFrontAction;
     protected JMenuItem bringToFrontMenuItem = new JMenuItem (new bringToFrontAction());
     protected JMenuItem pauseResumeMenuItem = new JMenuItem (new pauseResumeAction());
     protected JMenuItem closeMenuItem = new JMenuItem (new closeGameAction());
@@ -36,7 +34,6 @@ public class TablePopUp extends JFrame implements ActionListener {
     GenerationEntryPopup genEntryPopup;
     GameRunner gr;
     int callingRow;
-    
     
     public TablePopUp(MainWindow mi)
     {
@@ -50,8 +47,10 @@ public class TablePopUp extends JFrame implements ActionListener {
             popup.add(j);
         }
     }
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) 
+    {
         Component c = (Component)e.getSource();
         JPopupMenu popup = (JPopupMenu)c.getParent();
         JTable table = (JTable)popup.getInvoker();
@@ -62,7 +61,6 @@ public class TablePopUp extends JFrame implements ActionListener {
     public void ShowPopUp(MouseEvent e, int rowselected)
     {
         callingRow = rowselected;
-        
         updateTickLabel=StringMaster.combineStrings(new String[]{"Update tick time to: ",String.valueOf(mainWindow.getTickTime()), " MS"});
         updateTickTimeMenuItem.setText(updateTickLabel);
         
@@ -84,28 +82,30 @@ public class TablePopUp extends JFrame implements ActionListener {
             super("Bring to Front");
         }
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) 
+        {
             System.out.println("This will bring window to front");
             gr.focusOnSpecificSimWindow(callingRow);
-            
         }
-        
     }
     
-     public class pauseResumeAction extends AbstractAction {
+    public class pauseResumeAction extends AbstractAction 
+    {
         public pauseResumeAction()
         {
-            super("Pause / Resume");
+           super("Pause / Resume");
         }
+        
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) 
+        {
             System.out.println("This will pause or resume a game");
             throw new java.lang.UnsupportedOperationException("Not supported yet.");
-            
         }
     }//end pauseresume action//
      
-    public class exportGameAction extends AbstractAction {
+    public class exportGameAction extends AbstractAction 
+    {
         public exportGameAction()
         {
             super("Export Game to Text File");
@@ -116,13 +116,15 @@ public class TablePopUp extends JFrame implements ActionListener {
         }
     }//end exportgame action//
     
-     public class closeGameAction extends AbstractAction {
+    public class closeGameAction extends AbstractAction 
+    {
         public closeGameAction()
         {
             super("Close Game");
         }
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) 
+        {
             System.out.println("This will close a game");
             gr.closeSpecificSimWindow(callingRow);
         }
@@ -138,13 +140,12 @@ public class TablePopUp extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) 
         {    
-            System.out.println("adding generations");
+            System.out.println("adding generations" + mainWindow.getGenerationsToRun());
             genEntryPopup=new GenerationEntryPopup(mainWindow,callingRow);
-            //gr.addGenerationsToSpecificSimWindow(callingRow);
         }
     }//end addGenerationsAction//
     
-     public class updateTickTimeAction extends AbstractAction 
+    public class updateTickTimeAction extends AbstractAction 
     {
         public updateTickTimeAction(){}
         
@@ -155,5 +156,4 @@ public class TablePopUp extends JFrame implements ActionListener {
             gr.updateTickSpeedOnSpecificWindow(callingRow);
         }
     }//end addGenerationsAction//
-    
-}
+}//end tablepopupclass/

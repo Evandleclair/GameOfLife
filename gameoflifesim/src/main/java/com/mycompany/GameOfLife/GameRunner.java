@@ -8,7 +8,6 @@ import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -23,11 +22,10 @@ public class GameRunner implements GameRunnerInterface {
     private final MainWindow mainInterface;
     private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
     private static int gamesRunning=0;
-    private Hashtable<String, Integer> rulesDictionary = new Hashtable<>();
     private String[] colNames = {"Game","Generation","Status"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
-    private RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
+    private final RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
     private File storedFileToImport=null;
     private int importedGensToRun=0;
     
@@ -36,7 +34,6 @@ public class GameRunner implements GameRunnerInterface {
     {
         mainInterface=MI;
         HideGameColumn();
-        SetUpRulesDictionary();
     }//end constructor//
     
     private void HideGameColumn() //we are storing games in the column but do not want to display them as that is pointless//
@@ -44,17 +41,8 @@ public class GameRunner implements GameRunnerInterface {
        // simTable.getColumnModel().getColumn(2).setMaxWidth(0);
     }
             
-    private void SetUpRulesDictionary()
-    {
-        rulesDictionary.put("StarveNumber", 1);
-        rulesDictionary.put("AliveNumber", 2);
-        rulesDictionary.put("ReviveNumber", 3);
-        rulesDictionary.put("OverpopNumber", 3);
-    }
-    public Hashtable<String, Integer> CopyRulesDictionary()
-    {
-       return rulesDictionary;
-    }
+   
+   
     
     @Override
     public void createSimWindowAndStartSim(int dims) 
@@ -207,8 +195,9 @@ public class GameRunner implements GameRunnerInterface {
    
     public void addGenerationsToSpecificSimWindow(int rowID, int gensToAdd)
     {
-        getSimWindowByID(rowID).pleaseAddGenerations(gensToAdd);
-        focusOnSpecificSimWindow(rowID);
+        SimCanvasWindow SW= getSimWindowByID(rowID);
+        SW.pleaseAddGenerations(gensToAdd);
+        SW.pleaseLookAtMe();
     }
     
     @Override

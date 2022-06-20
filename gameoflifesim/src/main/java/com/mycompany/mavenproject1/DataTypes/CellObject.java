@@ -54,6 +54,13 @@ public class CellObject {
     {
         cellState = 0;
     }
+    
+    public int getState()
+    {
+        System.out.println("self reported x is " + x + "   y " + y);
+        return cellState;
+       
+    }
 
     public void turnOn() 
     {

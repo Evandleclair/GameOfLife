@@ -9,8 +9,6 @@ import com.mycompany.GameOfLife.GameRunner;
 import com.mycompany.GameOfLife.MainWindow;
 import com.mycompany.GameOfLife.SimCanvasWindow;
 import com.mycompany.GameOfLife.XMLWriter;
-import java.awt.BorderLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;

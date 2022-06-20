@@ -4,7 +4,6 @@
  */
 package com.mycompany.GameOfLife;
 
-import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 
 /**
