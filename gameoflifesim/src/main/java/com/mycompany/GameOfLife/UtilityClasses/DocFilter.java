@@ -16,7 +16,7 @@ import javax.swing.text.DocumentFilter;
 public class DocFilter extends DocumentFilter
 {
    
-       private final Pattern regexCheck = Pattern.compile("[0-9]+");
+       private Pattern regexCheck = Pattern.compile("[0-9]+");
 
         @Override
         public void insertString(FilterBypass fb, int offs, String str, AttributeSet a) throws BadLocationException {

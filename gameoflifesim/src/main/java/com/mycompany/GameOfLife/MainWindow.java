@@ -33,13 +33,13 @@ import javax.swing.text.AbstractDocument;
  */
 public class MainWindow extends javax.swing.JFrame {
  
- private GameRunner gameRunner;
-  private final DocFilter docFilter;
- private static TablePopUp tablePopUpMenu;
- private static RulesCustomizerPopup rulesCustomizerPopup;
- private static FileManagerPopup fileManager;
- private static RulesBundle customRules = new RulesBundle(0,2,3,4);
- private static final int maxSpinnerValue=2500, spinnerIncrement=25, spinnerDefValue=250;
+private GameRunner gameRunner;
+private final DocFilter docFilter;
+private static TablePopUp tablePopUpMenu;
+private static RulesCustomizerPopup rulesCustomizerPopup;
+private static RulesBundle customRules = new RulesBundle(0,2,3,4);
+private static FileManagerPopup fileManager;
+private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_DEFAULT_VALUE=250;
 
  private AbstractDocument genRunDoc, boxDimDoc;
     //protected static SimulatorWindow simWindow = new SimulatorWindow();
@@ -81,10 +81,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void setUpSpinner()
     {
         SpinnerModel model =
-        new SpinnerNumberModel(spinnerDefValue, //initial value
+        new SpinnerNumberModel(SPINNER_DEFAULT_VALUE, //initial value
                                0, //min
-                               maxSpinnerValue, //max
-                               spinnerIncrement);                //step
+                               MAX_SPINNER_VALUE, //max
+                               SPINNER_INCREMENT);                //step
         
         generationTimeSpinner.setModel(model);
         ((DefaultEditor) generationTimeSpinner.getEditor()).getTextField().setEditable(false);
@@ -555,7 +555,7 @@ public class MainWindow extends javax.swing.JFrame {
          for (Enumeration<AbstractButton> buttons = rulesButtonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
             if (button.isSelected()) {
-                if (button.getText()=="Use Custom Rules")
+                if (button.getText().equals("Use Custom Rules"))
                 {
                     retValue=true;
                 }

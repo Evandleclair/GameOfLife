@@ -4,7 +4,7 @@
  */
 package com.mycompany.GameOfLife.UtilityClasses;
 
-import java.util.*;
+
 
 
 /**
@@ -12,12 +12,7 @@ import java.util.*;
  * @author evandleclair
  */
 public class StringMaster {
-    public static final Map<Integer, String> digitCharacter = new HashMap<>();
-    static {
-        //▯◼◻▮ left these here for easier access incase I change my mind about the character used//
-      digitCharacter.put(0, "0");
-      digitCharacter.put(1, "1");
-    }
+
     public static String arrayToString(int[][] inArray )
     {
         StringBuilder sb = new StringBuilder();
@@ -26,7 +21,7 @@ public class StringMaster {
         {
             for (int w=0; w<inArray[0].length; w++)
             {
-                sb.append(digitCharacter.get(inArray[h][w]));
+                sb.append(String.valueOf(inArray[h][w]));
             }
             if (h!=inArray.length-1)
             {

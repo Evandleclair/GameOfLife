@@ -32,16 +32,15 @@ import javax.swing.KeyStroke;
 public class SimCanvasWindow extends JDialog implements SimWindowInterface{
 
     static int openFrameCount = 0;
-    private final int boardDim;
-    private int genTime;
+    private final int boardDim, genTime;
     private final String IDname;
     private final MainWindow mainWindow;
     private final GameRunner gameRunner;
     private JMenuBar menuBar;
-    private JMenu menu, ioMenu;
+    private JMenu menu;
     private JMenuItem menuItem;
     private SimulatorRunnable simRunnable;
-    private RulesBundle myRules;
+    private final RulesBundle myRules;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
     GridCanvas boardGameCanvas;
     BoardObject bOb= null;
@@ -102,6 +101,8 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     @Override
     public void pleaseCloseMe()
     {
+        
+        
         dispose();
     }
     
@@ -202,6 +203,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                    System.out.println("closing self. I am " + IDname);
                    gameRunner.destroyGame(new simWindowInfo(IDname,this));
                    simRunnable.interuptThread();
+                   gameRunner.reportClosedGame();
                 }
 
                 @Override
@@ -210,6 +212,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                     System.out.println("closing self. I am " + IDname);
                     gameRunner.destroyGame(new simWindowInfo(IDname,this));
                     simRunnable.interuptThread();
+                    gameRunner.reportClosedGame();
                 }
             });
         this.setJMenuBar(establishMenuBar());

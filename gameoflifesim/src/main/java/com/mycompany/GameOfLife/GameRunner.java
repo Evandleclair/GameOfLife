@@ -10,6 +10,7 @@ import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -20,9 +21,9 @@ import javax.swing.table.TableModel;
  */
 public class GameRunner implements GameRunnerInterface {
     
-    private final MainWindow mainInterface;
+    private final MainWindow mainWindow;
     private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
-    private static int gamesRunning=0;
+    private static int gamesRunning=0, gamesRan =0;
     private String[] colNames = {"Game","Generation","Status","Tick Speed"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
@@ -33,7 +34,7 @@ public class GameRunner implements GameRunnerInterface {
     
     public GameRunner(MainWindow MI)
     {
-        mainInterface=MI;
+        mainWindow=MI;
         HideGameColumn();
     }//end constructor//
     
@@ -48,24 +49,33 @@ public class GameRunner implements GameRunnerInterface {
     @Override
     public void createSimWindowAndStartSim(int dims) 
     {
-        SimCanvasWindow simWindowObj= new SimCanvasWindow(dims, "GAME " + gamesRunning, mainInterface, getRulesSet());
-        simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
-        gamesRunning++;
-        simWindowObj.runSimWindowStartupTasks();
-        simWindowObj.startSimRunnable();
-        updateSimWindowTable();
+        SimCanvasWindow simWindowObj= new SimCanvasWindow(dims, "GAME " + gamesRan, mainWindow, getRulesSet());
+        addWindowToTable(simWindowObj);
     }
     
     @Override
     public void createSimWindowAndStartSim(BoardObject BOb) 
     {
         BOb.setName("GAME "+gamesRunning);
-        SimCanvasWindow simWindowObj = new SimCanvasWindow(mainInterface, BOb);
-        simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
+        SimCanvasWindow simWindowObj = new SimCanvasWindow(mainWindow, BOb);
+        addWindowToTable(simWindowObj);
+    }
+    
+    public void addWindowToTable(SimCanvasWindow sW)
+    {
+        if (gamesRunning<20)
+        {
+        simWindows.add(new simWindowInfo("GAME "+gamesRan,sW));
+        gamesRan++;
         gamesRunning++;
-        simWindowObj.runSimWindowStartupTasks();
-        simWindowObj.startSimRunnable();
+        sW.runSimWindowStartupTasks();
+        sW.startSimRunnable();
         updateSimWindowTable();
+        }
+        else
+        {
+             JOptionPane.showMessageDialog(mainWindow, "Cannot have more than twenty games running at the same time");
+        }
     }
 
     @Override
@@ -115,9 +125,9 @@ public class GameRunner implements GameRunnerInterface {
     private RulesBundle getRulesSet()
     {
         RulesBundle rb = conwayDefault;
-        if (mainInterface.useCustomRules())
+        if (mainWindow.useCustomRules())
         {
-            rb=mainInterface.getRules();
+            rb=mainWindow.getRules();
         }
         return rb;
     }
@@ -186,7 +196,7 @@ public class GameRunner implements GameRunnerInterface {
     
     public void updateTickSpeedOnSpecificWindow(int rowID)
     {
-        int tickTime =mainInterface.getTickTime();
+        int tickTime =mainWindow.getTickTime();
         getSimWindowByID(rowID).updateTickSpeed(tickTime);
         updateTickTime(rowID,tickTime);
         
@@ -212,7 +222,7 @@ public class GameRunner implements GameRunnerInterface {
     
     @Override
     public void UpdateTableOnMainWindow() {
-        mainInterface.updateTableModel(simTable.getModel());
+        mainWindow.updateTableModel(simTable.getModel());
     }
     
     public void updateSimColumnsOnTable(String IDname, String status, int curGen, int tSpeed)
@@ -269,5 +279,11 @@ public class GameRunner implements GameRunnerInterface {
                 sw=(SimCanvasWindow) s.getOBJ();
                 sw.pleaseCloseMe();
             } 
+    }
+
+    @Override
+    public void reportClosedGame() 
+    {
+       gamesRunning--;
     }
 }//end class//

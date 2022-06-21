@@ -12,16 +12,15 @@ import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
  *
  * @author evandleclair
  */
-public interface GameRunnerInterface {
-        
-        public void createSimWindowAndStartSim(int dimensions);
-        public void createSimWindowAndStartSim(BoardObject BOb);
-        public void destroyGame(simWindowInfo s);
-        public int getGamesRunning();
-        public void setGamesRunning(int GamesRunning);
-        public SimCanvasWindow getSimWindowByID(int rowID);
-        public int getOpenGamesCount();
-        public void UpdateTableOnMainWindow();
-       
-        
+public interface GameRunnerInterface 
+{        
+    public void createSimWindowAndStartSim(int dimensions);
+    public void createSimWindowAndStartSim(BoardObject BOb);
+    public void destroyGame(simWindowInfo s);
+    public int getGamesRunning();
+    public void setGamesRunning(int GamesRunning);
+    public SimCanvasWindow getSimWindowByID(int rowID);
+    public int getOpenGamesCount();
+    public void UpdateTableOnMainWindow();
+    public void reportClosedGame();
 }
