@@ -53,6 +53,7 @@ public class StringMaster {
          }
          return str.toString();
     }
+    
     //StringMaster will hold onto the default font used by all boards.//
     public static Font getGlobalFont()
     {
