@@ -156,13 +156,12 @@ public class GenerationEntryPopup extends JDialog
         gr.addGenerationsToSpecificSimWindow(callingRow, gensToAdd);
         closeMe();
     }
-    
-   
-    
-    private void setImportedGenerationsToRun(int i)
+     private void setImportedGenerationsToRun(int i)
     {
+      
         gr.setImportedGens(i);
         closeMe();
     }
+
 }//end GenerationEntryPopup//
 
