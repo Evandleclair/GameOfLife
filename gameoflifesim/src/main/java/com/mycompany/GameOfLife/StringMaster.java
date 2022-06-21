@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class StringMaster {
     public static final Map<Integer, String> digitCharacter = new HashMap<>();

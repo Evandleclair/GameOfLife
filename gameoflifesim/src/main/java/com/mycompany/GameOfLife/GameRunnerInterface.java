@@ -8,7 +8,7 @@ import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 interface GameRunnerInterface {
         

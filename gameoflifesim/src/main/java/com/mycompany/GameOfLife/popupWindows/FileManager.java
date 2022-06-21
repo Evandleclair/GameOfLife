@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class FileManager extends JPanel implements FileManagerInterface, ActionListener {
 

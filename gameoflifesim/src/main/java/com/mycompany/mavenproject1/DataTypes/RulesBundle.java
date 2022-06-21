@@ -6,7 +6,7 @@ package com.mycompany.mavenproject1.DataTypes;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class RulesBundle {
     private int starveNumber, aliveNumber, reviveNumber, overpopNumber;

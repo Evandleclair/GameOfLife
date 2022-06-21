@@ -8,7 +8,7 @@ import com.mycompany.GameOfLife.SimCanvasWindow;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class simWindowInfo<String,SimCanvasWindow> 
 {

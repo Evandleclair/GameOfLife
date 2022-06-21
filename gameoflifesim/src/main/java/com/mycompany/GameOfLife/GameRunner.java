@@ -15,14 +15,14 @@ import javax.swing.table.TableModel;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class GameRunner implements GameRunnerInterface {
     
     private final MainWindow mainInterface;
     private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
     private static int gamesRunning=0;
-    private String[] colNames = {"Game","Generation","Status"};
+    private String[] colNames = {"Game","Generation","Status","Tick Speed"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
     private final RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
@@ -175,7 +175,7 @@ public class GameRunner implements GameRunnerInterface {
       private void addSimWindowToTable(simWindowInfo s)
     {
         DefaultTableModel model = (DefaultTableModel) simTable.getModel();
-        model.addRow(new Object[]{s.getID(),"oo","generation",s.getOBJ()});
+        model.addRow(new Object[]{s.getID(),"name","generation","tickspeed",s.getOBJ()});
     }
     
     public void focusOnSpecificSimWindow(int rowID)
@@ -185,7 +185,10 @@ public class GameRunner implements GameRunnerInterface {
     
     public void updateTickSpeedOnSpecificWindow(int rowID)
     {
-        getSimWindowByID(rowID).updateTickSpeed(mainInterface.getTickTime());
+        int tickTime =mainInterface.getTickTime();
+        getSimWindowByID(rowID).updateTickSpeed(tickTime);
+        updateTickTime(rowID,tickTime);
+        
     }
        
     public void closeSpecificSimWindow(int rowID)
@@ -199,20 +202,27 @@ public class GameRunner implements GameRunnerInterface {
         SW.pleaseAddGenerations(gensToAdd);
         SW.pleaseLookAtMe();
     }
+    public void addGenerationsToSpecificSimWindow(String name, int gensToAdd)
+    {
+        SimCanvasWindow SW= getSimWindowByID(getSimRowByName(name));
+        SW.pleaseAddGenerations(gensToAdd);
+        SW.pleaseLookAtMe();
+    }
     
     @Override
     public void UpdateTableOnMainWindow() {
         mainInterface.updateTableModel(simTable.getModel());
     }
     
-    public void updateSimColumnsOnTable(String IDname, String status, int curGen)
+    public void updateSimColumnsOnTable(String IDname, String status, int curGen, int tSpeed)
     {
         //System.out.println("trying to find " + IDname + " which has a Gen value of " + curGen);
         int rowToUpdate = getSimRowByName(IDname);
         if (rowToUpdate != -1)
         {
-            simTable.getModel().setValueAt(status,rowToUpdate,2);
             simTable.getModel().setValueAt(curGen,rowToUpdate,1);
+            simTable.getModel().setValueAt(status,rowToUpdate,2);
+            simTable.getModel().setValueAt(tSpeed,rowToUpdate,3);
         }
         else
         {
@@ -220,7 +230,13 @@ public class GameRunner implements GameRunnerInterface {
         }
     }
     
-    private int getSimRowByName(String IDname)
+    
+    public void updateTickTime(int rowID,int tickTime)
+    {
+        simTable.getModel().setValueAt(tickTime,rowID,3);
+    }
+    
+    public int getSimRowByName(String IDname)
     {
         int retInt = -1; //signifies not found//
         for (int i=0; i<simTable.getRowCount();i++)

@@ -6,7 +6,7 @@ package com.mycompany.GameOfLife;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public abstract class CellAutomaton {
         //public abstract String lifeCycle();

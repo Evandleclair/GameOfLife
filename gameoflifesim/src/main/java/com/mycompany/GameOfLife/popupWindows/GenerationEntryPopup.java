@@ -21,7 +21,7 @@ import javax.swing.text.AbstractDocument;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class GenerationEntryPopup extends JDialog 
 {
@@ -55,6 +55,18 @@ public class GenerationEntryPopup extends JDialog
         mainWindow=(MainWindow)Frame;
         gensToAdd=0;
         gr=mainWindow.getGameRunner();
+        createAndShowGUI(); 
+        //setDocumentFilters();
+    }//end constructor//
+    
+    public GenerationEntryPopup(JFrame Frame, String name)
+    {
+        super(Frame);
+        setModal(true);
+        mainWindow=(MainWindow)Frame;
+        gensToAdd=0;
+        gr=mainWindow.getGameRunner();
+        callingRow=gr.getSimRowByName(name);
         createAndShowGUI(); 
         //setDocumentFilters();
     }//end constructor//

@@ -9,7 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class MainClass 
 {    
@@ -22,6 +22,6 @@ public class MainClass
         mainInterface.setFileManager(FM);
         mainInterface.addRightClickMenuToTable(); //can only be done AFTER a game runner has been assigned//
         GR.UpdateTableOnMainWindow(); //links the GameRunner's table model to that of the main interface window, so they update in unision.//
-        mainInterface.showTheMainWindow();//now that all the prep is done, we can show the window//
+        mainInterface.invokeMainWindow();//now that all the prep is done, we can show the window//
     }
 }

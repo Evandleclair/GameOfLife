@@ -24,7 +24,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class RulesCustomizerPopup extends JDialog
 {

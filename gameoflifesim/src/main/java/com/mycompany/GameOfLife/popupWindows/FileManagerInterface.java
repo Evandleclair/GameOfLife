@@ -8,7 +8,7 @@ import java.io.File;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public interface FileManagerInterface {
         public String convertBoardToString();

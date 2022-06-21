@@ -28,7 +28,7 @@ import javax.swing.text.AbstractDocument;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class MainWindow extends javax.swing.JFrame {
  
@@ -53,6 +53,17 @@ public class MainWindow extends javax.swing.JFrame {
         setUpSpinner();
         //addRightClickMenuToTable();
     }//end constructor//
+    
+    public void invokeMainWindow()
+    {
+         java.awt.EventQueue.invokeLater(() -> {
+            createAndShowMainWindow();
+         });
+    }//end startGameRunner./
+    
+     protected void quit() {
+        System.exit(0);
+    }
     
     //this is used so that it is not responsible for creating it's own gamerunner object//
     public void setGameRunner(GameRunner gameRunnerArg)
@@ -489,12 +500,7 @@ public class MainWindow extends javax.swing.JFrame {
     {
         gameJTable.setModel((tm));
     }
-    
-    public void sendGensToSpecificRow()
-    {
         
-    }
-    
     public void nullRulesWindow()
     {
        if (rulesCustomizerPopup.isVisible()==false)
@@ -502,33 +508,81 @@ public class MainWindow extends javax.swing.JFrame {
            rulesCustomizerPopup=null;
        }
     }
+    
     protected void createFrameAndGame()  
     {
         int dims = Integer.parseInt(dimensionBox.getText());
         gameRunner.createSimWindowAndStartSim(dims);
     }
     
-    protected void quit() {
-        System.exit(0);
-    }
+   
+    
     private void createAndShowMainWindow()
     {   
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
   
-    public double getInitialAliveProbability()
+    public void addRightClickMenuToTable() 
     {
-        System.out.println(percSlider.getValue()*0.01 + " percent chance of alive at start");
+        tablePopUpMenu = new TablePopUp(this);
+        gameJTable.addMouseListener( new MouseAdapter()
+        {
+            @Override
+            public void mousePressed(MouseEvent e) { }
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {
+                if (e.isPopupTrigger())
+                {
+                    JTable source = (JTable)e.getSource();
+                    int row = source.rowAtPoint( e.getPoint() );
+                    int column = source.columnAtPoint( e.getPoint() );
+
+                    if (! source.isRowSelected(row))
+                        source.changeSelection(row, column, false, false);
+                
+                    tablePopUpMenu.ShowPopUp(e, row);
+                }
+            }
+        });
+    }
+
+    public boolean useCustomRules()
+    {
+        boolean retValue = false;
+         for (Enumeration<AbstractButton> buttons = rulesButtonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+            if (button.isSelected()) {
+                if (button.getText()=="Use Custom Rules")
+                {
+                    retValue=true;
+                }
+            }
+        }
+        return retValue;
+    }
+    
+    public void showFileSaveInterface(int rowID)
+    {
+          fileManager.setCallingRow(rowID);
+          fileManager.ShowSaveInterface();
+    }
+    
+    public void showFileSaveInterface(String boardName)
+    {
+          fileManager.setCallingRow(gameRunner.getSimRowByName(boardName));
+          fileManager.ShowSaveInterface();
+    }
+    
+    /*------------------------------------------------------------*/
+    /* get and set section */
+     public double getInitialAliveProbability()
+    {
         return (percSlider.getValue()*0.01);
     }
   
-    public  void showTheMainWindow()
-    {
-         java.awt.EventQueue.invokeLater(() -> {
-            createAndShowMainWindow();
-         });
-    }//end startGameRunner./
+    
     public int getGenerationsToRun()
     {
         return Integer.parseInt(genRunBox.getText());
@@ -548,21 +602,20 @@ public class MainWindow extends javax.swing.JFrame {
     {
         return (Integer)generationTimeSpinner.getValue();
     }
-
-    public boolean useCustomRules()
+    
+    public RulesBundle getRules()
     {
-        boolean retValue = false;
-         for (Enumeration<AbstractButton> buttons = rulesButtonGroup.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
-            if (button.isSelected()) {
-                if (button.getText()=="Use Custom Rules")
-                {
-                    retValue=true;
-                }
-            }
-        }
-        return retValue;
+        return customRules;
     }
+    
+    public void setRules(RulesBundle rb)
+    {
+        customRules=rb;
+    }
+    
+    /*---------end get and set section----------*/
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton customRulesButton;
     private javax.swing.JTextField dimensionBox;
@@ -594,47 +647,11 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
-    public RulesBundle getRules()
-    {
-        return customRules;
-    }
-    public void setRules(RulesBundle rb)
-    {
-        customRules=rb;
-    }
+   
     
-    public void showFileSaveInterface(int rowID)
-    {
-          fileManager.setCallingRow(rowID);
-          fileManager.ShowSaveInterface();
-    }
     
-    public void addRightClickMenuToTable() 
-    {
-    tablePopUpMenu = new TablePopUp(this);
-    gameJTable.addMouseListener( new MouseAdapter(){
-    @Override
-    public void mousePressed(MouseEvent e)
-        {
-                System.out.println("pressed");
-            }
-    @Override
-          public void mouseReleased(MouseEvent e)
-            {
-                if (e.isPopupTrigger())
-                {
-                    JTable source = (JTable)e.getSource();
-                    int row = source.rowAtPoint( e.getPoint() );
-                    int column = source.columnAtPoint( e.getPoint() );
-
-                    if (! source.isRowSelected(row))
-                        source.changeSelection(row, column, false, false);
-                    
-                    tablePopUpMenu.ShowPopUp(e, row);
-                }
-            }
-     });
-    }
+    
+  
 }
 
 

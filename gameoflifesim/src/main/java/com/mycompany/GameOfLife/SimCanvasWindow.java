@@ -4,6 +4,7 @@
  */
 package com.mycompany.GameOfLife;
 
+import com.mycompany.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.mycompany.GameOfLife.popupWindows.GridCanvas;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
@@ -24,15 +25,16 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 /**
- *
- * @author 12035
+ * This object is responsible for containing the thread that runs the simulation, and the canvas to draw it on.
+ * @author evandleclair
  */
 public class SimCanvasWindow extends JDialog implements SimWindowInterface{
 
     static int openFrameCount = 0;
-    private int boardDim, genTime;
-    private  String  IDname;
-    private final MainWindow myCreator;
+    private final int boardDim;
+    private int genTime;
+    private final String IDname;
+    private final MainWindow mainWindow;
     private final GameRunner gameRunner;
     private JMenuBar menuBar;
     private JMenu menu, ioMenu;
@@ -48,7 +50,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     {
        
         boardDim=dim;
-        myCreator=c;
+        mainWindow=c;
         myRules=MyRules;
         genTime=c.getTickTime();
         gameRunner=c.getGameRunner();
@@ -64,7 +66,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     {
         bOb=BOb;
         boardDim=bOb.getDimensions();
-        myCreator=c;
+        mainWindow=c;
         myRules=bOb.getMyRules();
         genTime=c.getTickTime();
         gameRunner=c.getGameRunner();
@@ -112,7 +114,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     @Override
     public void establishBoardAndStartSim() 
     {
-        simRunnable = new SimulatorRunnable(this, IDname,boardDim, myCreator.getInitialAliveProbability(), myCreator.getGenerationsToRun(),myRules);
+        simRunnable = new SimulatorRunnable(this, IDname,boardDim, mainWindow.getInitialAliveProbability(), mainWindow.getGenerationsToRun(),myRules);
         simRunnable.startSimulation(genTime);
         bOb=simRunnable.grabBoard();
         pleaseLookAtMe();
@@ -176,21 +178,16 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         boardGameCanvas.addMouseListener(new MouseAdapter() {
 
                 @Override
-                public void mousePressed(MouseEvent e) {
-                    
+                public void mousePressed(MouseEvent e) 
+                {         
                     int x=e.getX();
                     int y=e.getY();
                     System.out.println("On the canvas" + " x " + x + " y " + y);
-                    
                     setCellAtCoords(x,y);
-                    
-                    //System.out.println(bOb.reportBoard());
                 }
 
                 @Override
-                public void mouseReleased(MouseEvent e) {
-                   
-                }
+                public void mouseReleased(MouseEvent e) {}
             });
         canvasPanel.add(boardGameCanvas);
         canvasPanel.setSize(boardGameCanvas.getSize());
@@ -221,94 +218,19 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
 
     private void setCellAtCoords(int x, int y)
     {
-        
-        //int c = x/boardGameCanvas.getWidth();
-        //int r = y/boardGameCanvas.getHeight();
         int c = Math.round(x/boardGameCanvas.getCellSize());
         int r = Math.round(y/boardGameCanvas.getCellSize());
         System.out.println(" c " + c + " r " + r);
         bOb.setCellAlive(r, c);
         boardGameCanvas.userToggleCell(r, c);
-        //boardGameCanvas.getCell(x, y);
     }
     
-    private JMenuBar establishMenuBar()
-    {
-        menuBar = new JMenuBar();
-        menu = new JMenu("Simulator Options");
-        menu.setMnemonic(KeyEvent.VK_A);
-        menu.getAccessibleContext().setAccessibleDescription(
-        "The only menu in this program that has menu items");
-        menuBar.add(menu);
-        menuItem = new JMenuItem(new AbstractAction("Pause/Resume") 
-        {
-            public void actionPerformed(ActionEvent ae) 
-            {
-                togglePause();
-            }
-        }
-        );
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        KeyEvent.VK_P, ActionEvent.ALT_MASK));
-        menuItem.getAccessibleContext().setAccessibleDescription(
-        "Pauses or unpauses the game");
-        menu.add(menuItem);
-        menuItem = new JMenuItem(new AbstractAction("Export board") 
-        {
-            public void actionPerformed(ActionEvent ae) 
-            {
-                 throw new UnsupportedOperationException("Not supported yet.");
-            }
-        }
-        );
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        KeyEvent.VK_E, ActionEvent.ALT_MASK));    
-        menu.add(menuItem);
-        
-        menuItem = new JMenuItem(new AbstractAction("Clear board") 
-        {
-            public void actionPerformed(ActionEvent ae) 
-            {
-                 throw new UnsupportedOperationException("Not supported yet.");
-            }
-        }
-        );
-         menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        KeyEvent.VK_C, ActionEvent.ALT_MASK));    
-        menu.add(menuItem);
-         
-         menuItem = new JMenuItem(new AbstractAction("Add generations") 
-        {
-            public void actionPerformed(ActionEvent ae) 
-            {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        }
-        );
-         menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        KeyEvent.VK_G, ActionEvent.ALT_MASK));    
-        menu.add(menuItem);
-        
-        menuItem = new JMenuItem(new AbstractAction("Close this Simulation") 
-        {
-            public void actionPerformed(ActionEvent ae) 
-            {
-                pleaseCloseMe();
-            }
-        }
-        );
-         menuItem.setAccelerator(KeyStroke.getKeyStroke(
-        KeyEvent.VK_Q, ActionEvent.ALT_MASK));    
-        menu.add(menuItem);
     
-        
-        return menuBar;
-    }
     
     @Override
-    public void passSimStatusToMainWindow(String simStatus, int currentGen) {
+    public void passSimStatusToMainWindow(String simStatus, int currentGen, int tickSpeed) {
         //System.out.println("passing");
-        gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen);
+        gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen, tickSpeed);
     }
 
     @Override
@@ -335,7 +257,85 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     }
 
     @Override
-    public void oogabooba() {
- 
+    public int getTickTime() 
+    {
+        return bOb.getTickSpeed();
+    }
+    
+    private JMenuBar establishMenuBar()
+    {
+        menuBar = new JMenuBar();
+        menu = new JMenu("Simulator Options");
+        menu.setMnemonic(KeyEvent.VK_A);
+        menu.getAccessibleContext().setAccessibleDescription(
+        "The only menu in this program that has menu items");
+        menuBar.add(menu);
+        menuItem = new JMenuItem(new AbstractAction("Pause/Resume") 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae) 
+            {
+                togglePause();
+            }
+        }
+        );
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_P, ActionEvent.ALT_MASK));
+        menuItem.getAccessibleContext().setAccessibleDescription("Pauses or unpauses the game");
+        menu.add(menuItem);
+        menuItem = new JMenuItem(new AbstractAction("Export board") 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae) 
+            {
+                mainWindow.showFileSaveInterface(IDname);
+            }
+        }
+        );
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_E, ActionEvent.ALT_MASK));    
+        menu.add(menuItem);
+        
+        menuItem = new JMenuItem(new AbstractAction("Clear board") 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae) 
+            {
+                 bOb.clearBoard();
+            }
+        }
+        );
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_C, ActionEvent.ALT_MASK));    
+        menu.add(menuItem);
+         
+         menuItem = new JMenuItem(new AbstractAction("Add generations") 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae) 
+            {
+                 new GenerationEntryPopup(mainWindow, IDname);
+            }
+        }
+        );
+         menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_G, ActionEvent.ALT_MASK));    
+        menu.add(menuItem);
+        
+        menuItem = new JMenuItem(new AbstractAction("Close this Simulation") 
+        {
+            @Override
+            public void actionPerformed(ActionEvent ae) 
+            {
+                pleaseCloseMe();
+            }
+        }
+        );
+         menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        KeyEvent.VK_Q, ActionEvent.ALT_MASK));    
+        menu.add(menuItem);
+    
+        
+        return menuBar;
     }
 }

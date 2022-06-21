@@ -18,7 +18,7 @@ import javax.swing.*;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class TablePopUp extends JFrame implements ActionListener {
     
@@ -154,6 +154,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         {    
             System.out.println("adding generations");
             gr.updateTickSpeedOnSpecificWindow(callingRow);
+            
         }
     }//end addGenerationsAction//
 }//end tablepopupclass/

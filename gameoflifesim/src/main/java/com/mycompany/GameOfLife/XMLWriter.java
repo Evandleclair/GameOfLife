@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
  public class XMLWriter 
  {

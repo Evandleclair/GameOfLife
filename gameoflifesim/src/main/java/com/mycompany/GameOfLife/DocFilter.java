@@ -11,7 +11,7 @@ import javax.swing.text.DocumentFilter;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class DocFilter extends DocumentFilter
 {

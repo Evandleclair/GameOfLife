@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class BoardObject extends CellAutomaton{
 
@@ -71,6 +71,12 @@ public class BoardObject extends CellAutomaton{
     {
         return new int[width][height];
     }
+    
+    public void clearBoard()
+    {
+        boardState=deadState(dimensions,dimensions);
+    }
+    
     public String reportBoard()
     {
         var retString ="";

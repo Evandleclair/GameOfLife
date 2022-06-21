@@ -9,7 +9,7 @@ import java.awt.Graphics;
 
 /**
  *
- * @author 12035
+ * @author evandleclair
  */
 public class CellObject {
     private final int x;

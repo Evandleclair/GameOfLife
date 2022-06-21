@@ -6,7 +6,7 @@ import java.util.TimerTask;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class SimulatorRunnable implements Runnable{
     private Thread t;
@@ -64,13 +64,13 @@ public class SimulatorRunnable implements Runnable{
     public void simulationTick()
     {
         boardObject.boardTick();
-        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen());
+        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen(),boardObject.getTickSpeed());
         mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
     
     public void pauseTick()
     {
-        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen());
+        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen(),boardObject.getTickSpeed());
         mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
 
@@ -96,7 +96,7 @@ public class SimulatorRunnable implements Runnable{
         finally
         {
             mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
-            mySimWindow.passSimStatusToMainWindow("COMPLETE",boardObject.getCurrentGen());
+            mySimWindow.passSimStatusToMainWindow("COMPLETE",boardObject.getCurrentGen(),boardObject.getTickSpeed());
             interuptThread();
         }//end finally
     }//end run//
@@ -123,6 +123,7 @@ public class SimulatorRunnable implements Runnable{
         else
         {
             //System.out.println("Paused");
+            mySimWindow.passSimStatusToMainWindow("PAUSED",boardObject.getCurrentGen(),boardObject.getTickSpeed());
             Thread.sleep(150);
             pauseTick();
             gameBody();

@@ -8,7 +8,7 @@ package com.mycompany.GameOfLife;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public interface SimWindowInterface {
     public void startSimRunnable(); //window must be able to start a new sim runnable object//
@@ -18,10 +18,10 @@ public interface SimWindowInterface {
     public void importBoardAndStartSim(BoardObject BOb);
     public void pleaseAddGenerations(int gens); //window must be able to add generations to the sim runnable it is associated with//
     public void displayUpdatedBoard(int[][] board);
-    public void passSimStatusToMainWindow(String simStatus, int currentGen);
+    public void passSimStatusToMainWindow(String simStatus, int currentGen, int tSpeed);
     public void pleasePauseSim();
     public void pleaseResumeSim();
-    public void oogabooba();
+    public int getTickTime();
     public BoardObject getBoardFromRunnable();
 
 }

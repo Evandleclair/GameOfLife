@@ -10,7 +10,7 @@ import java.awt.Graphics;
 
 /**
  *
- * @author 12035
+ * @author evandleclair
  */
 public class GridCanvas extends Canvas 
 {

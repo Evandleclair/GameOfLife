@@ -6,7 +6,7 @@ package com.mycompany.mavenproject1.DataTypes;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 class IntPair<F, S> {
   final F f;
