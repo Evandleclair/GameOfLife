@@ -5,6 +5,7 @@
 package com.mycompany.GameOfLife.popupWindows;
 
 
+
 import com.mycompany.GameOfLife.GameRunner;
 import com.mycompany.GameOfLife.MainWindow;
 import com.mycompany.GameOfLife.StringMaster;
@@ -63,7 +64,6 @@ public class TablePopUp extends JFrame implements ActionListener {
         callingRow = rowselected;
         updateTickLabel=StringMaster.combineStrings(new String[]{"Update tick time to: ",String.valueOf(mainWindow.getTickTime()), " MS"});
         updateTickTimeMenuItem.setText(updateTickLabel);
-        
         popup.show(e.getComponent(), e.getX(), e.getY());
     }
    
