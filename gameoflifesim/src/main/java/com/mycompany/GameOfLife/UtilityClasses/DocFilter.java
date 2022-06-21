@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.mycompany.GameOfLife.UtilityClasses;
 
 import java.util.regex.Pattern;
 import javax.swing.text.AttributeSet;
@@ -16,7 +16,7 @@ import javax.swing.text.DocumentFilter;
 public class DocFilter extends DocumentFilter
 {
    
-       private Pattern regexCheck = Pattern.compile("[0-9]+");
+       private final Pattern regexCheck = Pattern.compile("[0-9]+");
 
         @Override
         public void insertString(FilterBypass fb, int offs, String str, AttributeSet a) throws BadLocationException {

@@ -6,6 +6,7 @@
 package com.mycompany.GameOfLife;
 
 
+import com.mycompany.GameOfLife.UtilityClasses.StringMaster;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.util.Arrays;
 
@@ -13,7 +14,7 @@ import java.util.Arrays;
  *
  * @author evandleclair
  */
-public class BoardObject extends CellAutomaton{
+public class BoardObject {
 
     private int[][] boardState;
     private int previousState[][];
@@ -101,11 +102,6 @@ public class BoardObject extends CellAutomaton{
             }//end for columns loop//
         }//end for rows//
     }//end seedboard//
-    @Override
-     public boolean rules(int num)
-    {
-        return num == 3 || num == 12 || num == 13;
-    }
      
     /*
      This method contains everything we need to tick the board forward by 1. 

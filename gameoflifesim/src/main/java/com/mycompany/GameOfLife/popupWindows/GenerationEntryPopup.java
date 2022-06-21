@@ -6,7 +6,7 @@ package com.mycompany.GameOfLife.popupWindows;
 
 import com.mycompany.GameOfLife.GameRunner;
 import com.mycompany.GameOfLife.MainWindow;
-import com.mycompany.GameOfLife.DocFilter;
+import com.mycompany.GameOfLife.UtilityClasses.DocFilter;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

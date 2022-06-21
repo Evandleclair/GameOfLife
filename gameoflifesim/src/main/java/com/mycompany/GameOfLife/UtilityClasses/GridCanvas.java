@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife.popupWindows;
+package com.mycompany.GameOfLife.UtilityClasses;
 
 import com.mycompany.mavenproject1.DataTypes.CellObject;
 import java.awt.Canvas;

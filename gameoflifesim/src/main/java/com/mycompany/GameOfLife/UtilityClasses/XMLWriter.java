@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.mycompany.GameOfLife.UtilityClasses;
 
+import com.mycompany.GameOfLife.BoardObject;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,9 +30,8 @@ import org.xml.sax.SAXException;
  *
  * @author evandleclair
  */
- public class XMLWriter 
- {
-        
+public class XMLWriter 
+{
         static String filePathXML = "";
         DocumentBuilderFactory docFactory;
         DocumentBuilder docuBuilder;
@@ -71,20 +71,18 @@ import org.xml.sax.SAXException;
                 e.printStackTrace();
             }
         }
-          // write doc to output stream
-    private static void writeXml(Document doc,
-                                 OutputStream output)
-            throws TransformerException {
-
+         
+    private static void writeXml(Document doc, OutputStream output)throws TransformerException 
+    {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(output);
         transformer.transform(source, result);
     }
+    
     public BoardObject getBoardFromXML(File file) throws SAXException, ParserConfigurationException, IOException
     {
-        String id="";
         RulesBundle rules=null;
        
         int  dimensions=0, currentGen=0;
@@ -97,12 +95,6 @@ import org.xml.sax.SAXException;
 
         
         NamedNodeMap rulesMap=board.getElementsByTagName("Rules").item(0).getAttributes();
-        //int[] rulesArray = new int[rulesMap.getLength()];
-        //for (int i=0; i<rulesMap.getLength();i++)
-        //{
-         //   rulesArray[i]=Integer.parseInt(rulesMap.item(i).getNodeValue());
-         //   System.out.println(rulesArray[i]);
-        //}
         int starveNumber=Integer.parseInt(rulesMap.getNamedItem("StarveNumber").getNodeValue());
         int aliveNumber=Integer.parseInt(rulesMap.getNamedItem("AliveNumber").getNodeValue());
         int reviveNumber=Integer.parseInt(rulesMap.getNamedItem("ReviveNumber").getNodeValue());
@@ -111,15 +103,10 @@ import org.xml.sax.SAXException;
         NamedNodeMap settingsMap=board.getElementsByTagName("BoardSettings").item(0).getAttributes();
         currentGen=Integer.parseInt(settingsMap.getNamedItem("CurrentGen").getNodeValue());
         dimensions=Integer.parseInt(settingsMap.getNamedItem("Dimensions").getNodeValue());
-        //tickSpeed=Integer.parseInt(settingsMap.getNamedItem("TickSpeed").getNodeValue());
-        //System.out.println("Tickspeed is " + tickSpeed);
         String boardString = board.getElementsByTagName("BoardData").item(0).getAttributes().getNamedItem("BoardState").getNodeValue();
         int[][] myBoardState=convertStringToBoardMatrix(dimensions,boardString);
-        //System.out.println(Arrays.deepToString(myBoardState));
         BoardObject bOb = new BoardObject(dimensions, myBoardState, rules, 100, currentGen);
-        //System.out.println(bOb.reportBoard());
         return bOb;
-        //return 
     }
     
     int[][] convertStringToBoardMatrix(int dimensions, String board)
@@ -131,15 +118,13 @@ import org.xml.sax.SAXException;
             //System.out.println(rowStrings.get(r));
             for (int c=0; c<retVal[0].length; c++)
             {
-                
                 int cellVal = Character.getNumericValue(rowStrings.get(r).charAt(c));
-                //System.out.println(cellVal);
                 retVal[r][c]=cellVal;
-                //System.out.println(retVal[r][c]);
             }
         }
         return retVal;
     }
+    
     public List<String> splitStringAtEqualPoints(String s, int i)
     {
         List<String> ret = new ArrayList<String>((s.length() + i - 1) / i);
@@ -148,8 +133,5 @@ import org.xml.sax.SAXException;
             ret.add(s.substring(start, Math.min(s.length(), start + i)));
         }
         return ret;
-
     }
-
-       // public 
 }

@@ -4,8 +4,9 @@
  */
 package com.mycompany.GameOfLife;
 
+import com.mycompany.GameOfLife.Interfaces.SimWindowInterface;
 import com.mycompany.GameOfLife.popupWindows.GenerationEntryPopup;
-import com.mycompany.GameOfLife.popupWindows.GridCanvas;
+import com.mycompany.GameOfLife.UtilityClasses.GridCanvas;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.awt.Dimension;

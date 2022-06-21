@@ -5,7 +5,8 @@
 package com.mycompany.GameOfLife;
 
 
-import com.mycompany.GameOfLife.popupWindows.FileManager;
+import com.mycompany.GameOfLife.UtilityClasses.DocFilter;
+import com.mycompany.GameOfLife.popupWindows.FileManagerPopup;
 import com.mycompany.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.mycompany.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.mycompany.GameOfLife.popupWindows.TablePopUp;
@@ -36,7 +37,7 @@ public class MainWindow extends javax.swing.JFrame {
   private final DocFilter docFilter;
  private static TablePopUp tablePopUpMenu;
  private static RulesCustomizerPopup rulesCustomizerPopup;
- private static FileManager fileManager;
+ private static FileManagerPopup fileManager;
  private static RulesBundle customRules = new RulesBundle(0,2,3,4);
  private static final int maxSpinnerValue=2500, spinnerIncrement=25, spinnerDefValue=250;
 
@@ -72,7 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//end setGameRunner//
     
     
-    public void setFileManager(FileManager fm)
+    public void setFileManager(FileManagerPopup fm)
     {
         fileManager=fm;
     }//end setFileManager//
@@ -466,7 +467,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_EndButtonClicked
 
     private void selectFileButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectFileButtonMouseClicked
-        fileManager.ShowOpenInterface();
+        fileManager.showOpenInterface();
     }//GEN-LAST:event_selectFileButtonMouseClicked
 
     private void customRulesButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_customRulesButtonMouseClicked
@@ -494,7 +495,7 @@ public class MainWindow extends javax.swing.JFrame {
     void showGenerationPopupAndImportFile()
     {
         GenerationEntryPopup genEntryPopup=new GenerationEntryPopup(this);
-        fileManager.ImportBoard(gameRunner.getStoredFile());
+        fileManager.importBoard(gameRunner.getStoredFile());
     }
     void updateTableModel(TableModel tm)
     {
@@ -566,13 +567,13 @@ public class MainWindow extends javax.swing.JFrame {
     public void showFileSaveInterface(int rowID)
     {
           fileManager.setCallingRow(rowID);
-          fileManager.ShowSaveInterface();
+          fileManager.showSaveInterface();
     }
     
     public void showFileSaveInterface(String boardName)
     {
           fileManager.setCallingRow(gameRunner.getSimRowByName(boardName));
-          fileManager.ShowSaveInterface();
+          fileManager.showSaveInterface();
     }
     
     /*------------------------------------------------------------*/

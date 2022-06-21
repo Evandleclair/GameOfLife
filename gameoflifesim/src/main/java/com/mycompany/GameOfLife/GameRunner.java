@@ -4,6 +4,7 @@
  */
 package com.mycompany.GameOfLife;
 
+import com.mycompany.GameOfLife.Interfaces.GameRunnerInterface;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
 import java.io.File;

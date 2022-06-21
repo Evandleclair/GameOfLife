@@ -4,11 +4,12 @@
  */
 package com.mycompany.GameOfLife.popupWindows;
 
+import com.mycompany.GameOfLife.Interfaces.FileManagerInterface;
 import com.mycompany.GameOfLife.BoardObject;
 import com.mycompany.GameOfLife.GameRunner;
 import com.mycompany.GameOfLife.MainWindow;
 import com.mycompany.GameOfLife.SimCanvasWindow;
-import com.mycompany.GameOfLife.XMLWriter;
+import com.mycompany.GameOfLife.UtilityClasses.XMLWriter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -18,19 +19,9 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 
@@ -38,7 +29,7 @@ import org.xml.sax.SAXException;
  *
  * @author evandleclair
  */
-public class FileManager extends JPanel implements FileManagerInterface, ActionListener {
+public class FileManagerPopup extends JPanel implements FileManagerInterface, ActionListener {
 
     private final MainWindow mainWindow;
     private final GameRunner gr;
@@ -49,7 +40,8 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
     JTextArea log;
     int callingRow=0; //used for exporting//
     JFileChooser fc;
-    public FileManager(MainWindow MainWindow, GameRunner Gr) throws ParserConfigurationException
+    
+    public FileManagerPopup(MainWindow MainWindow, GameRunner Gr) throws ParserConfigurationException
     {
         this.xmlWriter = new XMLWriter();
         fc = new JFileChooser();
@@ -57,42 +49,30 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
         gr=Gr;
         fc.addChoosableFileFilter(new FileNameExtensionFilter("Game Of Life", "GOL", "gol"));
     }
-    
-    
-    
-    @Override
-    public String convertBoardToString() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
     @Override
-    public String convertStringToBoard() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void ExportBoard(File FileToExport) {
+    public void exportBoard(File FileToExport) 
+    {
         SimCanvasWindow sw= gr.getSimWindowByID(callingRow);
         BoardObject boardDataBundle= sw.getBoardFromRunnable();
-        try {
+        try 
+        {
             xmlWriter.createFileFromBoard(boardDataBundle, FileToExport);
-        } catch (TransformerException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+        }//end try// 
+        catch (TransformerException ex) 
+        {
+            Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
+        }//end catch////end catch//
+    }//end exportBoard//
     
     @Override
-    public void ImportBoard(File FileToImport) {
+    public void importBoard(File FileToImport) {
         BoardObject bOb=null;
         try {
             System.out.println("passing board to XML writer");
             bOb=xmlWriter.getBoardFromXML(FileToImport);
-        } catch (SAXException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(FileManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException | ParserConfigurationException | IOException ex) {
+            Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (bOb!=null)
         gr.createSimWindowAndStartSim(bOb);
@@ -103,32 +83,29 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    public void actionPerformed(ActionEvent e) {}
     
     public void setCallingRow(int crow)
     {
         callingRow=crow;
-    }
+    }//end setCallingRow//
     
     @Override
-    public void ShowSaveInterface()
+    public void showSaveInterface()
     {
-        int returnVal = fc.showSaveDialog(FileManager.this);
+        int returnVal = fc.showSaveDialog(FileManagerPopup.this);
         
              if (returnVal == JFileChooser.APPROVE_OPTION) {
                  File fileToSave = fc.getSelectedFile();
-                 ExportBoard(fileToSave);
+                 exportBoard(fileToSave);
             } else {
                System.out.println("file opening cancelled by user");
             }
     }
     
     @Override
-    public void ShowOpenInterface() {
-        int returnVal = fc.showOpenDialog(FileManager.this);
+    public void showOpenInterface() {
+        int returnVal = fc.showOpenDialog(FileManagerPopup.this);
           if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
                 //System.out.println(file.getName().toString());
@@ -138,10 +115,5 @@ public class FileManager extends JPanel implements FileManagerInterface, ActionL
             } else {
                System.out.println("file opening cancelled by user");
             }
-    }
-    /*
-    
-    
-    We need a class to handle XML functions, no other files need these functions so we keep them here//
-    */
-}
+    }//end showOpenInterface//
+}//end FileManagerPopup class//

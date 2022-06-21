@@ -2,9 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.mycompany.GameOfLife.UtilityClasses;
 
-import java.awt.Font;
 import java.util.*;
 
 
@@ -22,9 +21,9 @@ public class StringMaster {
     public static String arrayToString(int[][] inArray )
     {
         StringBuilder sb = new StringBuilder();
-        String retString = "";
-       for (int h=0; h<inArray.length ; h++) 
-       {
+        String retString;
+        for (int h=0; h<inArray.length ; h++) 
+        {
             for (int w=0; w<inArray[0].length; w++)
             {
                 sb.append(digitCharacter.get(inArray[h][w]));
@@ -33,14 +32,9 @@ public class StringMaster {
             {
                 sb.append("\r\n");
             }
-       }
+        }
     retString= sb.toString();
     return retString;
-    }
-    
-    public static int[][] importFileToBoard()
-    {
-        return new int[1][1];
     }
     
     public static String combineStrings(String[] inStrings)
@@ -52,11 +46,5 @@ public class StringMaster {
              str.append(s);
          }
          return str.toString();
-    }
-    
-    //StringMaster will hold onto the default font used by all boards.//
-    public static Font getGlobalFont()
-    {
-        return new Font(Font.MONOSPACED, Font.PLAIN, 12);
     }
 }
