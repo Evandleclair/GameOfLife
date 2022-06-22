@@ -5,6 +5,7 @@
 package com.mycompany.GameOfLife;
 
 import com.mycompany.GameOfLife.UtilityClasses.DocFilter;
+import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
 import com.mycompany.GameOfLife.popupWindows.FileManagerPopup;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -16,6 +17,7 @@ public class MainClass
 {    
     public static void main(String[] args) throws ParserConfigurationException
     {      
+        LoggingClass.setup(); //sets up our error logging system//
         MainWindow mainInterface = new MainWindow(new DocFilter()); //create a new main interface window//
         GameRunner GR=new GameRunner(mainInterface); //create a new game runner object, which handles the actual boards and respective games//
         FileManagerPopup FM=new FileManagerPopup(mainInterface,GR);

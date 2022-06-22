@@ -1,6 +1,7 @@
 package com.mycompany.GameOfLife;
 
 
+import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.util.TimerTask;
 
@@ -89,8 +90,7 @@ public class SimulatorRunnable implements Runnable{
         }//end try//
         catch(InterruptedException e)
         {
-            e.printStackTrace();
-            System.out.println("aaaaaa");
+            LoggingClass.WriteToLog(e, "Thread was interrupted");
             Thread.currentThread().interrupt(); //ensures the current thread will properly interrupt//
         }//end catch
         finally

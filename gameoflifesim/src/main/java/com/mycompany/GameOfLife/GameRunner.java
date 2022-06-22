@@ -65,18 +65,18 @@ public class GameRunner implements GameRunnerInterface {
     {
         if (gamesRunning<20)
         {
-        simWindows.add(new simWindowInfo("GAME "+gamesRan,sW));
-        gamesRan++;
-        gamesRunning++;
-        sW.runSimWindowStartupTasks();
-        sW.startSimRunnable();
-        updateSimWindowTable();
-        }
+            simWindows.add(new simWindowInfo("GAME "+gamesRan,sW));
+            gamesRan++;
+            gamesRunning++;
+            sW.runSimWindowStartupTasks();
+            sW.startSimRunnable();
+            updateSimWindowTable();
+        }//end if gamesRunning is smaller 20//
         else
         {
-             JOptionPane.showMessageDialog(mainWindow, "Cannot have more than twenty games running at the same time");
-        }
-    }
+            JOptionPane.showMessageDialog(mainWindow, "Cannot have more than twenty games running at the same time");
+        }//end else
+    }//end addWindowToTable//
 
     @Override
     public void destroyGame(simWindowInfo s) 
@@ -107,7 +107,7 @@ public class GameRunner implements GameRunnerInterface {
     public int getGamesRunning() 
     {
        return gamesRunning;
-    }
+    }//end getGamesRunning//
     
     @Override
     public int getOpenGamesCount()
@@ -115,7 +115,7 @@ public class GameRunner implements GameRunnerInterface {
         int retInt;
         retInt=simTable.getRowCount();
         return retInt;
-    }
+    }//end getOpensGamesCount//
     
     @Override
     public void setGamesRunning(int GamesRunning) {

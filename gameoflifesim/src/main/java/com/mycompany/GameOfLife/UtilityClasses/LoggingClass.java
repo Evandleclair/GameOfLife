@@ -1,0 +1,45 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.GameOfLife.UtilityClasses;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.*;
+/**
+ *
+ * @author evandleclair
+ */
+public class LoggingClass {
+    
+    private static final String OUTPUT_DESTINATION = System.getenv("APPDATA") + "\\GameOfLifeSim";  
+    private static final Logger LOGGER = Logger.getLogger(LoggingClass.class.getName());
+    static Handler fileHandler = null;
+    
+    public static void setup() {
+
+        try {
+            File directory = new File(OUTPUT_DESTINATION);
+            if (!directory.exists())
+            {
+                directory.mkdir();
+            }
+            fileHandler = new FileHandler(OUTPUT_DESTINATION+"./logfile.log");//file
+            SimpleFormatter simple = new SimpleFormatter();
+            fileHandler.setFormatter(simple);
+
+            LOGGER.addHandler(fileHandler);//adding Handler for file
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+        }
+
+    }
+
+    
+    public static void WriteToLog(Exception e, String customMessage)
+    {
+        System.out.println(StringMaster.combineStrings(new String[]{"Logger logged error ", e.getStackTrace().toString()}));
+        LOGGER.log(Level.WARNING,customMessage,e);
+    }
+}
