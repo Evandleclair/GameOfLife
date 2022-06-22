@@ -241,7 +241,6 @@ public class GameRunner implements GameRunnerInterface {
         }
     }
     
-    
     public void updateTickTime(int rowID,int tickTime)
     {
         simTable.getModel().setValueAt(tickTime,rowID,3);
@@ -275,10 +274,10 @@ public class GameRunner implements GameRunnerInterface {
     {
         SimCanvasWindow sw=null;
         for (simWindowInfo s : simWindows)
-            {
-                sw=(SimCanvasWindow) s.getOBJ();
-                sw.pleaseCloseMe();
-            } 
+        {
+            sw=(SimCanvasWindow) s.getOBJ();
+            sw.pleaseCloseMe();
+        } 
     }
 
     @Override

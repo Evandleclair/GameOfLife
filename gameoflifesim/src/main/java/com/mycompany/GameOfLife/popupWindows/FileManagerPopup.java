@@ -9,13 +9,12 @@ import com.mycompany.GameOfLife.BoardObject;
 import com.mycompany.GameOfLife.GameRunner;
 import com.mycompany.GameOfLife.MainWindow;
 import com.mycompany.GameOfLife.SimCanvasWindow;
+import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
 import com.mycompany.GameOfLife.UtilityClasses.XMLWriter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
@@ -61,7 +60,8 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
         }//end try// 
         catch (TransformerException ex) 
         {
-            Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
+            
+            //Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
         }//end catch////end catch//
     }//end exportBoard//
     
@@ -72,13 +72,13 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
             System.out.println("passing board to XML writer");
             bOb=xmlWriter.getBoardFromXML(FileToImport);
         } catch (SAXException | ParserConfigurationException | IOException ex) {
-            Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
+           LoggingClass.WriteToLog(ex, "Error when loading Board Object", "SEVERE");
         }
         if (bOb!=null)
-        gr.createSimWindowAndStartSim(bOb);
+            gr.createSimWindowAndStartSim(bOb); 
         else
         {
-            System.out.println("Failed to import board");
+            System.out.println("Failed to import board"); //NULL means it failed to import a board correctly//
         }
     }
 

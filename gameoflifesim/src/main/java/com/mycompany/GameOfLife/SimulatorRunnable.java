@@ -3,7 +3,6 @@ package com.mycompany.GameOfLife;
 
 import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
-import java.util.TimerTask;
 
 /**
  *
@@ -17,8 +16,8 @@ public class SimulatorRunnable implements Runnable{
     private final int boardDims;
     private final double aliveProb;
     private int tickTime =250;
-    private RulesBundle rulesBundle;
-    private String name;
+    private final RulesBundle rulesBundle;
+    private final String name;
     private boolean paused=false;
     //public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
     //{
@@ -79,26 +78,26 @@ public class SimulatorRunnable implements Runnable{
     public void run() 
     {
         while (!Thread.currentThread().isInterrupted())
-        try 
-        {
-           currentGen = boardObject.getCurrentGen();
-           if (currentGen>0)
-           {
-               gensToRun+=currentGen;
-           }
-           gameBody();
-        }//end try//
-        catch(InterruptedException e)
-        {
-            LoggingClass.WriteToLog(e, "Thread was interrupted");
-            Thread.currentThread().interrupt(); //ensures the current thread will properly interrupt//
-        }//end catch
-        finally
-        {
-            mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
-            mySimWindow.passSimStatusToMainWindow("COMPLETE",boardObject.getCurrentGen(),boardObject.getTickSpeed());
-            interuptThread();
-        }//end finally
+            try 
+            {
+               currentGen = boardObject.getCurrentGen();
+               if (currentGen>0)
+               {
+                   gensToRun+=currentGen;
+               }
+               gameBody();
+            }//end try//
+            catch(InterruptedException e)
+            {
+                LoggingClass.WriteToLog(e, "Thread was interrupted", "WARNING");
+                Thread.currentThread().interrupt(); //ensures the current thread will properly interrupt//
+            }//end catch
+            finally
+            {
+                mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
+                mySimWindow.passSimStatusToMainWindow("COMPLETE",boardObject.getCurrentGen(),boardObject.getTickSpeed());
+                interuptThread();
+            }//end finally
     }//end run//
     private void gameBody() throws InterruptedException
     {
@@ -128,30 +127,8 @@ public class SimulatorRunnable implements Runnable{
             pauseTick();
             gameBody();
         }
-        /* while (!paused)
-            {
-                for (int i=0; i<gensToRun; i++)
-                {
-                    int cGen = boardObject.getCurrentGen();
-                    cGen+=1;
-                    boardObject.setCurrentGen(cGen);
-                    if (i!=0)
-                    {
-                        simulationTick();
-                    }
-                    Thread.sleep(boardObject.getTickSpeed());
-                    if (paused)
-                        break;
-                        
-                }//end for loop i smaller than gens to run
-            }//end paused//
-            if (paused)
-            {
-                Thread.sleep(50);
-            }
-*/
-        
-    }
+    }//end Gamebody//
+    
     public void start () 
     {
         if (t == null) 
@@ -168,11 +145,7 @@ public class SimulatorRunnable implements Runnable{
         }
    }//end start//
     
-   public void setSimulationThreadReference()
-   {
-        
-   }
-   
+ 
     public void interuptThread()
     {
         System.out.println("ending thread");
@@ -212,13 +185,10 @@ public class SimulatorRunnable implements Runnable{
         String retString=null;
         if (t!=null)
         {
-            switch (t.getState().toString())
-            {
-                case "TERMINATED":
-                    retString="COMPLETE";
-                default:
-                    retString="RUNNING";
-            }
+            retString = switch (t.getState().toString()) {
+                case "TERMINATED" -> "COMPLETE";
+                default -> "RUNNING";
+            };
         }
         else
         {

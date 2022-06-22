@@ -199,8 +199,6 @@ public class BoardObject {
             }
                 sb.append("\r\n");
         }
-           //System.out.print(sb.toString());
-           //System.out.println("0-0-0-0-0-0-0-0-0---");
     }
      
     public String getOneLineBoardString()

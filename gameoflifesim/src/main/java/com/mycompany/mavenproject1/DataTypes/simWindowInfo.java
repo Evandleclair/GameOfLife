@@ -9,6 +9,8 @@ import com.mycompany.GameOfLife.SimCanvasWindow;
 /**
  *
  * @author evandleclair
+ * @param <String>
+ * @param <SimCanvasWindow>
  */
 public class simWindowInfo<String,SimCanvasWindow> 
 {

@@ -16,9 +16,10 @@ public class LoggingClass {
     private static final Logger LOGGER = Logger.getLogger(LoggingClass.class.getName());
     static Handler fileHandler = null;
     
-    public static void setup() {
-
-        try {
+    public static void setup() 
+    {
+        try 
+        {
             File directory = new File(OUTPUT_DESTINATION);
             if (!directory.exists())
             {
@@ -31,15 +32,20 @@ public class LoggingClass {
             LOGGER.addHandler(fileHandler);//adding Handler for file
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            System.out.println("Logger setup failed.");
         }
-
-    }
+    }//end setup//
 
     
-    public static void WriteToLog(Exception e, String customMessage)
+    public static void WriteToLog(Exception e, String customMessage, String severity)
     {
-        System.out.println(StringMaster.combineStrings(new String[]{"Logger logged error ", e.getStackTrace().toString()}));
-        LOGGER.log(Level.WARNING,customMessage,e);
+        Level sevLevel;
+        sevLevel = switch (severity.toUpperCase()) {
+            case "WARNING" -> Level.WARNING;
+            case "SEVERE" -> Level.SEVERE;
+            default -> Level.FINE;
+        }; //end switch//
+        System.out.println(StringMaster.combineStrings(new String[]{"Logger logged error", e.getStackTrace().toString()}));
+        LOGGER.log(sevLevel,customMessage,e);
     }
 }

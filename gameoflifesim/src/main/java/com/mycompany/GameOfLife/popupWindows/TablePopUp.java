@@ -66,15 +66,6 @@ public class TablePopUp extends JFrame implements ActionListener {
         updateTickTimeMenuItem.setText(updateTickLabel);
         popup.show(e.getComponent(), e.getX(), e.getY());
     }
-   
-    private void Test()
-    {
-        System.out.println("eee");
-    }
-
-    private Icon bringToFrontAction() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     
     public class bringToFrontAction extends AbstractAction {
         public bringToFrontAction()
@@ -154,7 +145,6 @@ public class TablePopUp extends JFrame implements ActionListener {
         {    
             System.out.println("adding generations");
             gr.updateTickSpeedOnSpecificWindow(callingRow);
-            
         }
     }//end addGenerationsAction//
 }//end tablepopupclass/

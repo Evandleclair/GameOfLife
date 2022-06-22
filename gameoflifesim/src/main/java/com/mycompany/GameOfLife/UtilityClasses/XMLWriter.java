@@ -68,45 +68,58 @@ public class XMLWriter
         } 
         catch (IOException e) 
             {
-                e.printStackTrace();
+                LoggingClass.WriteToLog(e, "Severe IO error when loading XML file into board", "SEVERE");
             }
         }
          
     private static void writeXml(Document doc, OutputStream output)throws TransformerException 
     {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(output);
-        transformer.transform(source, result);
+        try 
+        {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(output);
+            transformer.transform(source, result);
+        } 
+        catch (TransformerException e)
+        {
+            LoggingClass.WriteToLog(e, "Error during write method", "SEVERE");
+        }
     }
     
     public BoardObject getBoardFromXML(File file) throws SAXException, ParserConfigurationException, IOException
     {
-        RulesBundle rules=null;
-       
-        int  dimensions=0, currentGen=0;
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
-       //an instance of builder to parse the specified xml file  
-        DocumentBuilder db = dbf.newDocumentBuilder();  
-        Document doc = db.parse(file);  
-        doc.getDocumentElement().normalize();
-        Element board = doc.getDocumentElement();
-
-        
-        NamedNodeMap rulesMap=board.getElementsByTagName("Rules").item(0).getAttributes();
-        int starveNumber=Integer.parseInt(rulesMap.getNamedItem("StarveNumber").getNodeValue());
-        int aliveNumber=Integer.parseInt(rulesMap.getNamedItem("AliveNumber").getNodeValue());
-        int reviveNumber=Integer.parseInt(rulesMap.getNamedItem("ReviveNumber").getNodeValue());
-        int overpopNumber=Integer.parseInt(rulesMap.getNamedItem("OverpopulationNumber").getNodeValue());
-        rules = new RulesBundle(starveNumber,aliveNumber,reviveNumber,overpopNumber);
-        NamedNodeMap settingsMap=board.getElementsByTagName("BoardSettings").item(0).getAttributes();
-        currentGen=Integer.parseInt(settingsMap.getNamedItem("CurrentGen").getNodeValue());
-        dimensions=Integer.parseInt(settingsMap.getNamedItem("Dimensions").getNodeValue());
-        String boardString = board.getElementsByTagName("BoardData").item(0).getAttributes().getNamedItem("BoardState").getNodeValue();
-        int[][] myBoardState=convertStringToBoardMatrix(dimensions,boardString);
-        BoardObject bOb = new BoardObject(dimensions, myBoardState, rules, 100, currentGen);
-        return bOb;
+        BoardObject bOb = null;
+        try
+        {
+            RulesBundle rules=null;
+            int  dimensions=0, currentGen=0;
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
+           //an instance of builder to parse the specified xml file  
+            DocumentBuilder db = dbf.newDocumentBuilder();  
+            Document doc = db.parse(file);  
+            doc.getDocumentElement().normalize();
+            Element board = doc.getDocumentElement();
+            NamedNodeMap rulesMap=board.getElementsByTagName("Rules").item(0).getAttributes();
+            int starveNumber=Integer.parseInt(rulesMap.getNamedItem("StarveNumber").getNodeValue());
+            int aliveNumber=Integer.parseInt(rulesMap.getNamedItem("AliveNumber").getNodeValue());
+            int reviveNumber=Integer.parseInt(rulesMap.getNamedItem("ReviveNumber").getNodeValue());
+            int overpopNumber=Integer.parseInt(rulesMap.getNamedItem("OverpopulationNumber").getNodeValue());
+            rules = new RulesBundle(starveNumber,aliveNumber,reviveNumber,overpopNumber);
+            NamedNodeMap settingsMap=board.getElementsByTagName("BoardSettings").item(0).getAttributes();
+            currentGen=Integer.parseInt(settingsMap.getNamedItem("CurrentGen").getNodeValue());
+            dimensions=Integer.parseInt(settingsMap.getNamedItem("Dimensions").getNodeValue());
+            String boardString = board.getElementsByTagName("BoardData").item(0).getAttributes().getNamedItem("BoardState").getNodeValue();
+            int[][] myBoardState=convertStringToBoardMatrix(dimensions,boardString);
+            bOb = new BoardObject(dimensions, myBoardState, rules, 100, currentGen);
+            return bOb;
+        }
+        catch (SAXException | ParserConfigurationException | IOException e)
+        {
+            LoggingClass.WriteToLog(e, "Error when loading board from XML", "SEVERE");
+            return null; //if we get a null, it wont try to import anything further//
+        }
     }
     
     int[][] convertStringToBoardMatrix(int dimensions, String board)

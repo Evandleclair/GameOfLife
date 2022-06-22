@@ -92,7 +92,7 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
     
     private void setDocFilters()
     {
-        AbstractDocument genRunDoc = (AbstractDocument) genRunBox.getDocument();
+        genRunDoc = (AbstractDocument) genRunBox.getDocument();
         AbstractDocument dimBoxDoc = (AbstractDocument) dimensionBox.getDocument();
         genRunDoc.setDocumentFilter(docFilter);
         dimBoxDoc.setDocumentFilter(docFilter);
