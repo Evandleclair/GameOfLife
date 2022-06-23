@@ -1,22 +1,24 @@
 package com.mycompany.GameOfLife;
 
+
+import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
-import java.util.TimerTask;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class SimulatorRunnable implements Runnable{
     private Thread t;
     private BoardObject boardObject; //it will create a board master//
-    private final SimulatorWindow mySimWindow; //the simulator window that created this//
+    private final SimCanvasWindow mySimWindow;
     private int gensToRun, currentGen=0;
     private final int boardDims;
     private final double aliveProb;
-    private int genTime =250;
-    private RulesBundle rulesBundle;
-    private String name;
+    private int tickTime =250;
+    private final RulesBundle rulesBundle;
+    private final String name;
+    private boolean paused=false;
     //public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
     //{
     //    mySimWindow=m;
@@ -25,7 +27,7 @@ public class SimulatorRunnable implements Runnable{
     //    boardDims = d;
     //    gensToRun=GensToRun;
     //}
-      public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun, RulesBundle rBundle)
+    public SimulatorRunnable(SimCanvasWindow m, String n, int d, double prob, int GensToRun, RulesBundle rBundle)
     {
         rulesBundle=rBundle;
         mySimWindow=m;
@@ -35,24 +37,41 @@ public class SimulatorRunnable implements Runnable{
         gensToRun=GensToRun;
        
     }
-    public void startSimulation(int GenTime)
+     public SimulatorRunnable(SimCanvasWindow m, BoardObject BOb, int GensToRun)
     {
-        genTime=GenTime;
+        boardObject=BOb;
+        rulesBundle=boardObject.getMyRules();
+        mySimWindow=m;
+        name=boardObject.getName();
+        aliveProb=0.5;
+        boardDims = boardObject.getDimensions();
+        gensToRun=GensToRun;
+    }
+  
+    public void startSimulation(int TickTime)
+    {
+        tickTime=TickTime;
         boardObject = new BoardObject(boardDims);
+        boardObject.setTickSpeed(tickTime);
         boardObject.setupBoard(aliveProb,rulesBundle);
     }
-    public void startImportedSimulation(int[][] importedBoard, int GenTime)
+    public void startImportedSimulation(int TickTime)
     {
-        genTime=GenTime;
-        boardObject = new BoardObject(boardDims);
-        boardObject.setupBoard(importedBoard);
+        tickTime=TickTime;
+        boardObject.setTickSpeed(tickTime);
     }
         
     public void simulationTick()
     {
         boardObject.boardTick();
-        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),currentGen);
-        mySimWindow.displayUpdatedBoardText(boardObject.reportBoard());
+        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen(),boardObject.getTickSpeed());
+        mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
+    }
+    
+    public void pauseTick()
+    {
+        mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen(),boardObject.getTickSpeed());
+        mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
 
     @Override
@@ -61,95 +80,115 @@ public class SimulatorRunnable implements Runnable{
         while (!Thread.currentThread().isInterrupted())
             try 
             {
-               
-                //masterWindow.printMyName();
-                for (int i=0; i<gensToRun; i++)
-                {
-                    currentGen++;
-                    if (i!=0)
-                    {
-                        simulationTick();
-                    }
-                    Thread.sleep(genTime);
-                }
-                //currentGen++;
-            }
+               currentGen = boardObject.getCurrentGen();
+               if (currentGen>0)
+               {
+                   gensToRun+=currentGen;
+               }
+               gameBody();
+            }//end try//
             catch(InterruptedException e)
             {
-                e.printStackTrace();
+                LoggingClass.WriteToLog(e, "Thread was interrupted", "WARNING");
                 Thread.currentThread().interrupt(); //ensures the current thread will properly interrupt//
-            }
+            }//end catch
             finally
             {
-                mySimWindow.displayUpdatedBoardText(boardObject.reportBoard());
-                mySimWindow.passSimStatusToMainWindow("COMPLETE",currentGen);
+                mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
+                mySimWindow.passSimStatusToMainWindow("COMPLETE",boardObject.getCurrentGen(),boardObject.getTickSpeed());
                 interuptThread();
-            }
+            }//end finally
     }//end run//
-     public void start () {
-      
-      if (t == null) {
-         System.out.println("Starting game on new thread" +  name );
-         t = new Thread (this, name);
-         t.start ();
-      }
-      else if (t.isAlive()==false)
-      {
-        System.out.println("Starting a new thread to continue game");
-        t=null;
-        start();
-      }
-   }
-    public void setSimulationThreadReference()
+    private void gameBody() throws InterruptedException
     {
-        
-    }
-    public int getCurrentGen()
+        if (!paused)
+        {
+            if (currentGen<gensToRun)
+            {
+                if (currentGen!=0)
+                {
+                    simulationTick();
+                }
+                currentGen+=1;
+                boardObject.setCurrentGen(currentGen);
+                Thread.sleep(boardObject.getTickSpeed());
+                gameBody();
+            }
+            else
+            {
+                System.out.println("We done");
+            }
+        }
+        else
+        {
+            //System.out.println("Paused");
+            mySimWindow.passSimStatusToMainWindow("PAUSED",boardObject.getCurrentGen(),boardObject.getTickSpeed());
+            Thread.sleep(150);
+            pauseTick();
+            gameBody();
+        }
+    }//end Gamebody//
+    
+    public void start () 
     {
-        return currentGen;
-    }
+        if (t == null) 
+        {
+            System.out.println("Starting game on new thread" +  name );
+            t = new Thread (this, name);
+            t.start ();
+        }
+        else if (t.isAlive()==false)
+        {
+            System.out.println("Starting a new thread to continue game");
+            t=null;
+            start();
+        }
+   }//end start//
+    
+ 
     public void interuptThread()
     {
         System.out.println("ending thread");
         if (t!=null)
         {
-        t.interrupt(); 
-        t=null; //blank the thread//
+            t.interrupt(); 
+            t=null; //blank the thread//
         }
     }
     
-    public void hearingExam()
+    public void setPause(boolean pStatus)
     {
-        //test method to see if a thread is hearing from other objects correctly.//
-        System.out.println("I can hear you fine");
+        paused=pStatus;
+        System.out.println("paused is now" + paused);
     }
-    
+    public boolean getPause()
+    {
+        return paused;
+    }
+   
     public void addGens(int gensToAdd)
     {
-    if (t==null)
+        if (t==null)
         {
-        System.out.println("will start a new game");
-        gensToRun=gensToAdd;
-        start();
+            System.out.println("will start a new game");
+            gensToRun=gensToAdd;
+            start();
         }
-    else
+        else
         {
-         gensToRun+=gensToAdd;
+            gensToRun+=gensToAdd;
         }
     }
     
     public String getSimStatusAsString()
     {
-        String retString="eururu";
+        String retString=null;
         if (t!=null)
         {
-            switch (t.getState().toString())
-            {
-                case "TERMINATED":
-                    retString="COMPLETE";
-                default:
-                    retString="RUNNING";
-            }
+            retString = switch (t.getState().toString()) {
+                case "TERMINATED" -> "COMPLETE";
+                default -> "RUNNING";
+            };
         }
         else
         {
@@ -157,5 +196,14 @@ public class SimulatorRunnable implements Runnable{
         }
         return retString;
     }
-}
+    public BoardObject grabBoard()
+    {
+        return this.boardObject;
+    }
+    
+    public int getGensToRun()
+    {
+        return gensToRun;
+    }
+}//end class//
 

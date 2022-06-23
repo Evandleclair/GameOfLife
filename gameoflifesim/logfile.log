@@ -1,0 +1,11 @@
+Jun 22, 2022 1:32:21 PM com.mycompany.GameOfLife.UtilityClasses.LoggingClass WriteToLog
+WARNING: test
+java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method)
+	at com.mycompany.GameOfLife.SimulatorRunnable.gameBody(SimulatorRunnable.java:117)
+	at com.mycompany.GameOfLife.SimulatorRunnable.gameBody(SimulatorRunnable.java:118)
+	at com.mycompany.GameOfLife.SimulatorRunnable.gameBody(SimulatorRunnable.java:118)
+	at com.mycompany.GameOfLife.SimulatorRunnable.gameBody(SimulatorRunnable.java:118)
+	at com.mycompany.GameOfLife.SimulatorRunnable.run(SimulatorRunnable.java:89)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+

@@ -6,10 +6,11 @@ package com.mycompany.mavenproject1.DataTypes;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class RulesBundle {
     private int starveNumber, aliveNumber, reviveNumber, overpopNumber;
+    
     public RulesBundle(int StarveNumber, int AliveNumber, int ReviveNumber, int OverpopNumber)
     {
         starveNumber=StarveNumber;
@@ -17,6 +18,15 @@ public class RulesBundle {
         reviveNumber=ReviveNumber;
         overpopNumber=OverpopNumber;
     }
+    
+    public RulesBundle(int[] ruleSet)
+    {
+        starveNumber=ruleSet[0];
+        aliveNumber=ruleSet[1];
+        reviveNumber=ruleSet[2];
+        overpopNumber=ruleSet[3];
+    }
+    
     public RulesBundle()
     {
         starveNumber=0;
@@ -24,10 +34,12 @@ public class RulesBundle {
         reviveNumber=0;
         overpopNumber=0;
     }
+    
     public int[] getRules()
     {
         return new int[]{starveNumber,aliveNumber,reviveNumber,overpopNumber};
     }
+      
     public void rewriteRules(int StarveNumber, int AliveNumber, int ReviveNumber, int OverpopNumber)
     {
         starveNumber=StarveNumber;
@@ -35,20 +47,24 @@ public class RulesBundle {
         reviveNumber=ReviveNumber;
         overpopNumber=OverpopNumber;
     }
+    
     public int getStarveNumber()
     {
         return  starveNumber;
     }
+    
     public int getAliveNumber()
     {
         return aliveNumber;
     }
+    
     public int getReviveNumber()
     {
         return reviveNumber;
     }
+    
     public int getOverpopNumber()
     {
         return overpopNumber;
     }
-}
+}//end RulesBundle class//

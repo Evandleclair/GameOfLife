@@ -4,22 +4,24 @@
  */
 package com.mycompany.mavenproject1.DataTypes;
 
-import com.mycompany.GameOfLife.SimulatorWindow;
+import com.mycompany.GameOfLife.SimCanvasWindow;
 
 /**
  *
- * @author toast
+ * @author evandleclair
+ * @param <String>
+ * @param <SimCanvasWindow>
  */
-public class simWindowInfo<String,SimulatorWindow> 
+public class simWindowInfo<String,SimCanvasWindow> 
 {
     private String id;
-    private SimulatorWindow obj;
-    public simWindowInfo(String id, SimulatorWindow obj){
+    private SimCanvasWindow obj;
+    public simWindowInfo(String id, SimCanvasWindow obj){
         this.id = id;
         this.obj = obj;
     }
     public String getID(){ return id; }
-    public SimulatorWindow getOBJ(){ return obj; }
+    public SimCanvasWindow getOBJ(){ return obj; }
     public void setID(String id){ this.id = id; }
-    public void setOBJ(SimulatorWindow obj){ this.obj = obj; }
+    public void setOBJ(SimCanvasWindow obj){ this.obj = obj; }
 }

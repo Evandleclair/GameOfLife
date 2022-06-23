@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+         <!-- XML Schema Generated from XML Document on Thu Jun 23 2022 11:40:41 GMT-0400 (Eastern Daylight Time) -->
+         <!-- with XmlGrid.net Free Online Service http://xmlgrid.net -->
+         <xs:element name="Board">
+               <xs:complexType>
+                     <xs:sequence>
+                           <xs:element name="Rules">
+                                 <xs:complexType>
+                                       <xs:attribute name="AliveNumber" type="xs:int"></xs:attribute>
+                                       <xs:attribute name="OverpopulationNumber" type="xs:int"></xs:attribute>
+                                       <xs:attribute name="ReviveNumber" type="xs:int"></xs:attribute>
+                                       <xs:attribute name="StarveNumber" type="xs:int"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                           <xs:element name="BoardSettings">
+                                 <xs:complexType>
+                                       <xs:attribute name="CurrentGen" type="xs:int"></xs:attribute>
+                                       <xs:attribute name="Dimensions" type="xs:int"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                           <xs:element name="BoardData">
+                                 <xs:complexType>
+                                       <xs:attribute name="BoardState" type="xs:normalizedString"></xs:attribute>
+                                 </xs:complexType>
+                           </xs:element>
+                     </xs:sequence>
+               </xs:complexType>
+         </xs:element>
+   </xs:schema>

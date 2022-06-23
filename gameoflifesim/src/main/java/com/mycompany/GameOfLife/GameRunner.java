@@ -4,74 +4,83 @@
  */
 package com.mycompany.GameOfLife;
 
+import com.mycompany.GameOfLife.Interfaces.GameRunnerInterface;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
  *
- * @author toast
+ * @author evandleclair
  */
 public class GameRunner implements GameRunnerInterface {
     
-    private final MainWindow mainInterface;
+    private final MainWindow mainWindow;
     private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
-    private static int gamesRunning=0;
-    private Hashtable<String, Integer> rulesDictionary = new Hashtable<>();
-    private String[] colNames = {"Game","Generation","Status"};
+    private static int gamesRunning=0, gamesRan =0;
+    private String[] colNames = {"Game","Generation","Lifespan","Status","Tick Speed"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
-    private RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
+    private final RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
+    private File storedFileToImport=null;
+    private int importedGensToRun=0;
+    
+    
     public GameRunner(MainWindow MI)
     {
-    mainInterface=MI;
-    HideGameColumn();
-    SetUpRulesDictionary();
-    }
+        mainWindow=MI;
+        HideGameColumn();
+    }//end constructor//
+    
     private void HideGameColumn() //we are storing games in the column but do not want to display them as that is pointless//
     {
        // simTable.getColumnModel().getColumn(2).setMaxWidth(0);
     }
             
-    private void SetUpRulesDictionary()
+   
+   
+    
+    @Override
+    public void createSimWindowAndStartSim(int dims) 
     {
-        rulesDictionary.put("StarveNumber", 1);
-        rulesDictionary.put("AliveNumber", 2);
-        rulesDictionary.put("ReviveNumber", 3);
-        rulesDictionary.put("OverpopNumber", 3);
-    }
-    public Hashtable<String, Integer> CopyRulesDictionary()
-    {
-       return rulesDictionary;
+        SimCanvasWindow simWindowObj= new SimCanvasWindow(dims, "GAME " + gamesRan, mainWindow, getRulesSet());
+        addWindowToTable(simWindowObj);
     }
     
     @Override
-    public void createSimWindowAndStartSim(int dims) {
-        SimulatorWindow simWindowObj = new SimulatorWindow(dims, "GAME "+gamesRunning, mainInterface, getRulesSet());
-        simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
-        gamesRunning++;
-        simWindowObj.runSimWindowStartupTasks();
-        simWindowObj.startSimRunnable();
-        updateSimWindowTable();
+    public void createSimWindowAndStartSim(BoardObject BOb) 
+    {
+        BOb.setName("GAME "+gamesRunning);
+        SimCanvasWindow simWindowObj = new SimCanvasWindow(mainWindow, BOb);
+        addWindowToTable(simWindowObj);
     }
     
-    @Override
-    public void createSimWindowAndStartSim(int[][] importedBoard, RulesBundle importedRules) {
-        SimulatorWindow simWindowObj = new SimulatorWindow(importedBoard.length, "GAME "+gamesRunning, mainInterface, importedRules);
-        simWindows.add(new simWindowInfo("GAME "+gamesRunning,simWindowObj));
-        gamesRunning++;
-        simWindowObj.runSimWindowStartupTasks();
-        simWindowObj.startSimRunnable();
-        updateSimWindowTable();
-    }
+    public void addWindowToTable(SimCanvasWindow sW)
+    {
+        if (gamesRunning<20)
+        {
+            simWindows.add(new simWindowInfo("GAME "+gamesRan,sW));
+            gamesRan++;
+            gamesRunning++;
+            sW.runSimWindowStartupTasks();
+            sW.startSimRunnable();
+            updateSimWindowTable();
+        }//end if gamesRunning is smaller 20//
+        else
+        {
+            JOptionPane.showMessageDialog(mainWindow, "Cannot have more than twenty games running at the same time");
+        }//end else
+    }//end addWindowToTable//
 
     @Override
-    public void destroyGame(simWindowInfo s) {
+    public void destroyGame(simWindowInfo s) 
+    {
         System.out.println("removing "  + s.getID());
         DefaultTableModel model = (DefaultTableModel) simTable.getModel();
 
@@ -82,21 +91,23 @@ public class GameRunner implements GameRunnerInterface {
             {
                 simWindows.remove(s2);
                 break;
-            }
-        }
+            }//end if//
+        }//end enhanced for loops// 
         for (int i=0; i<simTable.getRowCount();i++)
         {
             final String rowGameID = (String)simTable.getValueAt(i, 0);
             if (rowGameID.equals(s.getID()))
-                {
+            {
                 model.removeRow(i);
-                }
-        }
+            }//end if//
+        }//end for loop//
     }//end destroygame//
+    
     @Override
-    public int getGamesRunning() {
+    public int getGamesRunning() 
+    {
        return gamesRunning;
-    }
+    }//end getGamesRunning//
     
     @Override
     public int getOpenGamesCount()
@@ -104,7 +115,7 @@ public class GameRunner implements GameRunnerInterface {
         int retInt;
         retInt=simTable.getRowCount();
         return retInt;
-    }
+    }//end getOpensGamesCount//
     
     @Override
     public void setGamesRunning(int GamesRunning) {
@@ -114,19 +125,27 @@ public class GameRunner implements GameRunnerInterface {
     private RulesBundle getRulesSet()
     {
         RulesBundle rb = conwayDefault;
-        if (mainInterface.useCustomRules())
+        if (mainWindow.useCustomRules())
         {
-            rb=mainInterface.getRules();
+            rb=mainWindow.getRules();
         }
         return rb;
     }
     
+    public int getImportedGens()
+    {
+        return importedGensToRun;
+    }
     
+    public void setImportedGens(int i)
+    {
+        importedGensToRun=i;
+    }
     
     @Override
-    public SimulatorWindow getSimWindowByID(int rowID)
+    public SimCanvasWindow getSimWindowByID(int rowID)
     {
-        SimulatorWindow sw = null;
+        SimCanvasWindow sw = null;
         //String idToFind = simTable.getModel().getValueAt(rowID, 0).toString();
         String idToFind = simTable.getValueAt(rowID, 0).toString();
         if (rowID>-1)
@@ -135,7 +154,7 @@ public class GameRunner implements GameRunnerInterface {
             {
                 if (s.getID()==idToFind)
                 {
-                    sw=(SimulatorWindow) s.getOBJ();
+                    sw=(SimCanvasWindow) s.getOBJ();
                 }
             } 
         }
@@ -167,12 +186,20 @@ public class GameRunner implements GameRunnerInterface {
       private void addSimWindowToTable(simWindowInfo s)
     {
         DefaultTableModel model = (DefaultTableModel) simTable.getModel();
-        model.addRow(new Object[]{s.getID(),"oo","generation",s.getOBJ()});
+        model.addRow(new Object[]{s.getID(),"name","generation","Lifespan","tickspeed",s.getOBJ()});
     }
-      
+    
     public void focusOnSpecificSimWindow(int rowID)
     {
-        getSimWindowByID(rowID).requestFocus();
+        getSimWindowByID(rowID).pleaseLookAtMe();
+    }
+    
+    public void updateTickSpeedOnSpecificWindow(int rowID)
+    {
+        int tickTime =mainWindow.getTickTime();
+        getSimWindowByID(rowID).updateTickSpeed(tickTime);
+        updateTickTime(rowID,tickTime);
+        
     }
        
     public void closeSpecificSimWindow(int rowID)
@@ -180,25 +207,41 @@ public class GameRunner implements GameRunnerInterface {
          getSimWindowByID(rowID).pleaseCloseMe();
     }
    
-    public void addGenerationsToSpecificSimWindow(int rowID)
+    public void addGenerationsToSpecificSimWindow(int rowID, int gensToAdd)
     {
-        getSimWindowByID(rowID).pleaseAddGenerations(mainInterface.getGenerationsToRun());
-        focusOnSpecificSimWindow(rowID);
+        SimCanvasWindow SW= getSimWindowByID(rowID);
+        SW.pleaseAddGenerations(gensToAdd);
+        SW.pleaseLookAtMe();
+    }
+    public void addGenerationsToSpecificSimWindow(String name, int gensToAdd)
+    {
+        SimCanvasWindow SW= getSimWindowByID(getSimRowByName(name));
+        SW.pleaseAddGenerations(gensToAdd);
+        SW.pleaseLookAtMe();
     }
     
     @Override
     public void UpdateTableOnMainWindow() {
-        mainInterface.updateTableModel(simTable.getModel());
+        mainWindow.updateTableModel(simTable.getModel());
     }
     
-    public void updateSimColumnsOnTable(String IDname, String status, int curGen)
+    /**
+     *
+     * @param IDname
+     * @param status
+     * @param curGen
+     * @param lifeSpan
+     * @param tSpeed
+     */
+    public void updateSimColumnsOnTable(String IDname, String status, int curGen, int lifeSpan, int tSpeed)
     {
-        System.out.println("trying to find " + IDname);
         int rowToUpdate = getSimRowByName(IDname);
         if (rowToUpdate != -1)
         {
-        simTable.getModel().setValueAt(status,rowToUpdate,2);
-        simTable.getModel().setValueAt(curGen,rowToUpdate,1);
+            simTable.getModel().setValueAt(curGen,rowToUpdate,1);
+            simTable.getModel().setValueAt(lifeSpan,rowToUpdate,2);
+            simTable.getModel().setValueAt(status,rowToUpdate,3);
+            simTable.getModel().setValueAt(tSpeed,rowToUpdate,4);
         }
         else
         {
@@ -206,28 +249,53 @@ public class GameRunner implements GameRunnerInterface {
         }
     }
     
-    private int getSimRowByName(String IDname)
+    public void updateMaxGensOnTable(String IDname, int maxGens)
+    {
+        
+    }
+    
+    public void updateTickTime(int rowID,int tickTime)
+    {
+        simTable.getModel().setValueAt(tickTime,rowID,3);
+    }
+    
+    public int getSimRowByName(String IDname)
     {
         int retInt = -1; //signifies not found//
         for (int i=0; i<simTable.getRowCount();i++)
         {
             String rowGameID = (String)simTable.getValueAt(i, 0);
-            System.out.println("comparing " + rowGameID + " to input of " + IDname);
+            //System.out.println("comparing " + rowGameID + " to input of " + IDname);
             if (rowGameID.equals(IDname))
             {
-            retInt=i;
+                retInt=i;
             }
         }
         return retInt;
     }
     
+    public void storeGameFile(File file)
+    {
+        storedFileToImport=file;
+    }
+    public File getStoredFile()
+    {
+        return storedFileToImport;
+    }
+    
     public void endAllGames()
     {
-        SimulatorWindow sw=null;
+        SimCanvasWindow sw=null;
         for (simWindowInfo s : simWindows)
-            {
-                sw=(SimulatorWindow) s.getOBJ();
-                sw.pleaseCloseMe();
-            } 
+        {
+            sw=(SimCanvasWindow) s.getOBJ();
+            sw.pleaseCloseMe();
+        } 
+    }
+
+    @Override
+    public void reportClosedGame() 
+    {
+       gamesRunning--;
     }
 }//end class//
