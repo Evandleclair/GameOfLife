@@ -12,6 +12,7 @@ import com.mycompany.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.mycompany.GameOfLife.popupWindows.TablePopUp;
 import com.mycompany.mavenproject1.DataTypes.RulesBundle;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
@@ -49,6 +50,9 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
     public MainWindow(DocFilter df) 
     {
         docFilter = df;
+        ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("GOLicon.png"));
+        setTitle("Game Of Life Simulator");
+        setIconImage(img.getImage());
         initComponents();
         setDocFilters();
         setUpSpinner();
@@ -127,7 +131,6 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
         jPanel5 = new javax.swing.JPanel();
         startButton = new javax.swing.JButton();
         endAllButton = new javax.swing.JButton();
-        endHighlightedGameButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         gameJTable = new javax.swing.JTable();
@@ -296,34 +299,24 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
             }
         });
 
-        endHighlightedGameButton.setText("End Highlighted Game");
-        endHighlightedGameButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                endHighlightedGameButtonMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+            .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(endHighlightedGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(endAllButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(startButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(endAllButton, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(endAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(endHighlightedGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(endAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -477,10 +470,6 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
         
     }//GEN-LAST:event_customRulesButtonMouseClicked
 
-    private void endHighlightedGameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_endHighlightedGameButtonMouseClicked
-       
-    }//GEN-LAST:event_endHighlightedGameButtonMouseClicked
-
     private void importButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_importButtonMouseClicked
         if (gameRunner.getStoredFile()!=null)
         {
@@ -621,7 +610,6 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
     private javax.swing.JButton customRulesButton;
     private javax.swing.JTextField dimensionBox;
     private javax.swing.JButton endAllButton;
-    private javax.swing.JButton endHighlightedGameButton;
     private javax.swing.JTextField fileNameField;
     private javax.swing.JTable gameJTable;
     private javax.swing.JTextField genRunBox;

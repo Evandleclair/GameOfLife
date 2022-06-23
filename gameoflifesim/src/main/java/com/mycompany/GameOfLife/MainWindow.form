@@ -344,12 +344,11 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="endHighlightedGameButton" max="32767" attributes="0"/>
-                          <Component id="startButton" alignment="1" max="32767" attributes="0"/>
-                          <Component id="endAllButton" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="startButton" alignment="1" pref="150" max="32767" attributes="0"/>
+                          <Component id="endAllButton" alignment="0" pref="150" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -359,11 +358,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="startButton" min="-2" pref="57" max="-2" attributes="0"/>
+                      <Component id="startButton" max="32767" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="endAllButton" min="-2" pref="54" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="endHighlightedGameButton" max="32767" attributes="0"/>
+                      <Component id="endAllButton" min="-2" pref="115" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -393,14 +390,6 @@
               </AccessibilityProperties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EndButtonClicked"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="endHighlightedGameButton">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="End Highlighted Game"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="endHighlightedGameButtonMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>
