@@ -24,7 +24,7 @@ public class GameRunner implements GameRunnerInterface {
     private final MainWindow mainWindow;
     private ArrayList<simWindowInfo> simWindows = new ArrayList<>();
     private static int gamesRunning=0, gamesRan =0;
-    private String[] colNames = {"Game","Generation","Status","Tick Speed"};
+    private String[] colNames = {"Game","Generation","Lifespan","Status","Tick Speed"};
     DefaultTableModel dtm = new DefaultTableModel(null,colNames);
     private JTable simTable = new JTable(dtm);
     private final RulesBundle conwayDefault = new RulesBundle(0,2,3,4);
@@ -186,7 +186,7 @@ public class GameRunner implements GameRunnerInterface {
       private void addSimWindowToTable(simWindowInfo s)
     {
         DefaultTableModel model = (DefaultTableModel) simTable.getModel();
-        model.addRow(new Object[]{s.getID(),"name","generation","tickspeed",s.getOBJ()});
+        model.addRow(new Object[]{s.getID(),"name","generation","Lifespan","tickspeed",s.getOBJ()});
     }
     
     public void focusOnSpecificSimWindow(int rowID)
@@ -225,20 +225,33 @@ public class GameRunner implements GameRunnerInterface {
         mainWindow.updateTableModel(simTable.getModel());
     }
     
-    public void updateSimColumnsOnTable(String IDname, String status, int curGen, int tSpeed)
+    /**
+     *
+     * @param IDname
+     * @param status
+     * @param curGen
+     * @param lifeSpan
+     * @param tSpeed
+     */
+    public void updateSimColumnsOnTable(String IDname, String status, int curGen, int lifeSpan, int tSpeed)
     {
-        //System.out.println("trying to find " + IDname + " which has a Gen value of " + curGen);
         int rowToUpdate = getSimRowByName(IDname);
         if (rowToUpdate != -1)
         {
             simTable.getModel().setValueAt(curGen,rowToUpdate,1);
-            simTable.getModel().setValueAt(status,rowToUpdate,2);
-            simTable.getModel().setValueAt(tSpeed,rowToUpdate,3);
+            simTable.getModel().setValueAt(lifeSpan,rowToUpdate,2);
+            simTable.getModel().setValueAt(status,rowToUpdate,3);
+            simTable.getModel().setValueAt(tSpeed,rowToUpdate,4);
         }
         else
         {
             System.out.println("Row did not exist");
         }
+    }
+    
+    public void updateMaxGensOnTable(String IDname, int maxGens)
+    {
+        
     }
     
     public void updateTickTime(int rowID,int tickTime)

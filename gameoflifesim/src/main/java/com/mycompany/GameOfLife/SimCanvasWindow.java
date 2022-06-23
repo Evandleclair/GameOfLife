@@ -234,7 +234,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     @Override
     public void passSimStatusToMainWindow(String simStatus, int currentGen, int tickSpeed) {
         //System.out.println("passing");
-        gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen, tickSpeed);
+        gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen, simRunnable.getGensToRun(), tickSpeed);
     }
 
     @Override

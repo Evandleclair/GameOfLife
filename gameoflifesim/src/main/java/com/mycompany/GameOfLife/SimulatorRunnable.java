@@ -200,5 +200,10 @@ public class SimulatorRunnable implements Runnable{
     {
         return this.boardObject;
     }
+    
+    public int getGensToRun()
+    {
+        return gensToRun;
+    }
 }//end class//
 
