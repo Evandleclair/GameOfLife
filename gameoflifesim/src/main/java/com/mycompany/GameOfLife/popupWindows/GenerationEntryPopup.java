@@ -145,7 +145,8 @@ public class GenerationEntryPopup extends JDialog
     {
         if (callingRow!=-1)
         {
-        gr.focusOnSpecificSimWindow(callingRow);
+            System.out.println("focusing on specific window");
+            gr.focusOnSpecificSimWindow(callingRow);
         }
         dispose();
     }

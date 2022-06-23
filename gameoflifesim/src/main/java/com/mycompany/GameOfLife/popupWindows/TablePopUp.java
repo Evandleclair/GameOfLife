@@ -133,6 +133,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         {    
             System.out.println("adding generations" + mainWindow.getGenerationsToRun());
             genEntryPopup=new GenerationEntryPopup(mainWindow,callingRow);
+            gr.focusOnSpecificSimWindow(callingRow);
         }
     }//end addGenerationsAction//
     

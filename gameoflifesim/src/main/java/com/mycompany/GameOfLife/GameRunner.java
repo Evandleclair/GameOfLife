@@ -191,7 +191,7 @@ public class GameRunner implements GameRunnerInterface {
     
     public void focusOnSpecificSimWindow(int rowID)
     {
-        getSimWindowByID(rowID).requestFocus();
+        getSimWindowByID(rowID).pleaseLookAtMe();
     }
     
     public void updateTickSpeedOnSpecificWindow(int rowID)
