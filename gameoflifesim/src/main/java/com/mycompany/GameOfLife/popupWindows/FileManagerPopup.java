@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
@@ -73,6 +76,8 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
             bOb=xmlWriter.getBoardFromXML(FileToImport);
         } catch (SAXException | ParserConfigurationException | IOException ex) {
            LoggingClass.WriteToLog(ex, "Error when loading Board Object", "SEVERE");
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (bOb!=null)
             gr.createSimWindowAndStartSim(bOb); 

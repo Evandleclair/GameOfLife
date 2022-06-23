@@ -10,15 +10,24 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -88,31 +97,38 @@ public class XMLWriter
         }
     }
     
-    public BoardObject getBoardFromXML(File file) throws SAXException, ParserConfigurationException, IOException
+    public BoardObject getBoardFromXML(File file) throws SAXException, ParserConfigurationException, IOException, URISyntaxException
     {
         BoardObject bOb = null;
         try
         {
-            RulesBundle rules=null;
-            int  dimensions=0, currentGen=0;
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
-           //an instance of builder to parse the specified xml file  
-            DocumentBuilder db = dbf.newDocumentBuilder();  
-            Document doc = db.parse(file);  
-            doc.getDocumentElement().normalize();
-            Element board = doc.getDocumentElement();
-            NamedNodeMap rulesMap=board.getElementsByTagName("Rules").item(0).getAttributes();
-            int starveNumber=Integer.parseInt(rulesMap.getNamedItem("StarveNumber").getNodeValue());
-            int aliveNumber=Integer.parseInt(rulesMap.getNamedItem("AliveNumber").getNodeValue());
-            int reviveNumber=Integer.parseInt(rulesMap.getNamedItem("ReviveNumber").getNodeValue());
-            int overpopNumber=Integer.parseInt(rulesMap.getNamedItem("OverpopulationNumber").getNodeValue());
-            rules = new RulesBundle(starveNumber,aliveNumber,reviveNumber,overpopNumber);
-            NamedNodeMap settingsMap=board.getElementsByTagName("BoardSettings").item(0).getAttributes();
-            currentGen=Integer.parseInt(settingsMap.getNamedItem("CurrentGen").getNodeValue());
-            dimensions=Integer.parseInt(settingsMap.getNamedItem("Dimensions").getNodeValue());
-            String boardString = board.getElementsByTagName("BoardData").item(0).getAttributes().getNamedItem("BoardState").getNodeValue();
-            int[][] myBoardState=convertStringToBoardMatrix(dimensions,boardString);
-            bOb = new BoardObject(dimensions, myBoardState, rules, 100, currentGen);
+            if (validateXMLagainstXDS(file.getAbsolutePath()))
+            {
+                RulesBundle rules=null;
+                int  dimensions=0, currentGen=0;
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();  
+               //an instance of builder to parse the specified xml file  
+                DocumentBuilder db = dbf.newDocumentBuilder();  
+                Document doc = db.parse(file);  
+                doc.getDocumentElement().normalize();
+                Element board = doc.getDocumentElement();
+                NamedNodeMap rulesMap=board.getElementsByTagName("Rules").item(0).getAttributes();
+                int starveNumber=Integer.parseInt(rulesMap.getNamedItem("StarveNumber").getNodeValue());
+                int aliveNumber=Integer.parseInt(rulesMap.getNamedItem("AliveNumber").getNodeValue());
+                int reviveNumber=Integer.parseInt(rulesMap.getNamedItem("ReviveNumber").getNodeValue());
+                int overpopNumber=Integer.parseInt(rulesMap.getNamedItem("OverpopulationNumber").getNodeValue());
+                rules = new RulesBundle(starveNumber,aliveNumber,reviveNumber,overpopNumber);
+                NamedNodeMap settingsMap=board.getElementsByTagName("BoardSettings").item(0).getAttributes();
+                currentGen=Integer.parseInt(settingsMap.getNamedItem("CurrentGen").getNodeValue());
+                dimensions=Integer.parseInt(settingsMap.getNamedItem("Dimensions").getNodeValue());
+                String boardString = board.getElementsByTagName("BoardData").item(0).getAttributes().getNamedItem("BoardState").getNodeValue();
+                int[][] myBoardState=convertStringToBoardMatrix(dimensions,boardString);
+                bOb = new BoardObject(dimensions, myBoardState, rules, 100, currentGen);
+            }
+            else
+            {
+                  System.out.println("not a valid XML");
+            }
             return bOb;
         }
         catch (SAXException | ParserConfigurationException | IOException e)
@@ -146,5 +162,26 @@ public class XMLWriter
             ret.add(s.substring(start, Math.min(s.length(), start + i)));
         }
         return ret;
+    }
+    
+    public boolean validateXMLagainstXDS(String xmlPath) throws URISyntaxException
+    {
+        try {
+         URL resource = getClass().getClassLoader().getResource("gameOfLifeSchema.xsd");
+         File xsdFile =Paths.get(resource.toURI()).toFile();
+         SchemaFactory factory =
+            SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = factory.newSchema(xsdFile);
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(new File(xmlPath)));
+      } catch (IOException e){
+         System.out.println("Exception: "+e.getMessage());
+         return false;
+      }catch(SAXException e1){
+         System.out.println("SAX Exception: "+e1.getMessage());
+         return false;
+      }
+		
+      return true;
     }
 }
