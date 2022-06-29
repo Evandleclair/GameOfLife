@@ -11,6 +11,7 @@ import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.personalprojects.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.personalprojects.GameOfLife.popupWindows.TablePopUp;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.UtilityClasses.NumberDocumentListener;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -19,8 +20,6 @@ import java.util.Hashtable;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.table.TableModel;
@@ -40,7 +39,10 @@ private static TablePopUp tablePopUpMenu;
 private static RulesCustomizerPopup rulesCustomizerPopup;
 private static RulesBundle customRules = new RulesBundle(0,2,3,4);
 private static FileManagerPopup fileManager;
-private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_DEFAULT_VALUE=250;
+private static final int MAX__TIME_SPINNER_VALUE=2500, TIME_SPINNER_INCREMENT=25, TIME_SPINNER_DEFAULT_VALUE=250;
+private static final int MIN_DIM_SPINNER_VALUE=2, MAX__DIM_SPINNER_VALUE=90, DIM_SPINNER_INCREMENT=1, DIM_SPINNER_DEFAULT_VALUE=20;
+private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10, GEN_SPINNER_DEFAULT_VALUE=100;
+
 
  private AbstractDocument genRunDoc, boxDimDoc;
     //protected static SimulatorWindow simWindow = new SimulatorWindow();
@@ -55,7 +57,7 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
         setIconImage(img.getImage());
         initComponents();
         setDocFilters();
-        setUpSpinner();
+        setUpSpinners();
         //addRightClickMenuToTable();
     }//end constructor//
     
@@ -82,24 +84,30 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
         fileManager=fm;
     }//end setFileManager//
     
-    private void setUpSpinner()
+    private void setUpSpinners()
     {
         SpinnerModel model =
-        new SpinnerNumberModel(SPINNER_DEFAULT_VALUE, //initial value
+        new SpinnerNumberModel(TIME_SPINNER_DEFAULT_VALUE, //initial value
                                0, //min
-                               MAX_SPINNER_VALUE, //max
-                               SPINNER_INCREMENT);                //step
+                               MAX__TIME_SPINNER_VALUE, //max
+                               TIME_SPINNER_INCREMENT);                //step
         
         generationTimeSpinner.setModel(model);
         ((DefaultEditor) generationTimeSpinner.getEditor()).getTextField().setEditable(false);
+        
+        model =
+        new SpinnerNumberModel(DIM_SPINNER_DEFAULT_VALUE, //initial value
+                               MIN_DIM_SPINNER_VALUE, //min
+                               MAX__DIM_SPINNER_VALUE, //max
+                               DIM_SPINNER_INCREMENT);                //step
+        
+        dimSpinner.setModel(model);
     }
     
     private void setDocFilters()
     {
         genRunDoc = (AbstractDocument) genRunBox.getDocument();
-        AbstractDocument dimBoxDoc = (AbstractDocument) dimensionBox.getDocument();
         genRunDoc.setDocumentFilter(docFilter);
-        dimBoxDoc.setDocumentFilter(docFilter);
     }
 
     /**
@@ -120,14 +128,14 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
         jRadioButton2 = new javax.swing.JRadioButton();
         customRulesButton = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        label1 = new java.awt.Label();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        dimensionBox = new javax.swing.JTextField();
         genRunBox = new javax.swing.JTextField();
         percSlider = new javax.swing.JSlider();
         generationTimeSpinner = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
+        dimSpinner = new javax.swing.JSpinner();
+        jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         startButton = new javax.swing.JButton();
         endAllButton = new javax.swing.JButton();
@@ -200,13 +208,9 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        label1.setText("DIMENSIONS:");
-
         jLabel2.setText("GENERATIONS TO RUN: ");
 
-        jLabel1.setText("% ALIVE ON START:");
-
-        dimensionBox.setText("25");
+        jLabel1.setText("PERCENT OF CELLS ALIVE ON START:");
 
         genRunBox.setText("30");
         genRunBox.setToolTipText("");
@@ -220,52 +224,44 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
         percSlider.setPaintTicks(true);
         percSlider.setName("percSlider"); // NOI18N
 
-        jLabel4.setText("Time between generations (ms)");
+        jLabel4.setText("TIME BETWEEN GENERATIONS (ms)");
+
+        jLabel5.setText("DIEMSNIONS (Max: 90):");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(12, 12, 12)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(67, 67, 67)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(genRunBox, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
-                            .addComponent(dimensionBox)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel1)))
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(generationTimeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(59, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel5))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                    .addComponent(genRunBox, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                    .addComponent(generationTimeSpinner)
+                    .addComponent(dimSpinner))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(2, 2, 2))
-                    .addComponent(dimensionBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dimSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(genRunBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -273,11 +269,10 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
                 .addGap(9, 9, 9))
         );
 
-        label1.getAccessibleContext().setAccessibleName("dimLabel");
-        dimensionBox.getAccessibleContext().setAccessibleName("dimensionBox");
         genRunBox.getAccessibleContext().setAccessibleName("genNumField");
         percSlider.getAccessibleContext().setAccessibleName("");
         generationTimeSpinner.getAccessibleContext().setAccessibleName("generationTimeSpinner");
+        dimSpinner.getAccessibleContext().setAccessibleName("dimSpinner");
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -501,7 +496,7 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
     
     protected void createFrameAndGame()  
     {
-        int dims = Integer.parseInt(dimensionBox.getText());
+        int dims = (Integer)dimSpinner.getValue();
         gameRunner.createSimWindowAndStartSim(dims);
     }
     
@@ -608,7 +603,7 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton customRulesButton;
-    private javax.swing.JTextField dimensionBox;
+    private javax.swing.JSpinner dimSpinner;
     private javax.swing.JButton endAllButton;
     private javax.swing.JTextField fileNameField;
     private javax.swing.JTable gameJTable;
@@ -619,6 +614,7 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -629,7 +625,6 @@ private static final int MAX_SPINNER_VALUE=2500, SPINNER_INCREMENT=25, SPINNER_D
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private java.awt.Label label1;
     private javax.swing.JSlider percSlider;
     private javax.swing.ButtonGroup rulesButtonGroup;
     private javax.swing.JButton selectFileButton;
