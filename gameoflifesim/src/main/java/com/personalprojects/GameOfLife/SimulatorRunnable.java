@@ -1,8 +1,8 @@
-package com.mycompany.GameOfLife;
+package com.personalprojects.GameOfLife;
 
 
-import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
-import com.mycompany.mavenproject1.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.UtilityClasses.LoggingClass;
+import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 
 /**
  *

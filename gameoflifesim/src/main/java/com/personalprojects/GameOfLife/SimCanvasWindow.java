@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.personalprojects.GameOfLife;
 
-import com.mycompany.GameOfLife.Interfaces.SimWindowInterface;
-import com.mycompany.GameOfLife.popupWindows.GenerationEntryPopup;
-import com.mycompany.GameOfLife.UtilityClasses.GridCanvas;
-import com.mycompany.mavenproject1.DataTypes.RulesBundle;
-import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
+import com.personalprojects.GameOfLife.Interfaces.SimWindowInterface;
+import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
+import com.personalprojects.GameOfLife.UtilityClasses.GridCanvas;
+import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.DataTypes.simWindowInfo;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
