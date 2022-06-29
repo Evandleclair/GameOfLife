@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife.popupWindows;
+package com.personalprojects.GameOfLife.popupWindows;
 
-import com.mycompany.GameOfLife.Interfaces.FileManagerInterface;
-import com.mycompany.GameOfLife.BoardObject;
-import com.mycompany.GameOfLife.GameRunner;
-import com.mycompany.GameOfLife.MainWindow;
-import com.mycompany.GameOfLife.SimCanvasWindow;
-import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
-import com.mycompany.GameOfLife.UtilityClasses.XMLWriter;
+import com.personalprojects.GameOfLife.Interfaces.FileManagerInterface;
+import com.personalprojects.GameOfLife.BoardObject;
+import com.personalprojects.GameOfLife.GameRunner;
+import com.personalprojects.GameOfLife.MainWindow;
+import com.personalprojects.GameOfLife.SimCanvasWindow;
+import com.personalprojects.GameOfLife.UtilityClasses.LoggingClass;
+import com.personalprojects.GameOfLife.UtilityClasses.XMLWriter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;

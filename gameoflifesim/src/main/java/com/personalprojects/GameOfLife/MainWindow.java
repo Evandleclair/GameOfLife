@@ -2,15 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.personalprojects.GameOfLife;
 
 
-import com.mycompany.GameOfLife.UtilityClasses.DocFilter;
-import com.mycompany.GameOfLife.popupWindows.FileManagerPopup;
-import com.mycompany.GameOfLife.popupWindows.GenerationEntryPopup;
-import com.mycompany.GameOfLife.popupWindows.RulesCustomizerPopup;
-import com.mycompany.GameOfLife.popupWindows.TablePopUp;
-import com.mycompany.mavenproject1.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.UtilityClasses.DocFilter;
+import com.personalprojects.GameOfLife.popupWindows.FileManagerPopup;
+import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
+import com.personalprojects.GameOfLife.popupWindows.RulesCustomizerPopup;
+import com.personalprojects.GameOfLife.popupWindows.TablePopUp;
+import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife.UtilityClasses;
+package com.personalprojects.GameOfLife.UtilityClasses;
 
-import com.mycompany.GameOfLife.BoardObject;
-import com.mycompany.mavenproject1.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.BoardObject;
+import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -176,9 +176,10 @@ public class XMLWriter
             validator.validate(new StreamSource(new File(xmlPath)));
       } catch (IOException e){
          System.out.println("Exception: "+e.getMessage());
+          LoggingClass.WriteToLog(e, "IO Exception when trying to compare XML to XSD", "SEVERE");
          return false;
-      }catch(SAXException e1){
-         System.out.println("SAX Exception: "+e1.getMessage());
+      }catch(SAXException e){
+         LoggingClass.WriteToLog(e, "SAX Exception when trying to compare XML to XSD", "SEVERE");
          return false;
       }
 		

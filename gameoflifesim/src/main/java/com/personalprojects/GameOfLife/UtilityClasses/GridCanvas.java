@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife.UtilityClasses;
+package com.personalprojects.GameOfLife.UtilityClasses;
 
-import com.mycompany.mavenproject1.DataTypes.CellObject;
+import com.personalprojects.GameOfLife.DataTypes.CellObject;
 import java.awt.Canvas;
 import java.awt.Graphics;
 

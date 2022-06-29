@@ -3,11 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
  */
 
-package com.mycompany.GameOfLife;
+package com.personalprojects.GameOfLife;
 
 
-import com.mycompany.GameOfLife.UtilityClasses.StringMaster;
-import com.mycompany.mavenproject1.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.UtilityClasses.StringMaster;
+import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 import java.util.Arrays;
 
 /**

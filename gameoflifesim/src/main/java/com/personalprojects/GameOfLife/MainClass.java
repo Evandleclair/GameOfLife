@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.personalprojects.GameOfLife;
 
-import com.mycompany.GameOfLife.UtilityClasses.DocFilter;
-import com.mycompany.GameOfLife.UtilityClasses.LoggingClass;
-import com.mycompany.GameOfLife.popupWindows.FileManagerPopup;
+import com.personalprojects.GameOfLife.UtilityClasses.DocFilter;
+import com.personalprojects.GameOfLife.UtilityClasses.LoggingClass;
+import com.personalprojects.GameOfLife.popupWindows.FileManagerPopup;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**

@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.GameOfLife;
+package com.personalprojects.GameOfLife;
 
-import com.mycompany.GameOfLife.Interfaces.GameRunnerInterface;
-import com.mycompany.mavenproject1.DataTypes.RulesBundle;
-import com.mycompany.mavenproject1.DataTypes.simWindowInfo;
+import com.personalprojects.GameOfLife.Interfaces.GameRunnerInterface;
+import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.DataTypes.simWindowInfo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
