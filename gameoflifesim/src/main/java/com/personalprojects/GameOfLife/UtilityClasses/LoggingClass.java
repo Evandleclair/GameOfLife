@@ -57,4 +57,21 @@ public class LoggingClass {
         System.out.println(StringMaster.combineStrings(new String[]{"Logger logged error", e.getStackTrace().toString()}));
         LOGGER.log(sevLevel,customMessage,e);
     }//end writetolog
+    
+    /**
+     * alternate method for writing things that allows for writing things are not necessarily exceptions
+     * @param customMessage
+     * @param severity
+     */
+    public static void WriteToLog(String customMessage, String severity)
+    {
+        Level sevLevel;
+        sevLevel = switch (severity.toUpperCase()) {
+            case "WARNING" -> Level.WARNING;
+            case "INFO" -> Level.INFO;    
+            default -> Level.FINE;
+        }; //end switch//
+        System.out.println(StringMaster.combineStrings(new String[]{"Logger logged user error"}));
+        LOGGER.log(sevLevel,customMessage);
+    }//end writetolog
 }//end class/

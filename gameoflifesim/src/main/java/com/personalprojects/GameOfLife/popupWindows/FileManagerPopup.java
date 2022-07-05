@@ -49,12 +49,16 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
         fc = new JFileChooser();
         mainWindow=MainWindow;
         gr=Gr;
-        fc.addChoosableFileFilter(new FileNameExtensionFilter("Game Of Life", "GOL", "gol"));
+        
+        var ff = new FileNameExtensionFilter("Game Of Life", "GOL", "gol");
+        fc.addChoosableFileFilter(ff);
+        fc.setFileFilter(ff);
     }
 
     @Override
     public void exportBoard(File FileToExport) 
     {
+      
         SimCanvasWindow sw= gr.getSimWindowFromSimTableByID(callingRow);
         BoardObject boardDataBundle= sw.getBoardFromRunnable();
         try 
@@ -98,6 +102,7 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
     @Override
     public void showSaveInterface()
     {
+        fc.setSelectedFile(new File("myGame.GOL")); //set default game file name//
         int returnVal = fc.showSaveDialog(FileManagerPopup.this);
         
              if (returnVal == JFileChooser.APPROVE_OPTION) {

@@ -11,6 +11,7 @@ import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.personalprojects.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.personalprojects.GameOfLife.popupWindows.TablePopUp;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.UtilityClasses.LoggingClass;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
@@ -159,11 +160,14 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         rulesButtonGroup.add(jRadioButton1);
         jRadioButton1.setSelected(true);
         jRadioButton1.setText("Use Conway's default rules");
+        jRadioButton1.setToolTipText("Conways default rules will be used if this is checked.");
 
         rulesButtonGroup.add(jRadioButton2);
         jRadioButton2.setText("Use Custom Rules");
+        jRadioButton2.setToolTipText("Custom rules, changed with the button to the right, will be used if this is checked.");
 
-        customRulesButton.setText("EDIT CUSTOM RULES");
+        customRulesButton.setText("EDIT \nCUSTOM \nRULES");
+        customRulesButton.setToolTipText("Open a window to change the rules used by the game of life.");
         customRulesButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 customRulesButtonMouseClicked(evt);
@@ -175,25 +179,26 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jRadioButton1)
                     .addComponent(jRadioButton2))
                 .addGap(18, 18, 18)
-                .addComponent(customRulesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(customRulesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(162, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(customRulesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(customRulesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jRadioButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jRadioButton2)
+                        .addGap(0, 37, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -273,6 +278,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         startButton.setText("Start Game");
+        startButton.setToolTipText("Start a new game of life with the parameters you have chosen to the left.");
         startButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         startButton.setIconTextGap(2);
         startButton.setMargin(new java.awt.Insets(2, 7, 2, 7));
@@ -284,6 +290,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         });
 
         endAllButton.setText("End All Games");
+        endAllButton.setToolTipText("Closes all running Games of Life");
         endAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 EndButtonClicked(evt);
@@ -318,12 +325,10 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -336,7 +341,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -364,6 +369,10 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         gameJTable.getAccessibleContext().setAccessibleName("");
 
         selectFileButton.setText("SELECT FILE");
+        selectFileButton.setToolTipText("Opens a window that lets you select a Game of Life (.GOL) file to import as a new game.");
+        selectFileButton.setMaximumSize(new java.awt.Dimension(110, 22));
+        selectFileButton.setMinimumSize(new java.awt.Dimension(95, 22));
+        selectFileButton.setPreferredSize(new java.awt.Dimension(105, 22));
         selectFileButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 selectFileButtonMouseClicked(evt);
@@ -371,6 +380,8 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         });
 
         importButton.setText("IMPORT FILE");
+        importButton.setToolTipText("Imports a selected GOL file and runs it as a new game.");
+        importButton.setPreferredSize(new java.awt.Dimension(95, 22));
         importButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 importButtonMouseClicked(evt);
@@ -384,17 +395,14 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(selectFileButton)
+                        .addComponent(selectFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(importButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(106, 106, 106))))
+                        .addComponent(importButton, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,28 +412,29 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(importButton)
-                    .addComponent(selectFileButton))
+                    .addComponent(importButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectFileButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        jLabel3.setText("Right click on a running game in the table below\\ to open up an interactions menu");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        jLabel3.setText("Right click on a running game in the table below\\ to open up an interactions menu. Hover over buttons for tooltips.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,6 +447,8 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jLabel3.getAccessibleContext().setAccessibleName("helpLabel");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -468,7 +479,8 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         }
         else
         {
-           System.out.println("no board to import");
+           System.out.println("No board to import! Please use the Select File button to choose a board, then use this button again");
+           LoggingClass.WriteToLog("User tried to import without selecting board first", "INFO");
         }
     }//GEN-LAST:event_importButtonMouseClicked
    
