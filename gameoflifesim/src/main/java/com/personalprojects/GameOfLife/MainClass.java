@@ -18,7 +18,7 @@ public class MainClass
     public static void main(String[] args) throws ParserConfigurationException
     {      
         LoggingClass.setup(); //sets up our error logging system//
-        MainWindow mainInterface = new MainWindow(new DocFilter()); //create a new main interface window//
+        MainWindow mainInterface = new MainWindow(); //create a new main interface window//
         GameRunner GR=new GameRunner(mainInterface); //create a new game runner object, which handles the actual boards and respective games//
         FileManagerPopup FM=new FileManagerPopup(mainInterface,GR);
         mainInterface.setGameRunner(GR); //assign our game runner object to the main window//

@@ -11,13 +11,9 @@ import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.personalprojects.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.personalprojects.GameOfLife.popupWindows.TablePopUp;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
-import java.beans.PropertyVetoException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
@@ -33,31 +29,24 @@ import javax.swing.text.AbstractDocument;
 public class MainWindow extends javax.swing.JFrame {
  
 private GameRunner gameRunner;
-private final DocFilter docFilter;
 private static TablePopUp tablePopUpMenu;
 private static RulesCustomizerPopup rulesCustomizerPopup;
 private static RulesBundle customRules = new RulesBundle(0,2,3,4);
 private static FileManagerPopup fileManager;
 private static final int MAX__TIME_SPINNER_VALUE=2500, TIME_SPINNER_INCREMENT=25, TIME_SPINNER_DEFAULT_VALUE=250;
 private static final int MIN_DIM_SPINNER_VALUE=2, MAX__DIM_SPINNER_VALUE=90, DIM_SPINNER_INCREMENT=1, DIM_SPINNER_DEFAULT_VALUE=20;
-private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10, GEN_SPINNER_DEFAULT_VALUE=100;
-
-
- private AbstractDocument genRunDoc, boxDimDoc;
+private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10, GEN_SPINNER_DEFAULT_VALUE=100;
     //protected static SimulatorWindow simWindow = new SimulatorWindow();
     /**
      * Creates new form MainInterface
      */
-    public MainWindow(DocFilter df) 
+    public MainWindow() 
     {
-        docFilter = df;
         ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("GOLicon.png"));
         setTitle("Game Of Life Simulator");
         setIconImage(img.getImage());
         initComponents();
-        setDocFilters();
         setUpSpinners();
-        //addRightClickMenuToTable();
     }//end constructor//
     
     public void invokeMainWindow()
@@ -101,14 +90,16 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
                                DIM_SPINNER_INCREMENT);                //step
         
         dimSpinner.setModel(model);
+        
+          model =
+        new SpinnerNumberModel(GEN_SPINNER_DEFAULT_VALUE, //initial value
+                               MIN_GEN_SPINNER_VALUE, //min
+                               MAX__GEN_SPINNER_VALUE, //max
+                               GEN_SPINNER_INCREMENT);                //step
+        
+        genSpinner.setModel(model);
     }
     
-    private void setDocFilters()
-    {
-        genRunDoc = (AbstractDocument) genRunBox.getDocument();
-        genRunDoc.setDocumentFilter(docFilter);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -129,12 +120,12 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        genRunBox = new javax.swing.JTextField();
         percSlider = new javax.swing.JSlider();
         generationTimeSpinner = new javax.swing.JSpinner();
         jLabel4 = new javax.swing.JLabel();
         dimSpinner = new javax.swing.JSpinner();
         jLabel5 = new javax.swing.JLabel();
+        genSpinner = new javax.swing.JSpinner();
         jPanel5 = new javax.swing.JPanel();
         startButton = new javax.swing.JButton();
         endAllButton = new javax.swing.JButton();
@@ -211,9 +202,6 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
 
         jLabel1.setText("PERCENT OF CELLS ALIVE ON START:");
 
-        genRunBox.setText("30");
-        genRunBox.setToolTipText("");
-
         Hashtable<Integer, JLabel> labels = new Hashtable<>();
         labels.put(0, new JLabel("0%"));
         labels.put(50, new JLabel("50%"));
@@ -223,9 +211,15 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
         percSlider.setPaintTicks(true);
         percSlider.setName("percSlider"); // NOI18N
 
+        generationTimeSpinner.setToolTipText("The time in miliseconds between generations.");
+
         jLabel4.setText("TIME BETWEEN GENERATIONS (ms)");
 
+        dimSpinner.setToolTipText("The dimensions of a board. Boards are square, so height and width are always the same.");
+
         jLabel5.setText("DIEMSNIONS (Max: 90):");
+
+        genSpinner.setToolTipText("The generations that any new simulation will go through.");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -241,9 +235,9 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
                 .addGap(29, 29, 29)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                    .addComponent(genRunBox, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                    .addComponent(generationTimeSpinner)
-                    .addComponent(dimSpinner))
+                    .addComponent(generationTimeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                    .addComponent(dimSpinner)
+                    .addComponent(genSpinner))
                 .addContainerGap(97, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -256,7 +250,7 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(genRunBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(genSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(percSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,10 +262,13 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
                 .addGap(9, 9, 9))
         );
 
-        genRunBox.getAccessibleContext().setAccessibleName("genNumField");
         percSlider.getAccessibleContext().setAccessibleName("");
+        percSlider.getAccessibleContext().setAccessibleDescription("");
         generationTimeSpinner.getAccessibleContext().setAccessibleName("generationTimeSpinner");
+        generationTimeSpinner.getAccessibleContext().setAccessibleDescription("The time in miliseconds between generations.");
         dimSpinner.getAccessibleContext().setAccessibleName("dimSpinner");
+        dimSpinner.getAccessibleContext().setAccessibleDescription("The dimensions of a board. Boards are square, so height and width are always the same.");
+        genSpinner.getAccessibleContext().setAccessibleName("genSpinner");
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -561,15 +558,14 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
     
     /*------------------------------------------------------------*/
     /* get and set section */
-     public double getInitialAliveProbability()
+    public double getInitialAliveProbability()
     {
         return (percSlider.getValue()*0.01);
     }
   
-    
     public int getGenerationsToRun()
     {
-        return Integer.parseInt(genRunBox.getText());
+        return (Integer)genSpinner.getValue();
     }
     
     public void setTextBoxToFilename(String s)
@@ -606,7 +602,7 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
     private javax.swing.JButton endAllButton;
     private javax.swing.JTextField fileNameField;
     private javax.swing.JTable gameJTable;
-    private javax.swing.JTextField genRunBox;
+    private javax.swing.JSpinner genSpinner;
     private javax.swing.JSpinner generationTimeSpinner;
     private javax.swing.JButton importButton;
     private javax.swing.JLabel jLabel1;
@@ -630,11 +626,4 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
     private javax.swing.JButton startButton;
     // End of variables declaration//GEN-END:variables
 
-   
-    
-    
-    
-  
-}
-
-
+}//end class//

@@ -218,9 +218,9 @@
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="percSlider" alignment="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="genRunBox" alignment="0" pref="103" max="32767" attributes="0"/>
-                          <Component id="generationTimeSpinner" alignment="0" max="32767" attributes="0"/>
+                          <Component id="generationTimeSpinner" alignment="0" pref="103" max="32767" attributes="0"/>
                           <Component id="dimSpinner" alignment="0" max="32767" attributes="0"/>
+                          <Component id="genSpinner" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="97" max="32767" attributes="0"/>
                   </Group>
@@ -237,7 +237,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="genRunBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="genSpinner" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -265,15 +265,6 @@
                 <Property name="text" type="java.lang.String" value="PERCENT OF CELLS ALIVE ON START:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="genRunBox">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="30"/>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
-              </Properties>
-              <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="genNumField"/>
-              </AccessibilityProperties>
-            </Component>
             <Component class="javax.swing.JSlider" name="percSlider">
               <Properties>
                 <Property name="paintLabels" type="boolean" value="true"/>
@@ -282,14 +273,19 @@
               </Properties>
               <AccessibilityProperties>
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+                <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
               </AccessibilityProperties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Hashtable&lt;Integer, JLabel&gt; labels = new Hashtable&lt;&gt;();&#xa;    labels.put(0, new JLabel(&quot;0%&quot;));&#xa;    labels.put(50, new JLabel(&quot;50%&quot;));&#xa;    labels.put(100, new JLabel(&quot;100%&quot;));&#xa;percSlider.setLabelTable(labels);"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JSpinner" name="generationTimeSpinner">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value="The time in miliseconds between generations."/>
+              </Properties>
               <AccessibilityProperties>
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="generationTimeSpinner"/>
+                <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="The time in miliseconds between generations."/>
               </AccessibilityProperties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
@@ -298,14 +294,26 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JSpinner" name="dimSpinner">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value="The dimensions of a board. Boards are square, so height and width are always the same."/>
+              </Properties>
               <AccessibilityProperties>
                 <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="dimSpinner"/>
+                <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value="The dimensions of a board. Boards are square, so height and width are always the same."/>
               </AccessibilityProperties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
                 <Property name="text" type="java.lang.String" value="DIEMSNIONS (Max: 90):"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JSpinner" name="genSpinner">
+              <Properties>
+                <Property name="toolTipText" type="java.lang.String" value="The generations that any new simulation will go through."/>
+              </Properties>
+              <AccessibilityProperties>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="genSpinner"/>
+              </AccessibilityProperties>
             </Component>
           </SubComponents>
         </Container>

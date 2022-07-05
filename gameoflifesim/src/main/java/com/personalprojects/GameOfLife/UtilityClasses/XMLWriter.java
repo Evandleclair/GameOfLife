@@ -31,8 +31,6 @@ import javax.xml.validation.Validator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -53,7 +51,7 @@ public class XMLWriter
     /**
      * Takes a BoardObject object, and a file object, and then saves the board to that file.
      * @param bOb the board object. 
-     * @param file the file object, usually retreived from a file save interface
+     * @param file the file object, usually retrieved from a file save interface
      * @throws TransformerException
      */
     public void createFileFromBoard(BoardObject bOb, File file) throws TransformerException 
