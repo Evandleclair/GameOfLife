@@ -153,18 +153,19 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         boardGameCanvas.setPreferredSize(new Dimension(prefSize,prefSize));
         
         setTitle(IDname);
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(new MouseAdapter() 
+        {
 
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    System.out.println("Big window");
-                }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("Big window");
+            }
 
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                   
-                }
-            });
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+        });
         
         //...Create the GUI and put it in the window...
         JPanel canvasPanel = new JPanel();
@@ -335,11 +336,10 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
             }
         }
         );
-         menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
         KeyEvent.VK_Q, ActionEvent.ALT_MASK));    
         menu.add(menuItem);
-    
-        
         return menuBar;
     }
 }

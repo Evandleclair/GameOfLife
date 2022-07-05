@@ -122,7 +122,7 @@ public class BoardObject {
         var retString ="";
         if (boardState!=null)
         {
-            retString= StringMaster.arrayToString(boardState);
+            retString= StringMaster.matrixToString(boardState);
         }
         return retString;
     }

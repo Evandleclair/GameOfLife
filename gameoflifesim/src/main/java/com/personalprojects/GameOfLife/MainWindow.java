@@ -11,7 +11,6 @@ import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.personalprojects.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.personalprojects.GameOfLife.popupWindows.TablePopUp;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
-import com.personalprojects.GameOfLife.UtilityClasses.NumberDocumentListener;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -556,7 +555,7 @@ private static final int MAX__GEN_SPINNER_VALUE=10000, GEN_SPINNER_INCREMENT=10,
     
     public void showFileSaveInterface(String boardName)
     {
-          fileManager.setCallingRow(gameRunner.getSimRowByName(boardName));
+          fileManager.setCallingRow(gameRunner.getRowIDFromSimTableByName(boardName));
           fileManager.showSaveInterface();
     }
     

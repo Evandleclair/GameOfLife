@@ -66,7 +66,7 @@ public class GenerationEntryPopup extends JDialog
         mainWindow=(MainWindow)Frame;
         gensToAdd=0;
         gr=mainWindow.getGameRunner();
-        callingRow=gr.getSimRowByName(name);
+        callingRow=gr.getRowIDFromSimTableByName(name);
         createAndShowGUI(); 
         //setDocumentFilters();
     }//end constructor//

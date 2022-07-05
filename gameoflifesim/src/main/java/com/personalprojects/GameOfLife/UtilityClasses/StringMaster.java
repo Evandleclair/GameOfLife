@@ -8,22 +8,27 @@ package com.personalprojects.GameOfLife.UtilityClasses;
 
 
 /**
- *
+ * A utility class to allow easy access to string manipulations used multiple times throughout the program//
  * @author evandleclair
  */
 public class StringMaster {
 
-    public static String arrayToString(int[][] inArray )
+    /**
+     * Takes a matrix and turns it into an easy to read multi line string. Mostly for internal and debugging use. 
+     * @param inMatrix
+     * @return
+     */
+    public static String matrixToString(int[][] inMatrix )
     {
         StringBuilder sb = new StringBuilder();
         String retString;
-        for (int h=0; h<inArray.length ; h++) 
+        for (int h=0; h<inMatrix.length ; h++) 
         {
-            for (int w=0; w<inArray[0].length; w++)
+            for (int w=0; w<inMatrix[0].length; w++)
             {
-                sb.append(String.valueOf(inArray[h][w]));
+                sb.append(String.valueOf(inMatrix[h][w]));
             }
-            if (h!=inArray.length-1)
+            if (h!=inMatrix.length-1)
             {
                 sb.append("\r\n");
             }
@@ -32,6 +37,11 @@ public class StringMaster {
     return retString;
     }
     
+    /**
+     * Uses a string builder to combine a 1d array of strings into a single string. 
+     * @param inStrings
+     * @return a single string created out of the array of strings given 
+     */
     public static String combineStrings(String[] inStrings)
     {
          StringBuilder str
@@ -41,5 +51,5 @@ public class StringMaster {
              str.append(s);
          }
          return str.toString();
-    }
-}
+    }//end combineStrings
+}//end class//

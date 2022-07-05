@@ -55,7 +55,7 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
     @Override
     public void exportBoard(File FileToExport) 
     {
-        SimCanvasWindow sw= gr.getSimWindowByID(callingRow);
+        SimCanvasWindow sw= gr.getSimWindowFromSimTableByID(callingRow);
         BoardObject boardDataBundle= sw.getBoardFromRunnable();
         try 
         {

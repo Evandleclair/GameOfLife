@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.*;
 /**
- *
+ * Custom logging class used by the program. 
  * @author evandleclair
  */
 public class LoggingClass {
@@ -16,6 +16,10 @@ public class LoggingClass {
     private static final Logger LOGGER = Logger.getLogger(LoggingClass.class.getName());
     static Handler fileHandler = null;
     
+    /**
+     *Setup method checks if the directory in Appdata exists, creates it if it does not, and then creates the filehandler
+     * that is used through the other method
+     */
     public static void setup() 
     {
         try 
@@ -36,7 +40,12 @@ public class LoggingClass {
         }
     }//end setup//
 
-    
+    /**
+     * The actual log writing method.
+     * @param e the exception that occurred 
+     * @param customMessage a custom message to include in the log
+     * @param severity String that determines what severity level to log the error as. 
+     */
     public static void WriteToLog(Exception e, String customMessage, String severity)
     {
         Level sevLevel;
@@ -47,5 +56,5 @@ public class LoggingClass {
         }; //end switch//
         System.out.println(StringMaster.combineStrings(new String[]{"Logger logged error", e.getStackTrace().toString()}));
         LOGGER.log(sevLevel,customMessage,e);
-    }
-}
+    }//end writetolog
+}//end class/

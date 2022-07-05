@@ -7,7 +7,7 @@ package com.personalprojects.GameOfLife.DataTypes;
 import com.personalprojects.GameOfLife.SimCanvasWindow;
 
 /**
- *
+ * Stores the ID and the matching Sim Window together so they can be passed as one. 
  * @author evandleclair
  * @param <String>
  * @param <SimCanvasWindow>
