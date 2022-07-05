@@ -83,6 +83,16 @@ public class CellObject {
         cellState = 0;
     }
     
+    public void toggleMe()
+    {
+        if (cellState==0)
+        {
+            turnOn();
+        }
+        else if (cellState==1)
+            turnOff();
+    }
+    
     /**
     *Sets the cell state to 1, aka alive.
     */

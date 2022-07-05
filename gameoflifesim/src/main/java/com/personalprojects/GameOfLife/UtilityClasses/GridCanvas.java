@@ -90,7 +90,7 @@ public class GridCanvas extends Canvas
      */
     public void userToggleCell(int r, int c)
     {
-        cellArray[r][c].turnOn(); 
+        cellArray[r][c].toggleMe();
         draw(this.getGraphics());
     } //end userToggleCell//
     

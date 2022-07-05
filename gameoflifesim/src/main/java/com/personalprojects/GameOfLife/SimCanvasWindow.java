@@ -226,7 +226,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         int c = Math.round(x/boardGameCanvas.getCellSize());
         int r = Math.round(y/boardGameCanvas.getCellSize());
         System.out.println(" c " + c + " r " + r);
-        bOb.setCellAlive(r, c);
+        bOb.setCellToggle(r, c);
         boardGameCanvas.userToggleCell(r, c);
     }
     

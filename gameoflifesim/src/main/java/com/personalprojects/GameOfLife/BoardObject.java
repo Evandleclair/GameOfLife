@@ -360,8 +360,11 @@ public class BoardObject {
         id=n;
     }
     
-    public void setCellAlive(int r, int c)
+    public void setCellToggle(int r, int c)
     {
-        boardState[r][c]=1;
+        if (boardState[r][c]==1)
+            boardState[r][c]=0;
+        else if (boardState[r][c]==0)
+            boardState[r][c]=1;
     }
 }//end boardObject Class//
