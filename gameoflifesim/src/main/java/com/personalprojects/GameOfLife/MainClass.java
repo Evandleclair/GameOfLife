@@ -22,6 +22,7 @@ public class MainClass
         GameRunner GR=new GameRunner(mainInterface); //create a new game runner object, which handles the actual boards and respective games//
         FileManagerPopup FM=new FileManagerPopup(mainInterface,GR);
         mainInterface.setGameRunner(GR); //assign our game runner object to the main window//
+        mainInterface.setUpRadioButtons();
         mainInterface.setFileManager(FM);
         mainInterface.addRightClickMenuToTable(); //can only be done AFTER a game runner has been assigned//
         GR.UpdateTableOnMainWindow(); //links the GameRunner's table model to that of the main interface window, so they update in unision.//

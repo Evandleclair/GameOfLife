@@ -5,13 +5,13 @@
 package com.personalprojects.GameOfLife;
 
 
-import com.personalprojects.GameOfLife.UtilityClasses.DocFilter;
 import com.personalprojects.GameOfLife.popupWindows.FileManagerPopup;
 import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.personalprojects.GameOfLife.popupWindows.RulesCustomizerPopup;
 import com.personalprojects.GameOfLife.popupWindows.TablePopUp;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 import com.personalprojects.GameOfLife.UtilityClasses.LoggingClass;
+import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
@@ -20,7 +20,8 @@ import javax.swing.*;
 import javax.swing.JSpinner.DefaultEditor;
 import javax.swing.table.TableModel;
 import javax.swing.text.AbstractDocument;
-
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 
 /**
@@ -32,7 +33,7 @@ public class MainWindow extends javax.swing.JFrame {
 private GameRunner gameRunner;
 private static TablePopUp tablePopUpMenu;
 private static RulesCustomizerPopup rulesCustomizerPopup;
-private static RulesBundle customRules = new RulesBundle(0,2,3,4);
+//private static RulesBundle customRules = new RulesBundle(0,2,3,4);
 private static FileManagerPopup fileManager;
 private static final int MAX__TIME_SPINNER_VALUE=2500, TIME_SPINNER_INCREMENT=25, TIME_SPINNER_DEFAULT_VALUE=250;
 private static final int MIN_DIM_SPINNER_VALUE=2, MAX__DIM_SPINNER_VALUE=90, DIM_SPINNER_INCREMENT=1, DIM_SPINNER_DEFAULT_VALUE=20;
@@ -46,8 +47,10 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("GOLicon.png"));
         setTitle("Game Of Life Simulator");
         setIconImage(img.getImage());
+       
         initComponents();
         setUpSpinners();
+        
     }//end constructor//
     
     public void invokeMainWindow()
@@ -67,7 +70,10 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         gameRunner = gameRunnerArg;
     }//end setGameRunner//
     
-    
+    public void setUpRadioButtons()
+    {
+         useDefaultRulesRadioButton.addItemListener(new radioListener(this));
+    }
     public void setFileManager(FileManagerPopup fm)
     {
         fileManager=fm;
@@ -114,10 +120,19 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         jTable1 = new javax.swing.JTable();
         rulesButtonGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        rulesPanel = new javax.swing.JPanel();
+        useDefaultRulesRadioButton = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         customRulesButton = new javax.swing.JButton();
+        customRulesPanel = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        reviveField = new javax.swing.JTextField();
+        overpopField = new javax.swing.JTextField();
+        starveField = new javax.swing.JTextField();
+        aliveField = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -155,15 +170,15 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        rulesPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        rulesButtonGroup.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Use Conway's default rules");
-        jRadioButton1.setToolTipText("Conways default rules will be used if this is checked.");
+        rulesButtonGroup.add(useDefaultRulesRadioButton);
+        useDefaultRulesRadioButton.setSelected(true);
+        useDefaultRulesRadioButton.setText("Use Conway's default rules");
+        useDefaultRulesRadioButton.setToolTipText("Conways default rules will be used if this is checked.");
 
         rulesButtonGroup.add(jRadioButton2);
-        jRadioButton2.setText("Use Custom Rules");
+        jRadioButton2.setText("Use Custom rules from table to right");
         jRadioButton2.setToolTipText("Custom rules, changed with the button to the right, will be used if this is checked.");
 
         customRulesButton.setText("EDIT \nCUSTOM \nRULES");
@@ -174,32 +189,102 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        customRulesPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Rules:"));
+
+        jLabel6.setText("Starve at/below:");
+
+        jLabel7.setText("Revive at:");
+
+        jLabel8.setText("Stay alive at:");
+
+        jLabel9.setText("Overpopulation at:");
+
+        reviveField.setText("jTextField1");
+
+        overpopField.setText("jTextField1");
+
+        starveField.setText("jTextField1");
+
+        aliveField.setText("jTextField1");
+
+        javax.swing.GroupLayout customRulesPanelLayout = new javax.swing.GroupLayout(customRulesPanel);
+        customRulesPanel.setLayout(customRulesPanelLayout);
+        customRulesPanelLayout.setHorizontalGroup(
+            customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customRulesPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addGap(18, 18, 18)
-                .addComponent(customRulesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(162, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(customRulesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButton2)
-                        .addGap(0, 37, Short.MAX_VALUE)))
+                .addGroup(customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8)
+                    .addComponent(starveField)
+                    .addComponent(aliveField))
+                .addGroup(customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customRulesPanelLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(customRulesPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(overpopField))
+                    .addGroup(customRulesPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(reviveField)
+                            .addGroup(customRulesPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
+        customRulesPanelLayout.setVerticalGroup(
+            customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(customRulesPanelLayout.createSequentialGroup()
+                .addGroup(customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6))
+                .addGap(3, 3, 3)
+                .addGroup(customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reviveField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(starveField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(customRulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(aliveField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(overpopField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout rulesPanelLayout = new javax.swing.GroupLayout(rulesPanel);
+        rulesPanel.setLayout(rulesPanelLayout);
+        rulesPanelLayout.setHorizontalGroup(
+            rulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rulesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(rulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(useDefaultRulesRadioButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                    .addComponent(customRulesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(customRulesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        rulesPanelLayout.setVerticalGroup(
+            rulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rulesPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(rulesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(customRulesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(rulesPanelLayout.createSequentialGroup()
+                        .addComponent(useDefaultRulesRadioButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRadioButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(customRulesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        customRulesPanel.getAccessibleContext().setAccessibleName("customRulesPanel");
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -243,7 +328,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                     .addComponent(generationTimeSpinner, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
                     .addComponent(dimSpinner)
                     .addComponent(genSpinner))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,9 +355,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         percSlider.getAccessibleContext().setAccessibleName("");
         percSlider.getAccessibleContext().setAccessibleDescription("");
         generationTimeSpinner.getAccessibleContext().setAccessibleName("generationTimeSpinner");
-        generationTimeSpinner.getAccessibleContext().setAccessibleDescription("The time in miliseconds between generations.");
         dimSpinner.getAccessibleContext().setAccessibleName("dimSpinner");
-        dimSpinner.getAccessibleContext().setAccessibleDescription("The dimensions of a board. Boards are square, so height and width are always the same.");
         genSpinner.getAccessibleContext().setAccessibleName("genSpinner");
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -291,6 +374,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
 
         endAllButton.setText("End All Games");
         endAllButton.setToolTipText("Closes all running Games of Life");
+        endAllButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         endAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 EndButtonClicked(evt);
@@ -304,17 +388,19 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(startButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(endAllButton, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                    .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(endAllButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(endAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(endAllButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -326,12 +412,12 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rulesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(83, 83, 83))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -342,10 +428,12 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rulesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        rulesPanel.getAccessibleContext().setAccessibleName("rulesPanel");
 
         gameJTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         gameJTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -425,23 +513,23 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(2, 2, 2)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -568,6 +656,14 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
           fileManager.showSaveInterface();
     }
     
+    public void setRulesTableFieldValues(RulesBundle rb)
+    {
+        starveField.setText(String.valueOf(rb.getStarveNumber()));
+        aliveField.setText(String.valueOf(rb.getAliveNumber()));
+        reviveField.setText(String.valueOf(rb.getReviveNumber()));
+        overpopField.setText(String.valueOf(rb.getOverpopNumber()));
+    }
+    
     /*------------------------------------------------------------*/
     /* get and set section */
     public double getInitialAliveProbability()
@@ -595,21 +691,19 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
         return (Integer)generationTimeSpinner.getValue();
     }
     
-    public RulesBundle getRules()
+    public void itemStateChanged(ItemEvent e)
     {
-        return customRules;
+       
     }
-    
-    public void setRules(RulesBundle rb)
-    {
-        customRules=rb;
-    }
+   
     
     /*---------end get and set section----------*/
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField aliveField;
     private javax.swing.JButton customRulesButton;
+    private javax.swing.JPanel customRulesPanel;
     private javax.swing.JSpinner dimSpinner;
     private javax.swing.JButton endAllButton;
     private javax.swing.JTextField fileNameField;
@@ -622,20 +716,47 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField overpopField;
     private javax.swing.JSlider percSlider;
+    private javax.swing.JTextField reviveField;
     private javax.swing.ButtonGroup rulesButtonGroup;
+    private javax.swing.JPanel rulesPanel;
     private javax.swing.JButton selectFileButton;
     private javax.swing.JButton startButton;
+    private javax.swing.JTextField starveField;
+    private javax.swing.JRadioButton useDefaultRulesRadioButton;
     // End of variables declaration//GEN-END:variables
 
+   
+ 
 }//end class//
+  class radioListener implements ItemListener {
+        private final GameRunner gameRunner;
+        private final MainWindow mi;
+        radioListener(MainWindow Mi){mi=Mi; gameRunner=mi.getGameRunner();};
+        @Override
+        public void itemStateChanged(ItemEvent e) 
+        {
+            if (e.getStateChange() == ItemEvent.SELECTED)
+            {
+                mi.setRulesTableFieldValues(gameRunner.getConwayDefault());
+            }
+            else if (e.getStateChange() == ItemEvent.DESELECTED)
+            {
+                mi.setRulesTableFieldValues((gameRunner.getCustomRules()));
+            }
+        }
+        
+    }

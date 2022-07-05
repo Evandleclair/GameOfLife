@@ -6,6 +6,7 @@ package com.personalprojects.GameOfLife.popupWindows;
 
 import com.personalprojects.GameOfLife.MainWindow;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
+import com.personalprojects.GameOfLife.GameRunner;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -36,13 +37,15 @@ public class RulesCustomizerPopup extends JDialog
     private final String starveLabelText = "Cell starves with this many or fewer neighbors: ", aliveLabelText = "Cell survives with exactly this many neighbors: ", reviveLabelText="Dead cells revive with this many neighbors: ", overpopLabelText="Cells die of overpopulation with this many neighbors: ";
     private final String finishButtonText = "Confirm custom rules", cancelButtonText = "Cancel";
     private MainWindow mainWindow;
+    private GameRunner gameRunner;
     
     public RulesCustomizerPopup(JFrame Frame)
     {
         super(Frame);
         setModal(true);
         mainWindow=(MainWindow)Frame;
-        startingRules=mainWindow.getRules();
+        gameRunner=mainWindow.getGameRunner();
+        startingRules=gameRunner.getCustomRules();
         createAndShowGUI();
     }
    
@@ -181,7 +184,7 @@ public class RulesCustomizerPopup extends JDialog
     private void exportRulesAndClose()
     {
         RulesBundle exportedRules = new RulesBundle((Integer)starveSpinner.getValue(),(Integer)aliveSpinner.getValue(),(Integer)reviveSpinner.getValue(),(Integer)overpopSpinner.getValue());
-        mainWindow.setRules(exportedRules);
+        gameRunner.setCustomRules(exportedRules);
         closeMe();
     }
     

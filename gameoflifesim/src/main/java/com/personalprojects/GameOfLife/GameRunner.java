@@ -29,6 +29,7 @@ public class GameRunner implements GameRunnerInterface {
     DefaultTableModel dtm = new DefaultTableModel(null,colNames); //create a new table model using our column names..
     private JTable simTable = new JTable(dtm); //simTable holds onto all the games. 
     private final RulesBundle conwayDefault = new RulesBundle(0,2,3,4); //conway's default rules are always the same//
+    private RulesBundle customRules = new RulesBundle(0,2,3,4);
     private File storedFileToImport=null; //used by file import functions. for now it is null//
     private int importedGensToRun=0; 
     
@@ -39,6 +40,7 @@ public class GameRunner implements GameRunnerInterface {
     public GameRunner(MainWindow MI)
     {
         mainWindow=MI;
+        MI.setRulesTableFieldValues(conwayDefault);
     }//end constructor//
     
     /**
@@ -125,7 +127,7 @@ public class GameRunner implements GameRunnerInterface {
         RulesBundle rb = conwayDefault;
         if (mainWindow.useCustomRules())
         {
-            rb=mainWindow.getRules();
+            rb=customRules;
         }
         return rb;
     }
@@ -330,6 +332,22 @@ public class GameRunner implements GameRunnerInterface {
     /*
     Self explanatory get and set methods follow. 
     */
+    
+    public RulesBundle getConwayDefault()
+    {
+        return conwayDefault;
+    }
+    
+    public void setCustomRules(RulesBundle rb)
+    {
+        customRules=rb;
+    }        
+   
+    
+    public RulesBundle getCustomRules()
+    {
+         return customRules;
+    }
     
     public int getImportedGens()
     {
