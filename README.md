@@ -21,10 +21,15 @@ https://www.java.com/en/download/
 
 https://www.oracle.com/java/technologies/downloads/
 
+# Logging System
+
+The logging system will not function correctly on Mac OS based systems. The rest of the program should run correctly. 
+
 ## Features
 
 - Supported by any platform that can run Java
-- Set custom parameters and create boards.
-- Import and export boards.
+- Set custom parameters and create boards that play out the game of life, with up to twenty simultaneous simulations possible. 
+- Users can pause their simulations, click to create or kill cells, and then resume to watch the patterns play out. 
+- Users can save interesting patterns and boards, and import them to be resumed later. 
 
 
