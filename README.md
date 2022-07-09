@@ -48,5 +48,9 @@ We will go into these features in depth later. For now you simply need to know t
 ### Section 1: The parameters box.
 ### Section 2: The rules box.
 ### Section 3: The game table.
-
-
+## Part 2: The Game Window
+### Section 1: The menu bar.
+### Section 2: Editing a game in progress.
+## Part 3: Importing and Exporting Games.
+### Section 1: Exporting a Game
+### Section 2: Importing a Game
