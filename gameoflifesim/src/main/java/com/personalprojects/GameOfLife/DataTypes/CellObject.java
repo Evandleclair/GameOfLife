@@ -83,6 +83,9 @@ public class CellObject {
         cellState = 0;
     }
     
+    /**
+     * Sets the cell state to the opposite of whatever is it is right now. 
+     */
     public void toggleMe()
     {
         if (cellState==0)

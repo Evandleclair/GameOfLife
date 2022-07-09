@@ -360,6 +360,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        startButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         startButton.setText("Start Game");
         startButton.setToolTipText("Start a new game of life with the parameters you have chosen to the left.");
         startButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -372,9 +373,9 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
             }
         });
 
+        endAllButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         endAllButton.setText("End All Games");
         endAllButton.setToolTipText("Closes all running Games of Life");
-        endAllButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         endAllButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 EndButtonClicked(evt);
@@ -389,9 +390,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(startButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(endAllButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(endAllButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -416,8 +415,8 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                     .addComponent(rulesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(83, 83, 83))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -517,12 +516,12 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

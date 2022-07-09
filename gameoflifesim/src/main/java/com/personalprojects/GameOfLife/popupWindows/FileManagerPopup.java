@@ -43,6 +43,12 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
     int callingRow=0; //used for exporting//
     JFileChooser fc;
     
+    /**
+     * Constructor method. 
+     * @param MainWindow
+     * @param Gr
+     * @throws ParserConfigurationException
+     */
     public FileManagerPopup(MainWindow MainWindow, GameRunner Gr) throws ParserConfigurationException
     {
         this.xmlWriter = new XMLWriter();
@@ -55,6 +61,10 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
         fc.setFileFilter(ff);
     }
 
+    /**
+     * Takes a file as an argument and uses an XML writer to turn it into a file. 
+     * @param FileToExport The file object to be exported. 
+     */
     @Override
     public void exportBoard(File FileToExport) 
     {
@@ -72,6 +82,10 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
         }//end catch////end catch//
     }//end exportBoard//
     
+    /**
+     * Takes a file and turns it into a board object, and then starts a simulation using that board object.//
+     * @param FileToImport the file object to be imported into our game. 
+     */
     @Override
     public void importBoard(File FileToImport) {
         BoardObject bOb=null;
@@ -94,11 +108,18 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
     @Override
     public void actionPerformed(ActionEvent e) {}
     
+    /**
+     * Externally used. Lets a table tell us what row is calling this method sp we can point back to that row.
+     * @param crow
+     */
     public void setCallingRow(int crow)
     {
         callingRow=crow;
     }//end setCallingRow//
     
+    /**
+     * Shows the "save file" version of the interface. 
+     */
     @Override
     public void showSaveInterface()
     {
@@ -113,6 +134,9 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
             }
     }
     
+    /**
+     * Shows the "open file" version of the interface
+     */
     @Override
     public void showOpenInterface() {
         int returnVal = fc.showOpenDialog(FileManagerPopup.this);
