@@ -199,12 +199,16 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
 
         jLabel9.setText("Overpopulation at:");
 
+        reviveField.setEditable(false);
         reviveField.setText("jTextField1");
 
+        overpopField.setEditable(false);
         overpopField.setText("jTextField1");
 
+        starveField.setEditable(false);
         starveField.setText("jTextField1");
 
+        aliveField.setEditable(false);
         aliveField.setText("jTextField1");
 
         javax.swing.GroupLayout customRulesPanelLayout = new javax.swing.GroupLayout(customRulesPanel);
