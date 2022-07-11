@@ -85,6 +85,7 @@ public class GenerationEntryPopup extends JDialog
         Container cc = this.getContentPane();
         cc.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        
         int genInt = mainWindow.getGenerationsToRun();
         String startGenString="10";
         

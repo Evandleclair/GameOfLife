@@ -9,8 +9,12 @@ import com.personalprojects.GameOfLife.popupWindows.GenerationEntryPopup;
 import com.personalprojects.GameOfLife.UtilityClasses.GridCanvas;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 import com.personalprojects.GameOfLife.DataTypes.simWindowInfo;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -19,11 +23,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 /**
  * This object is responsible for containing the thread that runs the simulation, and the canvas to draw it on.
@@ -36,12 +42,16 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     private final String IDname;
     private final MainWindow mainWindow;
     private final GameRunner gameRunner;
+    private JLabel clickToEditLabel; 
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenuItem menuItem;
     private SimulatorRunnable simRunnable;
     private final RulesBundle myRules;
     private static final int X_OFFSET = 30, Y_OFFSET = 30;
+    private static final String PAUSE_MESSAGE = "Game Paused:click cells to kill/revive", RUN_MESSAGE = "Game Running";
+    private static final Font RUN_FONT = new Font("TimesRoman", Font.PLAIN, 12); 
+     private static final Font PAUSE_FONT = new Font("TimesRoman", Font.PLAIN, 10); 
     GridCanvas boardGameCanvas;
     BoardObject bOb= null;
     Graphics gr, canvasGr;
@@ -148,10 +158,14 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     
     public void createAndShowGUI()
     {
+        clickToEditLabel = new JLabel(RUN_MESSAGE);
+        clickToEditLabel.setVisible(true);
         boardGameCanvas = new GridCanvas(boardDim, 10);
         int prefSize= boardDim*(10);
         boardGameCanvas.setPreferredSize(new Dimension(prefSize,prefSize));
-        
+        Container cc = this.getContentPane();
+        cc.setLayout(new GridBagLayout());
+         GridBagConstraints gbc = new GridBagConstraints();
         setTitle(IDname);
         addMouseListener(new MouseAdapter() 
         {
@@ -166,7 +180,15 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
 
             }
         });
+        JPanel labelPanel = new JPanel();
         
+        labelPanel.add(clickToEditLabel);
+        clickToEditLabel.setHorizontalTextPosition(JLabel.CENTER);
+        gbc.fill=GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth=1;
+        gbc.gridx=0;
+        gbc.gridy=0;
+        cc.add(labelPanel, gbc);
         //...Create the GUI and put it in the window...
         JPanel canvasPanel = new JPanel();
         
@@ -192,10 +214,15 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                 @Override
                 public void mouseReleased(MouseEvent e) {}
             });
+      
         canvasPanel.add(boardGameCanvas);
         canvasPanel.setSize(boardGameCanvas.getSize());
-        
-        add(canvasPanel);
+        gbc.fill=GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth=1;
+        gbc.gridx=0;
+        gbc.gridy=1;
+        cc.add(canvasPanel, gbc);
+        //add(canvasPanel);
         this.addWindowListener(new WindowAdapter()
             {
                 @Override
@@ -247,17 +274,52 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     @Override
     public void pleasePauseSim() {
        simRunnable.setPause(true);
+       clickToEditLabel.setText(PAUSE_MESSAGE);
+      updatePauseLabel();
+       
     }
 
     @Override
     public void pleaseResumeSim() {
         simRunnable.setPause(false);
+        clickToEditLabel.setText(RUN_MESSAGE);
+        updatePauseLabel();
         pleaseLookAtMe();
+    }
+    
+    private void updatePauseLabel()
+    {
+   /* SwingUtilities.invokeLater(new Runnable() {
+        public void run() 
+        {
+            if (simRunnable.getPause()==true)
+            {
+                clickToEditLabel.setText(PAUSE_MESSAGE);
+            }
+            else
+            {
+                 clickToEditLabel.setText(RUN_MESSAGE);
+            }
+            repaint();
+        }});*/
+        if (simRunnable.getPause()==true)
+            {
+                clickToEditLabel.setText(PAUSE_MESSAGE);
+                clickToEditLabel.setFont(PAUSE_FONT);
+            }
+            else
+            {
+                 clickToEditLabel.setText(RUN_MESSAGE);
+                 clickToEditLabel.setFont(RUN_FONT);
+            }
+        clickToEditLabel.paintImmediately(clickToEditLabel.getVisibleRect());
+        validate();
     }
     
     private void togglePause()
     {
         simRunnable.setPause(!simRunnable.getPause());
+        updatePauseLabel();
         System.out.println("toggling pause");
     }
 
