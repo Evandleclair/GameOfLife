@@ -48,5 +48,11 @@ We will go into these features in depth later. For now you simply need to know t
 ### Section 1: The parameters box.
 ### Section 2: The rules box.
 ### Section 3: The game table.
-
-
+## Part 2: The Game Window
+### Section 1: The menu bar.
+  Every simulation window has a menu bar, which contains options on how to interact with your simulation. 
+### Section 2: Editing a game in progress.
+  Once a game has been paused using the menu bar, you can revive and kill cells by clicking on them. Clicking on a live cell kills it, and clicking on a dead cell revives it. While it it possible to do this when the game is not paused as well, unless the generation time is very long the cells will usually die before you can give them enough neighbors to support themselves. 
+## Part 3: Importing and Exporting Games.
+### Section 1: Exporting a Game
+### Section 2: Importing a Game
