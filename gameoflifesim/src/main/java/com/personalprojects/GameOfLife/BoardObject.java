@@ -226,7 +226,7 @@ public class BoardObject {
     
     
     /**
-     * Using its current state and the ammount of neighbors alive, returns a Boolean about whether a specific cell should be dead, alive, or revived 
+     * Using its current state and the amount of neighbors alive, returns a Boolean about whether a specific cell should be dead, alive, or revived 
      * next generation
      * @param liveN number of neighbors alive.
      * @param curVal if the cell is current a 0 (dead) or a 1 (alive)
