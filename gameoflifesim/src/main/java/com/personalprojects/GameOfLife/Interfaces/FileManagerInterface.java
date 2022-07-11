@@ -12,7 +12,7 @@ import java.io.File;
  */
 public interface FileManagerInterface {
         public void exportBoard(File FileToExport);
-        public void importBoard(File FileToImport);
+        public boolean importBoard(File FileToImport);
         public void showOpenInterface();
         public void showSaveInterface();
         

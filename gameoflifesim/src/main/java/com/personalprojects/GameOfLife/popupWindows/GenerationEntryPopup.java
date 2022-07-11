@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.text.AbstractDocument;
 
 /**
- *
+ * Re-usable popup window used to enter generation values in various context. 
  * @author evandleclair
  */
 public class GenerationEntryPopup extends JDialog 
@@ -33,7 +33,10 @@ public class GenerationEntryPopup extends JDialog
     private JTextField genEntryField;
     private final int callingRow;
     
-            
+    /**
+     * constructor without a specified row. Used for board imports. 
+     * @param Frame the frame that called the popup. 
+     */
     public GenerationEntryPopup(JFrame Frame)
     {
         super(Frame);
@@ -42,11 +45,16 @@ public class GenerationEntryPopup extends JDialog
         mainWindow=(MainWindow)Frame;
         gr=mainWindow.getGameRunner();
         gensToAdd=0;
-        callingRow=-1;
+        callingRow=-1; //the -1 as the calling row is the signifier that this was not called by a specific row. 
         createAndShowGUI();
         //setDocumentFilters();
     }//end constructor//
     
+    /**
+     * This version of the constructor is called by tables. 
+     * @param Frame the frame that created this. 
+     * @param CallingRow the row of the table that invoked this. Used to point back to that table and make changes to that row. 
+     */
     public GenerationEntryPopup(JFrame Frame, int CallingRow)
     {
         super(Frame);
@@ -66,7 +74,7 @@ public class GenerationEntryPopup extends JDialog
         mainWindow=(MainWindow)Frame;
         gensToAdd=0;
         gr=mainWindow.getGameRunner();
-        callingRow=gr.getSimRowByName(name);
+        callingRow=gr.getRowIDFromSimTableByName(name);
         createAndShowGUI(); 
         //setDocumentFilters();
     }//end constructor//
@@ -77,8 +85,10 @@ public class GenerationEntryPopup extends JDialog
         Container cc = this.getContentPane();
         cc.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        
         int genInt = mainWindow.getGenerationsToRun();
         String startGenString="10";
+        
         if (genInt>0)
         {
             startGenString=String.valueOf(genInt);
@@ -151,18 +161,26 @@ public class GenerationEntryPopup extends JDialog
         dispose();
     }
     
+    /**
+     * uses the callingrow variable to add generations to a specific game from the table.//
+     */
     private void sendGenerationsToSelectedRow()
     {
         gensToAdd = Integer.parseInt(genEntryField.getText());
         gr.addGenerationsToSpecificSimWindow(callingRow, gensToAdd);
         closeMe();
     }
-     private void setImportedGenerationsToRun(int i)
+    
+    /**
+     * Passes an integer over to the game runner, which knows that any imported games should be run 'i' many generations before stopping. 
+     * @param i the number of generations that imported simulations should run. 
+     */
+    private void setImportedGenerationsToRun(int i)
     {
       
         gr.setImportedGens(i);
         closeMe();
     }
-
+     
 }//end GenerationEntryPopup//
 

@@ -43,20 +43,34 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
     int callingRow=0; //used for exporting//
     JFileChooser fc;
     
+    /**
+     * Constructor method. 
+     * @param MainWindow
+     * @param Gr
+     * @throws ParserConfigurationException
+     */
     public FileManagerPopup(MainWindow MainWindow, GameRunner Gr) throws ParserConfigurationException
     {
         this.xmlWriter = new XMLWriter();
         fc = new JFileChooser();
         mainWindow=MainWindow;
         gr=Gr;
-        fc.addChoosableFileFilter(new FileNameExtensionFilter("Game Of Life", "GOL", "gol"));
+        
+        var ff = new FileNameExtensionFilter("Game Of Life", "GOL", "gol");
+        fc.addChoosableFileFilter(ff);
+        fc.setFileFilter(ff);
     }
 
+    /**
+     * Takes a file as an argument and uses an XML writer to turn it into a file. 
+     * @param FileToExport The file object to be exported. 
+     */
     @Override
     public void exportBoard(File FileToExport) 
     {
-        SimCanvasWindow sw= gr.getSimWindowByID(callingRow);
-        BoardObject boardDataBundle= sw.getBoardFromRunnable();
+      
+        SimCanvasWindow sw= gr.getSimWindowFromSimTableByID(callingRow);
+        BoardObject boardDataBundle= sw.getBoardObjectFromRunnable();
         try 
         {
             xmlWriter.createFileFromBoard(boardDataBundle, FileToExport);
@@ -68,8 +82,13 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
         }//end catch////end catch//
     }//end exportBoard//
     
+    /**
+     * Takes a file and turns it into a board object, and then starts a simulation using that board object.//
+     * @param FileToImport the file object to be imported into our game. 
+     * @return  a boolean representing if the import was successful or not
+     */
     @Override
-    public void importBoard(File FileToImport) {
+    public boolean importBoard(File FileToImport) {
         BoardObject bOb=null;
         try {
             System.out.println("passing board to XML writer");
@@ -80,24 +99,36 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
             Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (bOb!=null)
+        {
             gr.createSimWindowAndStartSim(bOb); 
+            return true;
+        }
         else
         {
             System.out.println("Failed to import board"); //NULL means it failed to import a board correctly//
+            return false;
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {}
     
+    /**
+     * Externally used. Lets a table tell us what row is calling this method sp we can point back to that row.
+     * @param crow
+     */
     public void setCallingRow(int crow)
     {
         callingRow=crow;
     }//end setCallingRow//
     
+    /**
+     * Shows the "save file" version of the interface. 
+     */
     @Override
     public void showSaveInterface()
     {
+        fc.setSelectedFile(new File("myGame.GOL")); //set default game file name//
         int returnVal = fc.showSaveDialog(FileManagerPopup.this);
         
              if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -108,6 +139,9 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
             }
     }
     
+    /**
+     * Shows the "open file" version of the interface
+     */
     @Override
     public void showOpenInterface() {
         int returnVal = fc.showOpenDialog(FileManagerPopup.this);

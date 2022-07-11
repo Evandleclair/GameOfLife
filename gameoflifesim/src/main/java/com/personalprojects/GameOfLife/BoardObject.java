@@ -11,7 +11,8 @@ import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 import java.util.Arrays;
 
 /**
- *
+ * Board objects encapsulate the data needed for the board itself,as well as the functions required to alter it's state. 
+ * It does not handle these actions internally, those are done by a separate thread. It also does not draw itself, that too is handled elsewhere. 
  * @author evandleclair
  */
 public class BoardObject {
@@ -25,10 +26,16 @@ public class BoardObject {
     private RulesBundle myRules;
     private double probAlive;
     
+    /*
+    * This class has two constructors. The first is used when we only know the dimensions 
+    * (creating a board from scratch) while the second is for creating a board from known values
+    */
+    
     public BoardObject(int d)
     {
         dimensions=d;
     }
+    
     public BoardObject(int d, int[][] BoardState, RulesBundle Rules, int TickSpeed, int CurrentGen)
     {
         dimensions=d;
@@ -42,6 +49,16 @@ public class BoardObject {
         overpopNumber=myRules.getOverpopNumber();
         //System.out.println("Reporting as " + reportBoard());
     }
+
+    /**
+     * The setupBoard function takes the probability of cells starting the game alive, and uses that number to seed a new board.
+     * it also has an alternate form for importing rules, if we decide to use custom rule sets. If we do not import any rules, 
+     * it will use the default rules of 
+     * Conway's Game of Life
+     * @param ProbAlive the initial probability of a cell being alive on generation zero
+     * @param myRules the imported rule package/
+     */
+
     public void setupBoard(double ProbAlive, RulesBundle myRules)
     {
         probAlive=ProbAlive;
@@ -52,7 +69,12 @@ public class BoardObject {
         overpopNumber=myRules.getOverpopNumber();
         createSeedAndReportBoard();
     }
-     public void setupBoard(double ProbAlive) //default method//
+    
+    /**
+     * This is the alternate version of setupBoard that uses the default game of life rules as laid out by Conway. 
+     * @param ProbAlive the initial probability of a cell being alive on generation zero
+     */
+    public void setupBoard(double ProbAlive) //default method//
     {
         probAlive=ProbAlive;
         starveNumber=1;
@@ -62,31 +84,52 @@ public class BoardObject {
         createSeedAndReportBoard();
     }
    
+    /**
+     * Creates a blank board, then invokes the seed board function//
+     */
     public void createSeedAndReportBoard()
     {
         boardState=deadState(dimensions,dimensions);
         seedBoard();
        
     }
+    
+    /**
+     * takes dimensions and returns a matrix of that size that is entirely 0. Used for initializing and clearing boards
+     * @param width
+     * @param height
+     * @return
+     */
     public int[][] deadState(int width, int height)
     {
         return new int[width][height];
     }
     
+    /**
+     *Uses the deadState function to clear the board
+     */
     public void clearBoard()
     {
         boardState=deadState(dimensions,dimensions);
     }
     
+    /**
+     * Makes the board report it's current status as a string
+     * @return returns the board as a string
+     */
     public String reportBoard()
     {
         var retString ="";
         if (boardState!=null)
         {
-            retString= StringMaster.arrayToString(boardState);
+            retString= StringMaster.matrixToString(boardState);
         }
         return retString;
     }
+    
+    /**
+     * Using the alive probability passed in from the constructor, goes through each cell and decides if it should be alive for generation zero
+     */
     public void seedBoard()
     {
         double randstate;
@@ -103,14 +146,22 @@ public class BoardObject {
         }//end for rows//
     }//end seedboard//
      
-    /*
-     This method contains everything we need to tick the board forward by 1. 
-     */
+    /**
+    *  Ticks the board forward by 1 generation. First it saves the previous state of the board, then invokes the method that
+    * uses that state to calculate the new state
+    */
     void boardTick()
     {
         previousState=boardState;
-        boardState=calcNextState(boardState);
+        boardState=calcNextState(previousState);
     }
+    
+     /**
+     * Takes the previous state, and then goes through each cell, running calculations to see if it will be alive in the next generation. It then returns
+     * the new board state.
+     * @param prevState a matrix of integers, represents the board on the previous generation.
+     * @return a matrix of integers representing the next generation of the board. 
+     */
     int[][] calcNextState(int[][] prevState)
     {
        int[][] nextState = deadState(dimensions,dimensions);
@@ -127,6 +178,13 @@ public class BoardObject {
        return nextState;
     }
     
+     /**
+     * Takes the previous state, and then goes through each cell, running calculations to see if it will be alive in the next generation. It then returns
+     * @param r the row of the cell to be checked
+     * @param c the column of the cell to be checked
+     * @param inBoard a matrix of integers. The current board state
+     * @return a Boolean of if the cell will be alive or not next generation 
+     */
     boolean enoughNeighborsAlive(int r, int c, int[][] inBoard)
     {
         int liveCount=0, deadCount=0;
@@ -150,6 +208,13 @@ public class BoardObject {
         return returnVal;
     }
     
+    /**
+     * Takes sees if a cell is within the bounds of the board, and if so, if it is alive.
+     * @param r the row of the cell to be checked
+     * @param c the column of the cell to be checked
+     * @param inBoard a matrix of integers. The current board state
+     * @return a Boolean of if the cell was within bounds and was alive.
+     */
     private boolean isCellAliveAndValid(int r, int c, int[][] inBoard)
     {
         if (r >= 0 && c >= 0 && r < dimensions && c < dimensions )
@@ -159,6 +224,14 @@ public class BoardObject {
         return (r >= 0 && c >= 0 && r < dimensions && c < dimensions && inBoard[r][c]==1);
     }
     
+    
+    /**
+     * Using its current state and the amount of neighbors alive, returns a Boolean about whether a specific cell should be dead, alive, or revived 
+     * next generation
+     * @param liveN number of neighbors alive.
+     * @param curVal if the cell is current a 0 (dead) or a 1 (alive)
+     * @return a Boolean of if the cell will be alive or not next generation 
+     */
     boolean areWeAliveBasedOnNeighbors(int liveN, int curVal)
     {
 
@@ -186,8 +259,12 @@ public class BoardObject {
             return false;
         }
         return false;
-    }
-     
+    }//end areWeAliveBasedOnNeighbors//
+
+    /**
+     * A method used for testing. prints the matrix given to the console.
+     * @param mat  the matrix to be printed
+     */
     private void printBoardStateToConsole(int[][] mat)
     {
         StringBuilder sb = new StringBuilder();
@@ -197,10 +274,15 @@ public class BoardObject {
             {
                 sb.append(mat[r][c]);
             }
-                sb.append("\r\n");
+            sb.append("\r\n");
         }
-    }
-     
+    }//end printBoardStateToConsole
+    
+    
+    /**
+     * Used when saving the board as a GOL file. Takes the board and saves it as a single line string so it can be stored in a GOL file.
+     * @return  a single line string that represents the entire board.
+     */ 
     public String getOneLineBoardString()
     {
         StringBuilder sb = new StringBuilder();
@@ -214,6 +296,10 @@ public class BoardObject {
         return sb.toString();
     }//end getOneLineBoardString//
      
+    /*
+     * Mostly self explanatory get and set methods follow:
+     */
+    
     public int[][] getBoardState()
     {
         return boardState;
@@ -274,8 +360,11 @@ public class BoardObject {
         id=n;
     }
     
-    public void setCellAlive(int r, int c)
+    public void setCellToggle(int r, int c)
     {
-        boardState[r][c]=1;
+        if (boardState[r][c]==1)
+            boardState[r][c]=0;
+        else if (boardState[r][c]==0)
+            boardState[r][c]=1;
     }
 }//end boardObject Class//

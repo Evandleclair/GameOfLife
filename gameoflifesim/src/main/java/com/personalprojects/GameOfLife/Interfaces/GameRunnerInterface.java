@@ -19,7 +19,7 @@ public interface GameRunnerInterface
     public void destroyGame(simWindowInfo s);
     public int getGamesRunning();
     public void setGamesRunning(int GamesRunning);
-    public SimCanvasWindow getSimWindowByID(int rowID);
+    public SimCanvasWindow getSimWindowFromSimTableByID(int rowID);
     public int getOpenGamesCount();
     public void UpdateTableOnMainWindow();
     public void reportClosedGame();

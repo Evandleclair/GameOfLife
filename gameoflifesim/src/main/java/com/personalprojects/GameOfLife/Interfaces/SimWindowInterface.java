@@ -23,7 +23,8 @@ public interface SimWindowInterface {
     public void passSimStatusToMainWindow(String simStatus, int currentGen, int tSpeed);
     public void pleasePauseSim();
     public void pleaseResumeSim();
-    public int getTickTime();
-    public BoardObject getBoardFromRunnable();
+    public int getTickSpeed();
+    public void setTickSpeed(int tSpeed);
+    public BoardObject getBoardObjectFromRunnable();
 
 }

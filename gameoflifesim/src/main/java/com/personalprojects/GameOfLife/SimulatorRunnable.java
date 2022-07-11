@@ -5,7 +5,7 @@ import com.personalprojects.GameOfLife.UtilityClasses.LoggingClass;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 
 /**
- *
+ * The actual events performed on the BoardObject are performed by this class, to ensure it can be run asynchronously. 
  * @author evandleclair
  */
 public class SimulatorRunnable implements Runnable{
@@ -19,14 +19,16 @@ public class SimulatorRunnable implements Runnable{
     private final RulesBundle rulesBundle;
     private final String name;
     private boolean paused=false;
-    //public SimulatorRunnable(SimulatorWindow m, String n, int d, double prob, int GensToRun)
-    //{
-    //    mySimWindow=m;
-    //    name=n;
-    //    aliveProb=prob;
-    //    boardDims = d;
-    //    gensToRun=GensToRun;
-    //}
+  
+    /**
+     *
+     * @param m
+     * @param n
+     * @param d
+     * @param prob
+     * @param GensToRun
+     * @param rBundle
+     */
     public SimulatorRunnable(SimCanvasWindow m, String n, int d, double prob, int GensToRun, RulesBundle rBundle)
     {
         rulesBundle=rBundle;
@@ -37,7 +39,14 @@ public class SimulatorRunnable implements Runnable{
         gensToRun=GensToRun;
        
     }
-     public SimulatorRunnable(SimCanvasWindow m, BoardObject BOb, int GensToRun)
+
+    /**
+     *
+     * @param m
+     * @param BOb
+     * @param GensToRun
+     */
+    public SimulatorRunnable(SimCanvasWindow m, BoardObject BOb, int GensToRun)
     {
         boardObject=BOb;
         rulesBundle=boardObject.getMyRules();
@@ -48,6 +57,10 @@ public class SimulatorRunnable implements Runnable{
         gensToRun=GensToRun;
     }
   
+    /**
+     *
+     * @param TickTime
+     */
     public void startSimulation(int TickTime)
     {
         tickTime=TickTime;
@@ -55,12 +68,20 @@ public class SimulatorRunnable implements Runnable{
         boardObject.setTickSpeed(tickTime);
         boardObject.setupBoard(aliveProb,rulesBundle);
     }
+
+    /**
+     *
+     * @param TickTime
+     */
     public void startImportedSimulation(int TickTime)
     {
         tickTime=TickTime;
         boardObject.setTickSpeed(tickTime);
     }
         
+    /**
+     *
+     */
     public void simulationTick()
     {
         boardObject.boardTick();
@@ -68,12 +89,18 @@ public class SimulatorRunnable implements Runnable{
         mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
     
+    /**
+     *
+     */
     public void pauseTick()
     {
         mySimWindow.passSimStatusToMainWindow(getSimStatusAsString(),boardObject.getCurrentGen(),boardObject.getTickSpeed());
         mySimWindow.displayUpdatedBoard(boardObject.getBoardState());
     }
 
+    /**
+     *
+     */
     @Override
     public void run() 
     {
@@ -99,6 +126,7 @@ public class SimulatorRunnable implements Runnable{
                 interuptThread();
             }//end finally
     }//end run//
+    
     private void gameBody() throws InterruptedException
     {
         if (!paused)
@@ -129,6 +157,9 @@ public class SimulatorRunnable implements Runnable{
         }
     }//end Gamebody//
     
+    /**
+     *
+     */
     public void start () 
     {
         if (t == null) 
@@ -145,7 +176,9 @@ public class SimulatorRunnable implements Runnable{
         }
    }//end start//
     
- 
+    /**
+     *
+     */
     public void interuptThread()
     {
         System.out.println("ending thread");
@@ -156,16 +189,11 @@ public class SimulatorRunnable implements Runnable{
         }
     }
     
-    public void setPause(boolean pStatus)
-    {
-        paused=pStatus;
-        System.out.println("paused is now" + paused);
-    }
-    public boolean getPause()
-    {
-        return paused;
-    }
    
+    /**
+     *
+     * @param gensToAdd
+     */
     public void addGens(int gensToAdd)
     {
         if (t==null)
@@ -180,6 +208,10 @@ public class SimulatorRunnable implements Runnable{
         }
     }
     
+    /**
+     *
+     * @return
+     */
     public String getSimStatusAsString()
     {
         String retString=null;
@@ -196,14 +228,43 @@ public class SimulatorRunnable implements Runnable{
         }
         return retString;
     }
+
+    /**
+     *
+     * @return
+     */
     public BoardObject grabBoard()
     {
         return this.boardObject;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getGensToRun()
     {
         return gensToRun;
     }
+     /**
+     *
+     * @param pStatus
+     */
+    public void setPause(boolean pStatus)
+    {
+        paused=pStatus;
+        System.out.println("paused is now" + paused);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean getPause()
+    {
+        return paused;
+    }
+   
+    
 }//end class//
 
