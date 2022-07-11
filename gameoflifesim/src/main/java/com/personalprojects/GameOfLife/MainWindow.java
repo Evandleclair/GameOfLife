@@ -578,7 +578,18 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
     void showGenerationPopupAndImportFile()
     {
         GenerationEntryPopup genEntryPopup=new GenerationEntryPopup(this);
-        fileManager.importBoard(gameRunner.getStoredFile());
+        if (fileManager.importBoard(gameRunner.getStoredFile())!=true)
+        {
+            showErrorMessage("INVALID FILE","The file you tried to import was either not found or was not a valid .GOL file. Please try again.");
+        }
+    }
+    
+    private void showErrorMessage(String title, String message)
+    {
+        JOptionPane.showMessageDialog(null, 
+                              message, 
+                              title, 
+                              JOptionPane.WARNING_MESSAGE);
     }
     void updateTableModel(TableModel tm)
     {

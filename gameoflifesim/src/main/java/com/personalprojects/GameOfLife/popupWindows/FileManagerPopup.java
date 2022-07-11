@@ -70,7 +70,7 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
     {
       
         SimCanvasWindow sw= gr.getSimWindowFromSimTableByID(callingRow);
-        BoardObject boardDataBundle= sw.getBoardFromRunnable();
+        BoardObject boardDataBundle= sw.getBoardObjectFromRunnable();
         try 
         {
             xmlWriter.createFileFromBoard(boardDataBundle, FileToExport);
@@ -85,9 +85,10 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
     /**
      * Takes a file and turns it into a board object, and then starts a simulation using that board object.//
      * @param FileToImport the file object to be imported into our game. 
+     * @return  a boolean representing if the import was successful or not
      */
     @Override
-    public void importBoard(File FileToImport) {
+    public boolean importBoard(File FileToImport) {
         BoardObject bOb=null;
         try {
             System.out.println("passing board to XML writer");
@@ -98,10 +99,14 @@ public class FileManagerPopup extends JPanel implements FileManagerInterface, Ac
             Logger.getLogger(FileManagerPopup.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (bOb!=null)
+        {
             gr.createSimWindowAndStartSim(bOb); 
+            return true;
+        }
         else
         {
             System.out.println("Failed to import board"); //NULL means it failed to import a board correctly//
+            return false;
         }
     }
 

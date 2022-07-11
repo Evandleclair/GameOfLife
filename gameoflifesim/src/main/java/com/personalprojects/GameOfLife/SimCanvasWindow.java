@@ -56,50 +56,70 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
     BoardObject bOb= null;
     Graphics gr, canvasGr;
     
-    public SimCanvasWindow(int dim, String idName, MainWindow c, RulesBundle MyRules)
+    /**
+     * Constructor method. Creates our window based on the arguments given.
+     * @param dim the dimensions of our grid of cells
+     * @param idName the name of the window, which matches the name of our simulation/
+     * @param creatorWindow the main GUI window of the program
+     * @param rulesToUse a RulesBundle object.
+     */
+    public SimCanvasWindow(int dim, String idName, MainWindow creatorWindow, RulesBundle rulesToUse)
     {
        
         boardDim=dim;
-        mainWindow=c;
-        myRules=MyRules;
-        genTime=c.getTickTime();
-        gameRunner=c.getGameRunner();
+        mainWindow=creatorWindow;
+        myRules=rulesToUse;
+        genTime=creatorWindow.getTickTime();
+        gameRunner=creatorWindow.getGameRunner();
         IDname=idName;
         //...Then set the window size or call pack...
         openFrameCount=gameRunner.getGamesRunning();
-        createAndShowGUI();
+        callCreateAndShowGUI();
         //Set the window's location.
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
     }
     
-    public SimCanvasWindow(MainWindow c, BoardObject BOb)
+    /**
+     * Much the same as the other constructor, but used when we have a boardObject that we want to import. 
+     * @param creatorWindow the main GUI window
+     * @param BOb the boardObject we are importing. 
+     */
+    public SimCanvasWindow(MainWindow creatorWindow, BoardObject BOb)
     {
         bOb=BOb;
         boardDim=bOb.getDimensions();
-        mainWindow=c;
+        mainWindow=creatorWindow;
         myRules=bOb.getMyRules();
-        genTime=c.getTickTime();
-        gameRunner=c.getGameRunner();
+        genTime=creatorWindow.getTickTime();
+        gameRunner=creatorWindow.getGameRunner();
         IDname=bOb.getName();
         //...Then set the window size or call pack...
         openFrameCount=gameRunner.getGamesRunning();
-        createAndShowGUI();
+        callCreateAndShowGUI();
         //Set the window's location.
         setLocation(X_OFFSET*openFrameCount, Y_OFFSET*openFrameCount);
     }
     
-    public void runSimWindowStartupTasks()
+    /**
+     * Exists so we are not directly calling an overridable method in the constructor.
+     */
+    private void callCreateAndShowGUI()
     {
-        setVisible(true); //necessary as of 1.3
-        setMyGraphics();
-        
+        createAndShowGUI();
     }
+    
+   
     
     @Override
     public void startSimRunnable() {
+        setVisible(true); //necessary as of 1.3
+        setMyGraphics();
         simRunnable.start();
     }
     
+    /**
+     * Public method that allows other windows to focus on specific games.
+     */
     @Override
     public void pleaseLookAtMe()
     {
@@ -108,30 +128,41 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         
     }
     
+    /**
+     * Public method that allows closing of specific games
+     */
     @Override
     public void pleaseCloseMe()
     {
-        
-        
         dispose();
     }
     
+    /**
+     * Public method that takes a generation count and adds it to the running simulation. 
+     * @param gens the ammount of generations to add. 
+     */
     @Override
     public void pleaseAddGenerations(int gens)
     {
         simRunnable.addGens(gens);
-        
     }
-
+    
+    /**
+     * Creates a simRunnable object, with a matching board, starts the simulation, stores the board here for referencing, then focuses on this window. 
+     */
     @Override
     public void establishBoardAndStartSim() 
     {
         simRunnable = new SimulatorRunnable(this, IDname,boardDim, mainWindow.getInitialAliveProbability(), mainWindow.getGenerationsToRun(),myRules);
-        simRunnable.startSimulation(genTime);
-        bOb=simRunnable.grabBoard();
-        pleaseLookAtMe();
+        simRunnable.startSimulation(genTime); //start the simulation//
+        bOb=simRunnable.grabBoard(); //store the board created by our simRunnable object.//
+        pleaseLookAtMe(); //focus on our new game so we do not miss the first generations//
     }
     
+    /**
+     * Takes a board object and starts a simulation using it. 
+     * @param BOb the board object to base the simulation on.
+     */
     @Override
     public void importBoardAndStartSim(BoardObject BOb) {
         simRunnable = new SimulatorRunnable(this, BOb,  gameRunner.getImportedGens());
@@ -139,23 +170,30 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         pleaseLookAtMe();
     }
     
+    /**
+     * Stores our boardGameCanvas graphics as well as our own graphis as easily referenced variables.
+     */
     public void setMyGraphics()
     {
         canvasGr=boardGameCanvas.getGraphics();
         gr = this.getGraphics();
     }//end setMyGraphics//
 
+    /**
+     * Given a matrix of ints, sets the stored canvas to match that state, and then redraws it.//
+     * @param boardState  a matrix of ints representing a board state.
+     */
     @Override
     public void displayUpdatedBoard(int[][] boardState) {
         boardGameCanvas.setCellsEqualToBoardState(boardState);
         boardGameCanvas.draw(canvasGr);
     }
     
-    public void updateTickSpeed(int speed)
-    {
-        bOb.setTickSpeed(speed);
-    }
+   
     
+    /**
+     * Invoked once upon creation. Creates the GUI and shows it.
+     */
     public void createAndShowGUI()
     {
         clickToEditLabel = new JLabel(RUN_MESSAGE);
@@ -208,7 +246,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
                     int x=e.getX();
                     int y=e.getY();
                     System.out.println("On the canvas" + " x " + x + " y " + y);
-                    setCellAtCoords(x,y);
+                    toggleCellAtCoords(x,y);
                 }
 
                 @Override
@@ -248,60 +286,65 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         setResizable(false);
     }//end createAndShowGUI//
 
-    private void setCellAtCoords(int x, int y)
+    /**
+     * toggles the cell at the specified coordinates
+     * @param C an Integer representing a column
+     * @param R an Integer representing a row
+     */
+    private void toggleCellAtCoords(int C, int R)
     {
-        int c = Math.round(x/boardGameCanvas.getCellSize());
-        int r = Math.round(y/boardGameCanvas.getCellSize());
+        int c = Math.round(C/boardGameCanvas.getCellSize());
+        int r = Math.round(R/boardGameCanvas.getCellSize());
         System.out.println(" c " + c + " r " + r);
         bOb.setCellToggle(r, c);
         boardGameCanvas.userToggleCell(r, c);
     }
     
-    
-    
+    /**
+     * Passes status information about this window and it's simulation to the main window, so its coresponding row on the table can be updated./ /
+     * @param simStatus The current status of the sim, stored as a String. 
+     * @param currentGen The curretn generation of the sim, stored as an Integer.
+     * @param tickSpeed the current time between generations, also called TickSpeed, stored as an Integer. 
+     */
     @Override
     public void passSimStatusToMainWindow(String simStatus, int currentGen, int tickSpeed) {
         //System.out.println("passing");
         gameRunner.updateSimColumnsOnTable(IDname, simStatus, currentGen, simRunnable.getGensToRun(), tickSpeed);
     }
 
+    /**
+     * Gets the stored boardObject from this windows associated simulation.
+     * @return a BoardObject belonging to the stored simRunnable. 
+     */
     @Override
-    public BoardObject getBoardFromRunnable() 
+    public BoardObject getBoardObjectFromRunnable() 
     {
        return simRunnable.grabBoard();
     }
 
+    /**
+     * Invokes the pause method on this windows associated sim, and invokes a method to update our label accordingly. 
+     */
     @Override
-    public void pleasePauseSim() {
-       simRunnable.setPause(true);
-       clickToEditLabel.setText(PAUSE_MESSAGE);
-      updatePauseLabel();
-       
+    public void pleasePauseSim() 
+    {
+    simRunnable.setPause(true);
+    updatePauseLabel();   
     }
 
+    /**
+     * Invokes the resume method on this windows associated sim, and invokes a method to update our label accordingly. Also focuses on the window. 
+     */
     @Override
-    public void pleaseResumeSim() {
+    public void pleaseResumeSim() 
+    {
         simRunnable.setPause(false);
-        clickToEditLabel.setText(RUN_MESSAGE);
         updatePauseLabel();
         pleaseLookAtMe();
     }
     
     private void updatePauseLabel()
     {
-   /* SwingUtilities.invokeLater(new Runnable() {
-        public void run() 
-        {
-            if (simRunnable.getPause()==true)
-            {
-                clickToEditLabel.setText(PAUSE_MESSAGE);
-            }
-            else
-            {
-                 clickToEditLabel.setText(RUN_MESSAGE);
-            }
-            repaint();
-        }});*/
         if (simRunnable.getPause()==true)
             {
                 clickToEditLabel.setText(PAUSE_MESSAGE);
@@ -316,6 +359,9 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         validate();
     }
     
+    /**
+     * Sets our simulations pause status to it's current opposite, and then updates the label according. 
+     */
     private void togglePause()
     {
         simRunnable.setPause(!simRunnable.getPause());
@@ -323,19 +369,19 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         System.out.println("toggling pause");
     }
 
-    @Override
-    public int getTickTime() 
-    {
-        return bOb.getTickSpeed();
-    }
-    
+  
+    /**
+     * Creates a menu bar that includes various options for interacting with the simulation
+     * @return  a new menu bar, that will be attached to this window 
+     */
     private JMenuBar establishMenuBar()
     {
         menuBar = new JMenuBar();
         menu = new JMenu("Simulator Options");
         menu.setMnemonic(KeyEvent.VK_A);
         menu.getAccessibleContext().setAccessibleDescription(
-        "The only menu in this program that has menu items");
+        "Simulation Interactions Menu");
+        
         menuBar.add(menu);
         menuItem = new JMenuItem(new AbstractAction("Pause/Resume") 
         {
@@ -349,6 +395,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         menuItem.setAccelerator(KeyStroke.getKeyStroke(
         KeyEvent.VK_P, ActionEvent.ALT_MASK));
         menuItem.getAccessibleContext().setAccessibleDescription("Pauses or unpauses the game");
+        
         menu.add(menuItem);
         menuItem = new JMenuItem(new AbstractAction("Export board") 
         {
@@ -376,7 +423,7 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         KeyEvent.VK_C, ActionEvent.ALT_MASK));    
         menu.add(menuItem);
          
-         menuItem = new JMenuItem(new AbstractAction("Add generations") 
+        menuItem = new JMenuItem(new AbstractAction("Add generations") 
         {
             @Override
             public void actionPerformed(ActionEvent ae) 
@@ -385,7 +432,8 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
             }
         }
         );
-         menuItem.setAccelerator(KeyStroke.getKeyStroke(
+        
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(
         KeyEvent.VK_G, ActionEvent.ALT_MASK));    
         menu.add(menuItem);
         
@@ -404,4 +452,21 @@ public class SimCanvasWindow extends JDialog implements SimWindowInterface{
         menu.add(menuItem);
         return menuBar;
     }
+    
+    @Override
+    public int getTickSpeed() 
+    {
+        return bOb.getTickSpeed();
+    }
+    
+     /**
+     * Changes the tick speed in milliseconds to match the argument given
+     * @param tSpeed  A tick speed in milliseconds, stored as an integer. 
+     */
+    @Override
+    public void setTickSpeed(int tSpeed)
+    {
+        bOb.setTickSpeed(tSpeed);
+    }
+    
 }

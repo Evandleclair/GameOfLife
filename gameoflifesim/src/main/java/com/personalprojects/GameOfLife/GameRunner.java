@@ -78,7 +78,7 @@ public class GameRunner implements GameRunnerInterface {
             simWindows.add(new simWindowInfo("GAME "+gamesRan,sW));
             gamesRan++; //total number of games ran increases by 1.
             gamesRunning++;
-            sW.runSimWindowStartupTasks();
+            //sW.runSimWindowStartupTasks();
             sW.startSimRunnable();
             updateSimWindowTableToMatchList();
         }//end if gamesRunning is smaller 20//
@@ -207,7 +207,7 @@ public class GameRunner implements GameRunnerInterface {
     public void updateTickSpeedOnSpecificWindow(int rowID)
     {
         int tickTime =mainWindow.getTickTime();
-        getSimWindowFromSimTableByID(rowID).updateTickSpeed(tickTime);
+        getSimWindowFromSimTableByID(rowID).setTickSpeed(tickTime);
         updateTickTime(rowID,tickTime);
         
     }
@@ -246,7 +246,7 @@ public class GameRunner implements GameRunnerInterface {
     }
     
     /**
-     * 
+     * Updates the table model on the GUI to match the one that is used here. 
      */
     @Override
     public void UpdateTableOnMainWindow() {
@@ -259,7 +259,7 @@ public class GameRunner implements GameRunnerInterface {
      * @param status the current status of the simulation IE: paused, terminated, etc.
      * @param curGen the current generation of that simulation
      * @param lifeSpan the last generation to calculate
-     * @param tSpeed the time in miliseconds between each generation, called "tick speed". 
+     * @param tSpeed the time in milliseconds between each generation, called "tick speed". 
      */
     public void updateSimColumnsOnTable(String IDname, String status, int curGen, int lifeSpan, int tSpeed)
     {
@@ -288,9 +288,9 @@ public class GameRunner implements GameRunnerInterface {
     }
     
     /**
-     * Using the name of a simulation, retreive it from the sim table. 
+     * Using the name of a simulation, retreived it from the sim table. 
      * @param IDname
-     * @return 
+     * @return an integer representing the row that name can be found on. 
      */
     public int getRowIDFromSimTableByName(String IDname)
     {
