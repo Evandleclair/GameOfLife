@@ -525,8 +525,8 @@
                       <Group type="102" attributes="0">
                           <Component id="selectFileButton" min="-2" pref="105" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="fileNameField" min="-2" pref="394" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="fileNameField" max="32767" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="importButton" min="-2" pref="105" max="-2" attributes="0"/>
                       </Group>
                   </Group>
