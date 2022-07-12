@@ -4,7 +4,8 @@
     <groupId>com.personalprojects</groupId>
     <artifactId>gameoflifesim</artifactId>
     <version>1.0-SNAPSHOT</version>
-    
+
+
   <build>
     <plugins>
       <plugin>
@@ -12,7 +13,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.personalprojects.GameOfLife.MainInterface</mainClass>
+              <mainClass>com.personalprojects.GameOfLife.MainClass</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
@@ -35,7 +36,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <exec.mainClass>com.personalprojects.GameOfLife.MainInterface</exec.mainClass>
+        <exec.mainClass>com.personalprojects.GameOfLife.MainClass</exec.mainClass>
     </properties>
     
     <name>GameOfLife</name>
@@ -65,6 +66,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
 </project>
 
