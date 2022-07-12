@@ -8,7 +8,6 @@ package com.personalprojects.GameOfLife;
 
 import com.personalprojects.GameOfLife.UtilityClasses.StringMaster;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
-import java.util.Arrays;
 
 /**
  * Board objects encapsulate the data needed for the board itself,as well as the functions required to alter it's state. 

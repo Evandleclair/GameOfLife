@@ -4,7 +4,6 @@
  */
 package com.personalprojects.GameOfLife;
 
-import com.personalprojects.GameOfLife.UtilityClasses.DocFilter;
 import com.personalprojects.GameOfLife.UtilityClasses.LoggingClass;
 import com.personalprojects.GameOfLife.popupWindows.FileManagerPopup;
 import javax.xml.parsers.ParserConfigurationException;
