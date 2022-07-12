@@ -99,7 +99,7 @@ public class TablePopUp extends JFrame implements ActionListener {
     {
         public exportGameAction()
         {
-            super("Export Game to Text File");
+            super("Export Game to .GOL File");
         }
         @Override
         public void actionPerformed(ActionEvent e) {
