@@ -45,7 +45,7 @@ public class TablePopUp extends JFrame implements ActionListener {
         {
             popup.add(j);
         }
-    }
+    }//end constructor//
     
     @Override
     public void actionPerformed(ActionEvent e) 
@@ -56,14 +56,15 @@ public class TablePopUp extends JFrame implements ActionListener {
         System.out.println(table.getSelectedRow() + " : " + table.getSelectedColumn());
         //addGenLabel=StringMaster.combineStrings(new String[]{"Add ",String.valueOf(mainWindow.getGenerationsToRun())," Generations"});
         callingRow=table.getSelectedRow();
-    }
-    public void ShowPopUp(MouseEvent e, int rowselected)
+    }//end actionPerformed
+    
+    public void showPopUp(MouseEvent e, int rowselected)
     {
         callingRow = rowselected;
         updateTickLabel=StringMaster.combineStrings(new String[]{"Update tick time to: ",String.valueOf(mainWindow.getTickTime()), " MS"});
         updateTickTimeMenuItem.setText(updateTickLabel);
         popup.show(e.getComponent(), e.getX(), e.getY());
-    }
+    }//end showPopUp 
     
     public class bringToFrontAction extends AbstractAction {
         public bringToFrontAction()
@@ -76,7 +77,7 @@ public class TablePopUp extends JFrame implements ActionListener {
             System.out.println("This will bring window to front");
             gr.focusOnSpecificSimWindow(callingRow);
         }
-    }
+    }//end bringToFrontAction//
     
     public class pauseResumeAction extends AbstractAction 
     {

@@ -77,7 +77,7 @@ public class GridCanvas extends Canvas
      */
     public void setCellState(int r, int c, int state)
     {
-        if (state==1)
+        if (state==1) //state of 1 means the cell is alive
             cellArray[r][c].turnOn();
         else
             cellArray[r][c].turnOff();
