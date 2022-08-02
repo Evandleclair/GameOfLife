@@ -5,6 +5,7 @@
 package com.personalprojects.GameOfLife.UtilityClasses;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.*;
 /**
  * Custom logging class used by the program. 
@@ -32,6 +33,7 @@ public class LoggingClass {
         else
         {
             validDir=false;
+            System.out.println("Note: full logging only supported on Linux and Window's based systems. Other features will still function.");
             return; //we do not support any other OS. break loop./ 
         }
         try 
@@ -49,6 +51,7 @@ public class LoggingClass {
             LOGGER.addHandler(fileHandler);//adding Handler for file
             validDir=true;
         } catch (IOException e) {
+            System.out.println(e.getStackTrace());
             System.out.println("Logger setup failed.");
             validDir=false;
         }
