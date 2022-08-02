@@ -13,7 +13,6 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
@@ -47,7 +46,7 @@ public class RulesCustomizerPopup extends JDialog
         gameRunner=mainWindow.getGameRunner();
         startingRules=gameRunner.getCustomRules();
         createAndShowGUI();
-    }
+    }//end Constructor//
    
     private void createAndShowGUI()
     {
@@ -83,7 +82,6 @@ public class RulesCustomizerPopup extends JDialog
         gbc.gridy=3;
         cc.add(overpopLabel, gbc);
         
-        
         starveSpinner = new JSpinner();
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridx=2;
@@ -114,7 +112,6 @@ public class RulesCustomizerPopup extends JDialog
         ((JSpinner.DefaultEditor) aliveSpinner.getEditor()).getTextField().setEditable(false);
         cc.add(aliveSpinner,gbc);
         
-        
         reviveSpinner = new JSpinner();
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.gridx=2;
@@ -143,7 +140,6 @@ public class RulesCustomizerPopup extends JDialog
         overpopSpinner.setModel(model);
         ((JSpinner.DefaultEditor) overpopSpinner.getEditor()).getTextField().setEditable(false);
         cc.add(overpopSpinner,gbc);
-        
         
         finishButton = new JButton(finishButtonText);
         gbc.fill=GridBagConstraints.HORIZONTAL;
@@ -179,17 +175,17 @@ public class RulesCustomizerPopup extends JDialog
                 mainWindow.nullRulesWindow();
             }
         });
-    }
+    }//end createAndShowGUI
     
     private void exportRulesAndClose()
     {
         RulesBundle exportedRules = new RulesBundle((Integer)starveSpinner.getValue(),(Integer)aliveSpinner.getValue(),(Integer)reviveSpinner.getValue(),(Integer)overpopSpinner.getValue());
         gameRunner.setCustomRules(exportedRules);
         closeMe();
-    }
+    }//end exportRulesAndClose//
     
     private void closeMe()
     {
         dispose();
-    }
+    }//end closeMe//
 }//end RulesCustomizerPopup//

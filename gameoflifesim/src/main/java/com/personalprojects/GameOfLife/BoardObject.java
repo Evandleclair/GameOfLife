@@ -8,7 +8,6 @@ package com.personalprojects.GameOfLife;
 
 import com.personalprojects.GameOfLife.UtilityClasses.StringMaster;
 import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
-import java.util.Arrays;
 
 /**
  * Board objects encapsulate the data needed for the board itself,as well as the functions required to alter it's state. 
@@ -48,7 +47,7 @@ public class BoardObject {
         reviveNumber=myRules.getReviveNumber();
         overpopNumber=myRules.getOverpopNumber();
         //System.out.println("Reporting as " + reportBoard());
-    }
+    }//end constructor method//
 
     /**
      * The setupBoard function takes the probability of cells starting the game alive, and uses that number to seed a new board.
@@ -68,7 +67,7 @@ public class BoardObject {
         reviveNumber=myRules.getReviveNumber();
         overpopNumber=myRules.getOverpopNumber();
         createSeedAndReportBoard();
-    }
+    }//end setupBoard//
     
     /**
      * This is the alternate version of setupBoard that uses the default game of life rules as laid out by Conway. 
@@ -82,7 +81,7 @@ public class BoardObject {
         reviveNumber=3;
         overpopNumber=4;
         createSeedAndReportBoard();
-    }
+    }//end setupBoard//
    
     /**
      * Creates a blank board, then invokes the seed board function//
@@ -91,8 +90,7 @@ public class BoardObject {
     {
         boardState=deadState(dimensions,dimensions);
         seedBoard();
-       
-    }
+    }//end createSeedAndReportBoard
     
     /**
      * takes dimensions and returns a matrix of that size that is entirely 0. Used for initializing and clearing boards
@@ -103,7 +101,7 @@ public class BoardObject {
     public int[][] deadState(int width, int height)
     {
         return new int[width][height];
-    }
+    } //end deadState//
     
     /**
      *Uses the deadState function to clear the board
@@ -111,7 +109,7 @@ public class BoardObject {
     public void clearBoard()
     {
         boardState=deadState(dimensions,dimensions);
-    }
+    } //end clearBoard//
     
     /**
      * Makes the board report it's current status as a string
@@ -125,7 +123,7 @@ public class BoardObject {
             retString= StringMaster.matrixToString(boardState);
         }
         return retString;
-    }
+    } //end reportBoard//
     
     /**
      * Using the alive probability passed in from the constructor, goes through each cell and decides if it should be alive for generation zero
@@ -154,7 +152,7 @@ public class BoardObject {
     {
         previousState=boardState;
         boardState=calcNextState(previousState);
-    }
+    }//end boardTick//
     
      /**
      * Takes the previous state, and then goes through each cell, running calculations to see if it will be alive in the next generation. It then returns
@@ -176,7 +174,7 @@ public class BoardObject {
        //System.out.println("-----");
        printBoardStateToConsole(nextState);
        return nextState;
-    }
+    }//end calcNextState//
     
      /**
      * Takes the previous state, and then goes through each cell, running calculations to see if it will be alive in the next generation. It then returns
@@ -206,7 +204,7 @@ public class BoardObject {
         boolean returnVal=areWeAliveBasedOnNeighbors(liveCount,inBoard[r][c]);
         //System.out.println("row " + r + " col " + c + " value is " + inBoard[r][c] + " and it has " + liveCount + "living neighbors and alive is " + returnVal);
         return returnVal;
-    }
+    }//end enoughNeighborsAlive//
     
     /**
      * Takes sees if a cell is within the bounds of the board, and if so, if it is alive.
@@ -222,7 +220,7 @@ public class BoardObject {
         //System.out.println("within bounds. coordinate at rc " + r + " " + c + " is "+inBoard[r][c]);
         }
         return (r >= 0 && c >= 0 && r < dimensions && c < dimensions && inBoard[r][c]==1);
-    }
+    }//end isCellAliveAndValid//
     
     
     /**

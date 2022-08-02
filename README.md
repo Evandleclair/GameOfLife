@@ -32,6 +32,13 @@ The logging system will not function correctly on Mac OS based systems. The rest
 - Users can pause their simulations, click to create or kill cells, and then resume to watch the patterns play out. 
 - Users can save interesting patterns and boards, and import them to be resumed later. 
 
+# Notes On Running In Linux
+For the program to run on linux, you will need at least OpenJDK17. Run the following command:
+
+> sudo apt install openjdk-17-jdk
+
+
+
 # How to use the program:
 
 ## Part 1: the main window

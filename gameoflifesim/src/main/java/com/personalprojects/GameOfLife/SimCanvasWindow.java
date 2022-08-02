@@ -29,7 +29,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 /**
  * This object is responsible for containing the thread that runs the simulation, and the canvas to draw it on.

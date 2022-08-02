@@ -637,7 +637,7 @@ private static final int MIN_GEN_SPINNER_VALUE=0, MAX__GEN_SPINNER_VALUE=10000, 
                     if (! source.isRowSelected(row))
                         source.changeSelection(row, column, false, false);
                 
-                    tablePopUpMenu.ShowPopUp(e, row);
+                    tablePopUpMenu.showPopUp(e, row);
                 }
             }
         });

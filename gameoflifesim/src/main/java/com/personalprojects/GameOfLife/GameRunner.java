@@ -9,11 +9,9 @@ import com.personalprojects.GameOfLife.DataTypes.RulesBundle;
 import com.personalprojects.GameOfLife.DataTypes.simWindowInfo;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 /**
  *

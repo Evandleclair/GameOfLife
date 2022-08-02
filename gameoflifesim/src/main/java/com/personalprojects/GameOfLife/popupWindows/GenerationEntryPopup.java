@@ -11,7 +11,6 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -39,15 +38,13 @@ public class GenerationEntryPopup extends JDialog
      */
     public GenerationEntryPopup(JFrame Frame)
     {
-        super(Frame);
-        setModal(true);
-        
-        mainWindow=(MainWindow)Frame;
-        gr=mainWindow.getGameRunner();
-        gensToAdd=0;
+        super(Frame); 
         callingRow=-1; //the -1 as the calling row is the signifier that this was not called by a specific row. 
+        setModal(true); //set it to modal so it prevents other interactions until closed
+        mainWindow=(MainWindow)Frame;
+        gensToAdd=0;
+        gr=mainWindow.getGameRunner();
         createAndShowGUI();
-        //setDocumentFilters();
     }//end constructor//
     
     /**
@@ -64,9 +61,13 @@ public class GenerationEntryPopup extends JDialog
         gensToAdd=0;
         gr=mainWindow.getGameRunner();
         createAndShowGUI(); 
-        //setDocumentFilters();
     }//end constructor//
     
+    /**
+     * This version of the constructor is used by the MenuBar on the simulator windows. 
+     * @param Frame
+     * @param name  the name of the simulation this is attached to. 
+     */
     public GenerationEntryPopup(JFrame Frame, String name)
     {
         super(Frame);
@@ -76,7 +77,6 @@ public class GenerationEntryPopup extends JDialog
         gr=mainWindow.getGameRunner();
         callingRow=gr.getRowIDFromSimTableByName(name);
         createAndShowGUI(); 
-        //setDocumentFilters();
     }//end constructor//
      
     private void createAndShowGUI()
@@ -87,7 +87,7 @@ public class GenerationEntryPopup extends JDialog
         GridBagConstraints gbc = new GridBagConstraints();
         
         int genInt = mainWindow.getGenerationsToRun();
-        String startGenString="10";
+        String startGenString="10"; 
         
         if (genInt>0)
         {
@@ -109,6 +109,7 @@ public class GenerationEntryPopup extends JDialog
         gbc.gridx=0;
         gbc.gridy=1;
         cc.add(addButton, gbc);
+        
         if (callingRow!=-1)
         {
             addButton.addActionListener((ActionEvent e) -> {
@@ -136,17 +137,14 @@ public class GenerationEntryPopup extends JDialog
         gbc.gridx=1;
         gbc.gridy=1;
       
-            
         cancelButton.addActionListener((ActionEvent e) -> {
             closeMe();
         });
         cc.add(cancelButton, gbc);
         
-        
         pack();
         setLocationRelativeTo(mainWindow);
         setVisible(true);
-        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
      
